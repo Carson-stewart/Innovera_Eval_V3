@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #111111;
+    --card: #ffffff;
+    --card-foreground: #111111;
+    --popover: #ffffff;
+    --popover-foreground: #111111;
+    --primary: #111111;
+    --primary-foreground: #f9f9f9;
+    --secondary: #f5f5f5;
+    --secondary-foreground: #111111;
+    --muted: #f5f5f5;
+    --muted-foreground: #6b7280;
+    --accent: #f5f5f5;
+    --accent-foreground: #111111;
+    --destructive: #dc2626;
+    --border: #e5e7eb;
+    --input: #e5e7eb;
+    --ring: #9ca3af;
+    --radius: 0.5rem;
+
+    /* Sidebar */
+    --sidebar: #fafafa;
+    --sidebar-foreground: #111111;
+    --sidebar-border: #e5e7eb;
+
+    /* ─── Innovera brand tokens ────────────────────────────────────────────────
+     * Vibrant deep emerald.
+     * NOTE: variable names retain the legacy "orange" suffix so no class-level
+     * renames are needed across the ~84 usages. Values are green.
+     *
+     * TO SWAP THE BRAND COLOR AGAIN: change only the six --brand-orange* values.
+     * Every CTA, active-nav, tab underline, focus ring, and chip accent re-colors
+     * automatically — one edit here, zero component changes.
+     * ──────────────────────────────────────────────────────────────────────── */
+    --brand-orange:        #15623C;  /* primary — CTAs, active nav, tab underline    */
+    --brand-orange-hover:  #1C7A49;  /* hover/pressed — lighter lift (base is dark)  */
+    --brand-orange-light:  #E6F4EC;  /* pale green tint — chip fills, hover bg       */
+    --brand-orange-fg:     #FFFFFF;  /* text/icons ON brand surfaces (~7.4:1 on base)*/
+    --brand-orange-ring:   #2A7A4E;  /* focus ring / accent — visible on white       */
+    --brand-orange-border: #1F5C3D;  /* brand borders                                */
+
+    /* Status tokens — scores and alerts only */
+    --status-green: #16A34A;        /* Ready to Ship */
+    --status-green-bg: #F0FDF4;
+    --status-amber: #D97706;        /* Needs Work */
+    --status-amber-bg: #FFFBEB;
+    --status-red: #DC2626;          /* Major Rework */
+    --status-red-bg: #FEF2F2;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
+}

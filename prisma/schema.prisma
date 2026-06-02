@@ -1,0 +1,351 @@
+// Innovera Eval V3 — Prisma Schema
+// Rubric: V3 v1.0 | 13 dimensions (8 Stage 1 + 5 Stage 2)
+// Build discipline: schema reflects framework spec exactly; no future-phase tables.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+// Memo typology per the framework (1A/1B/2A/2B)
+enum Typology {
+  ONE_A
+  ONE_B
+  TWO_A
+  TWO_B
+}
+
+// All 13 scored dimensions: 8 Stage 1 pillars (P1–P8, P7 active) + 5 Stage 2 dimensions (D1–D5)
+enum DimensionKey {
+  P1
+  P2
+  P3
+  P4
+  P5
+  P6
+  P7
+  P8
+  D1
+  D2
+  D3
+  D4
+  D5
+}
+
+// Scoring run status badge
+enum StatusBadge {
+  READY_TO_SHIP
+  NEEDS_WORK
+  MAJOR_REWORK
+}
+
+// Risk classification (Risk Gate)
+enum RiskClassification {
+  BULL
+  BEAR
+  BILATERAL
+}
+
+// Risk source (Risk Gate)
+enum RiskSource {
+  TYPOLOGY
+  FRAMING
+  EMPIRICAL
+  LLM_INFERENCE
+}
+
+// Risk severity (Risk Gate)
+enum RiskSeverity {
+  CRITICAL
+  HIGH
+  MEDIUM
+}
+
+// Severity for Gap, Edit, SanityIssue items
+enum Severity {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+// Engine diagnostics strip entry type
+enum DiagnosticType {
+  ERROR
+  CALIBRATION_WARNING
+}
+
+// Framing document source
+enum FramingSourceType {
+  DOCX
+  WIZARD
+  CHAT
+}
+
+// Sanity check verdict
+enum SanityVerdict {
+  READY_FOR_ANALYSIS
+  READY_FOR_DELIVERY
+  REVISIONS_REQUIRED
+  MAJOR_REWORK_NEEDED
+}
+
+// ELO comparison outcome
+enum EloWinner {
+  A
+  B
+  TIE
+}
+
+// ELO comparison margin
+enum EloMargin {
+  CLEAR
+  MODERATE
+  SLIGHT
+  AMBIGUOUS
+}
+
+// ELO comparison confidence
+enum EloConfidence {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+// Benchmark typology — includes CROSS for cross-typology reference rows
+enum BenchmarkTypology {
+  ONE_A
+  ONE_B
+  TWO_A
+  TWO_B
+  CROSS
+}
+
+// ─────────────────────────────────────────────
+// MODELS
+// ─────────────────────────────────────────────
+
+model Memo {
+  id          Int          @id @default(autoincrement())
+  name        String
+  typology    Typology
+  notes       String?
+  content     String?      // full raw memo text
+  chapters    Json?        // Array<{ title: string; text: string; scored: boolean }>
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  scoringRuns ScoringRun[]
+  eloRecord   EloRecord?
+
+  // ELO comparisons where this memo was side A or side B
+  eloComparisonsAsA EloComparison[] @relation("MemoA")
+  eloComparisonsAsB EloComparison[] @relation("MemoB")
+}
+
+model Framing {
+  id           Int               @id @default(autoincrement())
+  name         String
+  sourceType   FramingSourceType
+  content      String
+  typology     Typology?
+  createdAt    DateTime          @default(now())
+
+  sanityChecks SanityCheck[]
+}
+
+// One row per scoring event. Re-scoring under a new rubricVersion creates a NEW row — never overwrite.
+model ScoringRun {
+  id                Int           @id @default(autoincrement())
+  memoId            Int
+  rubricVersion     String        // e.g. "V3 v1.0"
+  memoConfidence    Float
+  decisionConfidence Float
+  riskMultiplier    Float         @default(1.0)
+  statusBadge       StatusBadge
+  stage1Avg         Float
+  stage2Avg         Float
+  scoredAt          DateTime      @default(now())
+  scorerId          String?
+
+  memo              Memo          @relation(fields: [memoId], references: [id])
+  dimensionScores   DimensionScore[]
+  confirmedRisks    ConfirmedRisk[]
+  gaps              Gap[]
+  edits             Edit[]
+  diagnostics       Diagnostic[]
+  redundancyAnalysis RedundancyAnalysis?
+}
+
+// One row per dimension per scoring run (13 rows per run).
+// Stores BOTH serverComputed and agentSelfReported so calibration drift is queryable.
+model DimensionScore {
+  id                Int          @id @default(autoincrement())
+  scoringRunId      Int
+  dimensionKey      DimensionKey
+  score             Float
+  subScores         Json         // per-sub-dimension scores
+  traceabilityLog   Json         // full TR-log content from the agent
+  serverComputed    Float        // score as computed server-side from classifications
+  agentSelfReported Float?       // score as self-reported by the agent (for drift tracking)
+  calibrationDrift  Boolean      @default(false)
+
+  scoringRun        ScoringRun   @relation(fields: [scoringRunId], references: [id])
+}
+
+// Risks approved/rejected at the Risk Gate (top 5 per run)
+model ConfirmedRisk {
+  id              Int                @id @default(autoincrement())
+  scoringRunId    Int
+  statement       String
+  classification  RiskClassification
+  source          RiskSource
+  severity        RiskSeverity
+  approved        Boolean
+  edited          Boolean            @default(false)
+  // v1.5 bridge: informational addressed-check (CRITICAL risks only — null for non-CRITICAL)
+  // Does NOT affect scoring or Decision Confidence (that is the v1.5 suppressor, separate).
+  addressedStatus String?            // "ADDRESSED" | "PARTIAL" | "NOT_ADDRESSED"
+  addressedNote   String?            // one-line evidence note
+
+  scoringRun      ScoringRun         @relation(fields: [scoringRunId], references: [id])
+}
+
+// Gaps tab on the scorecard
+model Gap {
+  id           Int          @id @default(autoincrement())
+  scoringRunId Int
+  dimensionKey DimensionKey
+  issue        String
+  impact       String
+  fix          String
+  severity     Severity
+
+  scoringRun   ScoringRun   @relation(fields: [scoringRunId], references: [id])
+}
+
+// Edits tab on the scorecard
+model Edit {
+  id           Int          @id @default(autoincrement())
+  scoringRunId Int
+  dimensionKey DimensionKey
+  issue        String
+  impact       String
+  fix          String
+  severity     Severity
+
+  scoringRun   ScoringRun   @relation(fields: [scoringRunId], references: [id])
+}
+
+// Engine diagnostics strip — self-audit entries per run
+model Diagnostic {
+  id           Int            @id @default(autoincrement())
+  scoringRunId Int
+  type         DiagnosticType
+  message      String
+
+  scoringRun   ScoringRun     @relation(fields: [scoringRunId], references: [id])
+}
+
+// Framing sanity check result
+model SanityCheck {
+  id                  Int           @id @default(autoincrement())
+  framingId           Int
+  verdict             SanityVerdict
+  passCount           Int
+  failCount           Int
+  enhanceCount        Int           // advisory (Category A) + enhancement findings combined
+  triageMatrix        Json          // grid of check × model pass/fail
+  revisedFraming      String
+  typology            String?
+  typologyConfidence  String?
+  createdAt           DateTime      @default(now())
+
+  framing         Framing       @relation(fields: [framingId], references: [id])
+  sanityIssues    SanityIssue[]
+}
+
+// Individual issues within a sanity check
+model SanityIssue {
+  id            Int          @id @default(autoincrement())
+  sanityCheckId Int
+  checkId       String
+  issue         String
+  impact        String
+  fix           String
+  severity      Severity
+  category      String
+  fidelityTier  String       @default("MEDIUM")
+  confidence    Float        @default(0.8)
+  location      String?
+  rewrite       String?
+  evidenceBasis String?
+  escalated     Boolean      @default(false)
+
+  sanityCheck   SanityCheck  @relation(fields: [sanityCheckId], references: [id])
+}
+
+// ELO rating per memo — version-independent; one record per memo
+model EloRecord {
+  id              Int      @id @default(autoincrement())
+  memoId          Int      @unique
+  rating          Float    @default(1500)
+  comparisonCount Int      @default(0)
+  updatedAt       DateTime @updatedAt
+
+  memo            Memo     @relation(fields: [memoId], references: [id])
+}
+
+// ELO pairwise comparison log
+// K=32 for first 30 comparisons, K=16 thereafter; decision-utility basis; LLM runs, humans verify/override
+model EloComparison {
+  id            Int           @id @default(autoincrement())
+  memoAId       Int
+  memoBId       Int
+  winner        EloWinner
+  margin        EloMargin
+  confidence    EloConfidence
+  humanOverride Boolean       @default(false)
+  reasoning     String?
+  comparedAt    DateTime      @default(now())
+
+  memoA         Memo          @relation("MemoA", fields: [memoAId], references: [id])
+  memoB         Memo          @relation("MemoB", fields: [memoBId], references: [id])
+}
+
+// Redundancy analysis — Phase R1 diagnostic (informational only, never affects scores)
+// Linked to ScoringRun read-only; scoring tables are never written from this side.
+model RedundancyAnalysis {
+  id                 Int      @id @default(autoincrement())
+  scoringRunId       Int      @unique
+  sri                Float    // Self-Repetition Index 0–1 (lower = better)
+  claimCount         Int      // total atomic claims extracted
+  uniqueClusterCount Int      // unique semantic clusters (numerator of 1-SRI)
+  threshold          Float    @default(0.85) // cosine-similarity threshold used
+  favoriteFriends    Json     // FavoriteFriend[] — top clusters with restatement instances
+  perChapterGain     Json?    // optional per-chapter info-gain fractions
+  analysisStatus     String   @default("completed") // "completed" | "failed" | "skipped"
+  errorMessage       String?
+  createdAt          DateTime @default(now())
+
+  scoringRun         ScoringRun @relation(fields: [scoringRunId], references: [id])
+}
+
+// Pillar 7 benchmark library — seeded from Section 8 of the framework spec.
+// Library is a prior, not a ceiling: J1-justified deviations score full credit.
+model BenchmarkEntry {
+  id             Int                @id @default(autoincrement())
+  typology       BenchmarkTypology
+  metric         String
+  plausibleRange String
+  boundaryRange  String?
+  outOfRange     String?
+  sources        String
+}
