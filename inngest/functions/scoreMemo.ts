@@ -37,6 +37,12 @@ interface ScoreMemoPayload {
   approvedRisks: ApprovedRisk[];
 }
 
+// Max scoreMemo runs allowed to execute simultaneously. This caps PARALLELISM
+// only — it does not affect how any single run is computed. 2 is a safe floor
+// for the local dev server; raise once batch scoring runs against a production
+// build.
+const SCORE_MEMO_CONCURRENCY = 2;
+
 type GapRow = {
   dimensionKey: string;
   issue: string;
@@ -88,6 +94,10 @@ export const scoreMemo = inngest.createFunction(
   {
     id: "score-memo",
     name: "Score Memo",
+    // Function-level concurrency cap: at most SCORE_MEMO_CONCURRENCY runs
+    // execute at once; additional events queue and drain. Does not alter
+    // per-run computation.
+    concurrency: { limit: SCORE_MEMO_CONCURRENCY },
     triggers: [{ event: "memo/score.requested" }],
   },
   async ({ event, step }: { event: { data: ScoreMemoPayload }; step: {
@@ -456,6 +466,7 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
         const scoringRun = await tx.scoringRun.create({
           data: {
             memoId,
+            framingId, // durable link to the framing that produced this run (from event.data)
             rubricVersion: "V3 v1.0",
             scoringModel: SCORING_MODEL,
             redundancyVersion: REDUNDANCY_VERSION,

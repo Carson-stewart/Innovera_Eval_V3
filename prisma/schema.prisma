@@ -159,6 +159,7 @@ model Framing {
   createdAt    DateTime          @default(now())
 
   sanityChecks SanityCheck[]
+  scoringRuns  ScoringRun[]
 }
 
 // One row per scoring event. Re-scoring under a new rubricVersion creates a NEW row — never overwrite.
@@ -184,6 +185,12 @@ model ScoringRun {
   // records why. null includeInAnalysis = not yet triaged.
   includeInAnalysis Boolean?
   dataNote          String?
+
+  // Durable link to the framing that produced this run (additive, nullable).
+  // Populated on NEW runs only; pre-existing runs keep framingId null
+  // (their framing link was ephemeral and isn't reliably recoverable).
+  framingId         Int?
+  framing           Framing?      @relation(fields: [framingId], references: [id])
 
   memo              Memo          @relation(fields: [memoId], references: [id])
   dimensionScores   DimensionScore[]
