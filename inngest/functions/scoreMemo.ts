@@ -1,6 +1,6 @@
 import { inngest } from "../client";
 import { prisma } from "@/lib/db";
-import { callModelJSON } from "@/lib/openrouter";
+import { callModelJSON, SCORING_MODEL } from "@/lib/openrouter";
 import { splitChapters } from "@/lib/ingest/splitChapters";
 import { buildMemoContext, estimateTokens } from "@/lib/memoContext";
 import { buildTier1Prompt } from "@/lib/prompts/tier1";
@@ -14,6 +14,7 @@ import { extractAllClaims } from "@/lib/redundancy/extractClaims";
 import { embedTexts } from "@/lib/redundancy/embed";
 import { clusterClaims, SIMILARITY_THRESHOLD } from "@/lib/redundancy/cluster";
 import { computeMetrics } from "@/lib/redundancy/metrics";
+import { REDUNDANCY_VERSION } from "@/lib/redundancy/version";
 import {
   memoConfidence,
   decisionConfidence,
@@ -456,6 +457,8 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
           data: {
             memoId,
             rubricVersion: "V3 v1.0",
+            scoringModel: SCORING_MODEL,
+            redundancyVersion: REDUNDANCY_VERSION,
             memoConfidence: memoConf,
             decisionConfidence: decisionConf,
             riskMultiplier: 1.0,

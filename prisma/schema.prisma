@@ -175,6 +175,16 @@ model ScoringRun {
   scoredAt          DateTime      @default(now())
   scorerId          String?
 
+  // Self-documenting provenance (additive, nullable; backfilled only on NEW runs).
+  scoringModel      String?       // pinned OpenRouter model id used for this run
+  redundancyVersion String?       // REDUNDANCY_VERSION stamp at scoring time
+
+  // Analysis-set curation (additive, nullable; NO deletes). When includeInAnalysis
+  // is false the run is kept but excluded from comparative analysis; dataNote
+  // records why. null includeInAnalysis = not yet triaged.
+  includeInAnalysis Boolean?
+  dataNote          String?
+
   memo              Memo          @relation(fields: [memoId], references: [id])
   dimensionScores   DimensionScore[]
   confirmedRisks    ConfirmedRisk[]

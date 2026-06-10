@@ -1,4 +1,19 @@
-export const SCORING_MODEL = "anthropic/claude-sonnet-4-5";
+/**
+ * Scoring model — pinned to the dated OpenRouter snapshot for Claude Sonnet 4.5.
+ *
+ * Pin date: 2026-06-10. Confirmed routable on that date: a live call returns
+ * `model: "anthropic/claude-4.5-sonnet-20250929"`, and this is the
+ * `canonical_slug` OpenRouter lists behind the `anthropic/claude-sonnet-4.5`
+ * id. The previous floating alias `anthropic/claude-sonnet-4-5` resolved to
+ * this exact same backend snapshot today, so pinning is not expected to change
+ * the served model — only to make every future run self-documenting.
+ *
+ * This is the model the 13 dimension scores AND redundancy claim-extraction run
+ * on. Future scores may differ slightly from past ones if OpenRouter later
+ * reroutes (now prevented by this pin); the pin does NOT alter any score already
+ * stored. Step-4 measurement runs quantify the run-to-run noise floor.
+ */
+export const SCORING_MODEL = "anthropic/claude-4.5-sonnet-20250929";
 
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_TIMEOUT_MS = 120_000;
