@@ -29,3 +29,8 @@ A collaborative memo evaluation platform. Two modules:
 
 ## Stack
 Next.js 14 App Router, TypeScript, Prisma, PostgreSQL 17, Tailwind + shadcn/ui, Inngest (port 8288), dev server on port 3000, OpenRouter for LLM calls.
+
+## Dev stack (process discipline — incident-derived, 2026-06-11)
+- **Exactly one dev server, always on port 3000.** Never start a second dev-server background task — stop the existing one first. Port kills must take the whole process tree (`taskkill /T`); killing only the listener leaves a `next dev` parent that respawns a worker on 3001.
+- **Any restart after Prisma schema work goes through `npm run dev:clean`** (kills 3000 tree, removes `.next`, starts one server). `prisma generate` against a running dev server corrupts the `.next` webpack cache (stale vendor chunks → every route 404s, including `/api/inngest`, which silently kills in-flight Inngest scoring runs). `npm run db:sync` chains generate → db push → dev:clean.
+- **One watcher at a time.** Watchers and pre-fire probes gate on `npm run stack:health` (one 3000 listener, `/api/inngest` 200, both functions registered, `.next/server` present) instead of ad-hoc curls.
