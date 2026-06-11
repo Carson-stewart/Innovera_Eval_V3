@@ -46,6 +46,9 @@ interface ScoreMemoPayload {
   /** Set by /api/score when the caller explicitly opted into an empty risk set.
    *  Persistence-labeling only — never read by any scoring step. */
   allowEmptyRisks?: boolean;
+  /** D3: anchor run id when this run is a k-run verification re-score.
+   *  Persistence-labeling only — never read by any scoring step. */
+  verificationGroupId?: number;
 }
 
 // Max scoreMemo runs allowed to execute simultaneously. This caps PARALLELISM
@@ -107,7 +110,7 @@ export const scoreMemo = inngest.createFunction(
   async ({ event, step }: { event: { data: ScoreMemoPayload }; step: {
     run: <T>(id: string, fn: () => Promise<T>) => Promise<T>;
   } }) => {
-    const { memoId, framingId, typology, approvedRisks } = event.data;
+    const { memoId, framingId, typology, approvedRisks, verificationGroupId } = event.data;
 
     // ─── Step 1: Load inputs ─────────────────────────────────────────────────
     // IMPORTANT: This step result is cached in the Inngest run journal.
@@ -553,6 +556,9 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
             // V3 v1.1: denominator of stage1Avg/readiness (8 unless a pillar
             // was NOT_SCORED and excluded via rescaling)
             scoredPillarCount,
+            // D3: anchor run id for k-run verification groups (display-level
+            // grouping only; null on normal runs)
+            ...(typeof verificationGroupId === "number" && { verificationGroupId }),
             stage2Avg,
             // Completeness metadata — measured from the parsed chapter titles
             // (allChapters is in scope from Step 2). Display only.

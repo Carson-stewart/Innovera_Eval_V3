@@ -196,6 +196,13 @@ model ScoringRun {
   // keep null (all their pillars carried a numeric score at scoring time).
   scoredPillarCount Int?
 
+  // D3 k-run verification (additive, nullable): id of the anchor run this run
+  // verifies. The anchor itself keeps null (historical rows are never
+  // modified); a verification group = the anchor + all runs pointing at it.
+  // Display-level grouping only — no stored score is ever averaged into any
+  // single run's record.
+  verificationGroupId Int?
+
   // Durable link to the framing that produced this run (additive, nullable).
   // Populated on NEW runs only; pre-existing runs keep framingId null
   // (their framing link was ephemeral and isn't reliably recoverable).

@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import { TopBar } from "@/components/shell/TopBar";
 import { PILLAR_EXPLANATIONS, STAGE_1_KEYS, STAGE_2_KEYS } from "@/lib/pillars/explanations";
 import { PILLAR_GUIDE_DETAILS } from "@/lib/pillars/guide-details";
+import {
+  aggregateVerification,
+  type VerificationRunSummary,
+} from "@/lib/confidence/verification";
 
 // ─── Types (match serialised Prisma output) ───────────────────────────────────
 
@@ -86,6 +90,8 @@ export interface RunData {
   /** V3 v1.1: readiness denominator — scored Stage-1 pillars (8 unless one was
    *  NOT_SCORED and excluded via rescaling). Null on pre-v1.1 runs. */
   scoredPillarCount: number | null;
+  /** D3: anchor run id when this run is a verification re-score; null otherwise. */
+  verificationGroupId: number | null;
   scoredAt: string;
   memo: {
     id: number;
@@ -877,6 +883,118 @@ function HeroBlock({ run }: { run: RunData }) {
             <p className="text-xs text-gray-400 italic">Same as Memo Readiness (Suppressor pending v1.5)</p>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── D3: k-run verification strip ────────────────────────────────────────────
+
+function VerificationStrip({ group, currentRunId }: { group: VerificationRunSummary[]; currentRunId: number }) {
+  const agg = aggregateVerification(group);
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          Verification group — {agg.count} run{agg.count !== 1 ? "s" : ""}
+        </p>
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${BADGE_STYLES[agg.consensusBadge] ?? "bg-gray-100 text-gray-600"}`}>
+          Consensus: {BADGE_LABELS[agg.consensusBadge] ?? agg.consensusBadge}
+        </span>
+      </div>
+      <div className="space-y-1 mb-3">
+        {group.map((r) => (
+          <div key={r.runId} className="flex items-center gap-3 text-xs">
+            <a href={`/scorecard/${r.runId}`}
+              className={`font-mono w-16 ${r.runId === currentRunId ? "font-bold text-gray-900" : "text-brand-orange hover:underline"}`}>
+              Run #{r.runId}
+            </a>
+            <span className="font-semibold tabular-nums w-12 text-gray-800">{r.memoConfidence.toFixed(1)}</span>
+            <span className={`rounded-full px-2 py-0.5 ${BADGE_STYLES[r.statusBadge] ?? "bg-gray-100 text-gray-600"}`}>
+              {BADGE_LABELS[r.statusBadge] ?? r.statusBadge}
+            </span>
+            <span className="text-gray-400">{new Date(r.scoredAt).toLocaleString()}</span>
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-gray-500">
+        Mean readiness <span className="font-semibold text-gray-700">{agg.meanReadiness.toFixed(1)}</span>
+        {" "}· spread <span className={`font-semibold ${agg.spread > 5 ? "text-amber-700" : "text-gray-700"}`}>{agg.spread.toFixed(1)}</span>
+        {" "}· consensus badge is worst-of-group (conservative by design). P1 is pinned by the
+        findings cache across the group, so the spread measures the other pillars&apos; variance.
+        No stored score is averaged into any single run&apos;s record.
+      </p>
+    </div>
+  );
+}
+
+function VerifyScoreModal({ run, onClose }: { run: RunData; onClose: () => void }) {
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function fire() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/verify-score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ runId: run.id }),
+      });
+      const data = (await res.json()) as { queued?: number; note?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Verification request failed");
+      setResult(data.note ?? `${data.queued} verification runs queued.`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Verification request failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
+      <div className="bg-white rounded-xl shadow-xl border border-gray-200 w-full max-w-md p-6">
+        <p className="text-sm font-semibold text-gray-900 mb-2">Verify score (3 runs)</p>
+        {result ? (
+          <>
+            <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-4">{result}</p>
+            <div className="flex justify-end">
+              <button onClick={onClose}
+                className="px-4 py-1.5 text-sm font-medium rounded-lg bg-gray-900 text-white hover:bg-gray-700">
+                Done
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-xs text-gray-600 leading-relaxed mb-3">
+              This re-scores <span className="font-semibold">{run.memo.name}</span> twice more
+              through the full pipeline with the original Risk Gate decisions carried over,
+              then shows a 3-run aggregate (per-run readiness, mean, spread, and a
+              worst-of-three consensus badge).
+            </p>
+            <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
+              <span className="font-semibold">Token cost:</span> two additional full scoring
+              runs (~2× this run&apos;s LLM calls). The P1 findings cache makes the coherence
+              portion free and deterministic; everything else is re-detected live. This spend
+              cannot be undone.
+            </p>
+            {error && (
+              <p className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3">{error}</p>
+            )}
+            <div className="flex justify-end gap-2">
+              <button onClick={onClose} disabled={busy}
+                className="px-4 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">
+                Cancel
+              </button>
+              <button onClick={fire} disabled={busy}
+                className="px-4 py-1.5 text-sm font-medium rounded-lg bg-brand-orange text-white hover:bg-brand-orange-hover disabled:opacity-50">
+                {busy ? "Queuing…" : "Confirm — run 2 more scorings"}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -2093,7 +2211,7 @@ function DeleteModal({
 
 // ─── Overflow menu ────────────────────────────────────────────────────────────
 
-function OverflowMenu({ run, onDelete, onEdit }: { run: RunData; onDelete: () => void; onEdit: () => void }) {
+function OverflowMenu({ run, onDelete, onEdit, onVerify }: { run: RunData; onDelete: () => void; onEdit: () => void; onVerify: () => void }) {
   const [open, setOpen] = useState(false);
 
   function exportRunCSV() {
@@ -2146,6 +2264,13 @@ function OverflowMenu({ run, onDelete, onEdit }: { run: RunData; onDelete: () =>
               className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
               Edit memo details
             </button>
+            {run.verificationGroupId === null && (
+              <button
+                onClick={() => { setOpen(false); onVerify(); }}
+                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                Verify score (3 runs)…
+              </button>
+            )}
             <div className="border-t border-gray-100 my-1" />
             <button
               onClick={() => { setOpen(false); onDelete(); }}
@@ -2261,13 +2386,20 @@ function EditMemoModal({
 
 type Tab = "gaps" | "edits" | "breakdown" | "explanation" | "recovery" | "redundancy";
 
-export function ScorecardClient({ run: initialRun }: { run: RunData }) {
+export function ScorecardClient({
+  run: initialRun,
+  verificationGroup = null,
+}: {
+  run: RunData;
+  verificationGroup?: VerificationRunSummary[] | null;
+}) {
   const [run, setRun] = useState(initialRun);
   const [activeTab, setActiveTab] = useState<Tab>("gaps");
   const [focusKey, setFocusKey] = useState<string | null>(null);
   const [showDelete, setShowDelete] = useState(false);
   const [showEloModal, setShowEloModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
 
   function handleChipClick(key: string) {
     setActiveTab("breakdown");
@@ -2290,7 +2422,7 @@ export function ScorecardClient({ run: initialRun }: { run: RunData }) {
     <>
       <TopBar
         title={run.memo.name}
-        actions={<OverflowMenu run={run} onDelete={() => setShowDelete(true)} onEdit={() => setShowEditModal(true)} />}
+        actions={<OverflowMenu run={run} onDelete={() => setShowDelete(true)} onEdit={() => setShowEditModal(true)} onVerify={() => setShowVerifyModal(true)} />}
       />
 
       <main className="flex-1 overflow-y-auto">
@@ -2311,6 +2443,9 @@ export function ScorecardClient({ run: initialRun }: { run: RunData }) {
 
           {/* 2. Hero */}
           <HeroBlock run={run} />
+
+          {/* 2b. D3: verification group strip (anchor + re-scores) */}
+          {verificationGroup && <VerificationStrip group={verificationGroup} currentRunId={run.id} />}
 
           {/* 3. Stage matrix */}
           <StageMatrix run={run} />
@@ -2361,6 +2496,7 @@ export function ScorecardClient({ run: initialRun }: { run: RunData }) {
       </main>
 
       {showDelete && <DeleteModal runId={run.id} onClose={() => setShowDelete(false)} />}
+      {showVerifyModal && <VerifyScoreModal run={run} onClose={() => setShowVerifyModal(false)} />}
       {showEloModal && (
         <EloComparisonModal
           currentMemoId={run.memo.id}

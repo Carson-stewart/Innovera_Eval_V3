@@ -48,7 +48,25 @@ export default async function ScorecardPage({ params }: Props) {
     edits: sortBySev(run.edits),
   };
 
+  // D3: k-run verification group — the anchor run + all runs pointing at it.
+  // Display-level grouping only; nothing is written here.
+  const groupKey = run.verificationGroupId ?? run.id;
+  const groupRuns = await prisma.scoringRun.findMany({
+    where: { OR: [{ id: groupKey }, { verificationGroupId: groupKey }] },
+    select: { id: true, memoConfidence: true, statusBadge: true, scoredAt: true },
+    orderBy: { id: "asc" },
+  });
+  const verificationGroup =
+    groupRuns.length >= 2
+      ? groupRuns.map((r) => ({
+          runId: r.id,
+          memoConfidence: r.memoConfidence,
+          statusBadge: String(r.statusBadge),
+          scoredAt: r.scoredAt.toISOString(),
+        }))
+      : null;
+
   // JSON.parse(JSON.stringify()) serializes Dates → ISO strings and JsonValue → plain objects.
   // Safe for the server→client boundary.
-  return <ScorecardClient run={JSON.parse(JSON.stringify(sorted))} />;
+  return <ScorecardClient run={JSON.parse(JSON.stringify(sorted))} verificationGroup={verificationGroup} />;
 }
