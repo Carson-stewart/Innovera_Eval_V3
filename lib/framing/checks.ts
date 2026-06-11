@@ -50,6 +50,12 @@ export interface FramingCheck {
   recommendationForm: string;
   /** which named failure patterns does this check catch? */
   patternIds: string[];
+  /**
+   * Optional concrete empirical-evidence sentence persisted on findings (additive,
+   * checker v1.2). Unset for the original 48 checks — their persisted
+   * evidenceBasis values are unchanged.
+   */
+  evidenceDetail?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -822,13 +828,49 @@ const CATEGORY_D: FramingCheck[] = [
 // Exports
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// D18 — Single Source of Truth (ADDITIVE, checker v1.2; empirically derived
+// from the scoring-corpus deep dive, NOT inferred from rubric tables).
+//
+// Evaluated by a DEDICATED two-stage pipeline pass (deterministic quantity
+// extraction + LLM same-concept adjudication), NOT by the generic Category-D
+// LLM pass — which is why it lives outside CHECKS_BY_CATEGORY (the category
+// prompt grouping) while being a full registry citizen in ALL_CHECKS /
+// CHECKS_BY_ID for severity mapping, patterns, and display.
+// ---------------------------------------------------------------------------
+
+export const SINGLE_SOURCE_CHECK: FramingCheck = {
+  id: "D18",
+  name: "Single Source of Truth (One Quantity, One Value)",
+  category: "D",
+  severity: "Critical",
+  fidelity: "HIGH",
+  evidenceBasis: "Empirically calibrated",
+  source: "Scoring-corpus deep dive 2026-06 (run 64); checker v1.2",
+  failCriteria:
+    "The framing contains two unreconciled values for the same quantity-concept (same unit class, differing values, same concept per adjudication). A single stated range is ONE value; scenario-labeled variants and time-distinguished values are NOT violations.",
+  naCondition:
+    "Never N/A for mutual contradictions. Client-Stated Input Protocol: client-originated figures are exempt from plausibility challenges, NOT from conflicting with each other — two conflicting client-stated values for one concept still FAIL this check.",
+  recommendationForm:
+    "State the quantity once and mark it authoritative; if a second value is needed, label it explicitly as a scenario, time horizon, or scope variant.",
+  patternIds: ["P31"],
+  evidenceDetail:
+    "Corpus run 64 — a brief containing both '$150–200M' and '$240–300M' Year-3 revenue expectations produced 15 downstream reconciliation failures, the corpus record.",
+};
+
 export const ALL_CHECKS: FramingCheck[] = [
   ...CATEGORY_A,
   ...CATEGORY_B,
   ...CATEGORY_C,
   ...CATEGORY_D,
+  SINGLE_SOURCE_CHECK,
 ];
 
+/**
+ * Category grouping AS CONSUMED BY THE LLM CATEGORY PASSES — intentionally the
+ * original 48 checks only, so the existing category prompts stay byte-identical.
+ * D18 runs in its own dedicated pass (see inngest/functions/sanityCheck.ts).
+ */
 export const CHECKS_BY_CATEGORY: Record<"A" | "B" | "C" | "D", FramingCheck[]> = {
   A: CATEGORY_A,
   B: CATEGORY_B,

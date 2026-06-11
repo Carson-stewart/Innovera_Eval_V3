@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { inngest } from "@/inngest/client";
+import { prisma } from "@/lib/db";
 import type { ApprovedRisk } from "@/lib/prompts/types";
+import { gateAllowsScoring, type GateVerdict } from "@/lib/framing/gate";
+import { GATE_MODE } from "@/lib/framing/version";
 
 interface ScoreRequestBody {
   memoId: number;
@@ -34,6 +37,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { error: "Missing required fields: memoId, framingId, typology, approvedRisks" },
       { status: 400 }
     );
+  }
+
+  // ── Framing gate (checker v1.2, T3) ───────────────────────────────────────
+  // Advisory mode (current): gateAllowsScoring always allows; the lookup is
+  // skipped entirely. Enforced mode: BLOCKED or not-run framings stop the
+  // submission with a clear message.
+  if (GATE_MODE === ("enforced" as typeof GATE_MODE)) {
+    const latest = await prisma.sanityCheck.findFirst({
+      where: { framingId },
+      orderBy: { createdAt: "desc" },
+      select: { gateVerdict: true },
+    });
+    const gate = gateAllowsScoring(GATE_MODE, (latest?.gateVerdict as GateVerdict | null) ?? null);
+    if (!gate.allowed) {
+      return NextResponse.json({ error: gate.reason }, { status: 400 });
+    }
   }
 
   if (approvedRisks.length === 0 && allowEmptyRisks !== true) {

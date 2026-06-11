@@ -279,6 +279,21 @@ export const PATTERNS: FramingPattern[] = [
     caughtBy: ["C32"],
     recommendedFix: "Re-score both memos under the same rubric version for absolute comparison, or use ELO ratings (which are version-independent) for relative comparison.",
   },
+  // ── P31 — ADDITIVE, checker v1.2 (empirically derived; highest downstream-
+  //    fidelity tier, carried by D18's fidelity: "HIGH") ─────────────────────
+  {
+    id: "P31",
+    name: "Dual Target",
+    symptom:
+      "The framing states two different success thresholds for the same outcome (e.g. two Year-3 revenue expectations) without reconciling them.",
+    whyItMatters:
+      "Empirical basis — corpus run 64: a brief containing both '$150–200M' and '$240–300M' Year-3 revenue expectations produced 15 downstream reconciliation failures, the corpus record. The generator inherits both anchors and restates the conflict across chapters; the memo then fails P1 at the ship rule.",
+    detectionLogic:
+      "Stage 1: extract quantities with context, pair same-unit-class values that differ and share context signal (excluding single ranges, scenario-labeled variants, and time-distinguished values). Stage 2: LLM adjudication of same-concept. Confirmed pairs trigger D18.",
+    caughtBy: ["D18"],
+    recommendedFix:
+      "Pick one authoritative threshold per outcome and state it once; express any secondary number as an explicitly labeled scenario, horizon, or scope variant.",
+  },
 ];
 
 export const PATTERNS_BY_ID: Record<string, FramingPattern> = Object.fromEntries(

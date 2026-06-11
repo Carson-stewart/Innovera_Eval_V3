@@ -168,6 +168,14 @@ export default function ScoreMemoPage() {
   const [riskError, setRiskError] = useState("");
   const [riskCaveat, setRiskCaveat] = useState("");
 
+  // ── Framing gate (checker v1.2, T3 — advisory: visible, never blocking)
+  const [framingGate, setFramingGate] = useState<{
+    status: "not-run" | "run";
+    gateVerdict?: string | null;
+    criticalCount?: number;
+    sanityCheckId?: number;
+  } | null>(null);
+
   // ── Progress
   const [eventId, setEventId] = useState<string | null>(null);
   const [progressSteps, setProgressSteps] = useState<StepStatus[]>([]);
@@ -176,6 +184,25 @@ export default function ScoreMemoPage() {
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // ─── Step 1 helpers ────────────────────────────────────────────────────────
+
+  async function fetchFramingGate(id: number | null) {
+    if (id === null) {
+      setFramingGate(null);
+      return;
+    }
+    try {
+      const res = await fetch(`/api/framing-gate?framingId=${id}`);
+      const data = (await res.json()) as {
+        status: "not-run" | "run";
+        gateVerdict?: string | null;
+        criticalCount?: number;
+        sanityCheckId?: number;
+      };
+      setFramingGate(res.ok ? data : null);
+    } catch {
+      setFramingGate(null); // chip absent on lookup failure — never blocks (advisory)
+    }
+  }
 
   async function handleFramingFile(file: File) {
     setFramingLoading(true);
@@ -189,6 +216,7 @@ export default function ScoreMemoPage() {
       setFramingId(data.framingId ?? null);
       setFramingContent(data.content ?? "");
       setFramingEditText(data.content ?? "");
+      void fetchFramingGate(data.framingId ?? null);
     } catch (e) {
       setFramingError(e instanceof Error ? e.message : "Upload failed");
     } finally {
@@ -211,6 +239,7 @@ export default function ScoreMemoPage() {
       setFramingId(data.framingId ?? null);
       setFramingContent(data.content ?? "");
       setFramingEditText(data.content ?? "");
+      void fetchFramingGate(data.framingId ?? null);
     } catch (e) {
       setFramingError(e instanceof Error ? e.message : "Paste failed");
     } finally {
@@ -535,6 +564,37 @@ export default function ScoreMemoPage() {
 
               {framingId && (
                 <div className="mt-4 space-y-2">
+                  {/* Framing gate chip (checker v1.2 — advisory: informational, never blocks) */}
+                  {(() => {
+                    if (!framingGate || framingGate.status === "not-run" || !framingGate.gateVerdict) {
+                      return (
+                        <span className="inline-block text-xs rounded-full px-3 py-1 bg-gray-100 border border-gray-300 text-gray-600">
+                          Framing gate: not run
+                        </span>
+                      );
+                    }
+                    const v = framingGate.gateVerdict;
+                    const style =
+                      v === "BLOCKED"
+                        ? "bg-red-100 border-red-300 text-red-800"
+                        : v === "PASS_WITH_WARNINGS"
+                        ? "bg-amber-100 border-amber-300 text-amber-800"
+                        : "bg-green-100 border-green-300 text-green-800";
+                    const label =
+                      v === "BLOCKED"
+                        ? `Framing gate: BLOCKED — ${framingGate.criticalCount ?? 0} Critical finding${(framingGate.criticalCount ?? 0) !== 1 ? "s" : ""}`
+                        : v === "PASS_WITH_WARNINGS"
+                        ? "Framing gate: pass with warnings"
+                        : "Framing gate: PASS";
+                    return (
+                      <a
+                        href={`/sanity-check/${framingGate.sanityCheckId}`}
+                        className={`inline-block text-xs rounded-full px-3 py-1 border hover:opacity-80 ${style}`}
+                      >
+                        {label}
+                      </a>
+                    );
+                  })()}
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700">Framing content</span>
                     {!framingEditing && (

@@ -309,6 +309,14 @@ model SanityCheck {
   typologyConfidence  String?
   createdAt           DateTime      @default(now())
 
+  // Checker v1.2 additions (additive, nullable; pre-v1.2 rows keep null):
+  // CHECKER_VERSION stamp; T3 gate verdict (BLOCKED | PASS_WITH_WARNINGS | PASS,
+  // separate from the READY_FOR_* verdict above); T2 anchor inventory
+  // ([{ value, unit, label, count, locations[] }]).
+  checkerVersion  String?
+  gateVerdict     String?
+  anchorInventory Json?
+
   framing         Framing       @relation(fields: [framingId], references: [id])
   sanityIssues    SanityIssue[]
 }
