@@ -372,6 +372,18 @@ model RedundancyAnalysis {
   scoringRun         ScoringRun @relation(fields: [scoringRunId], references: [id])
 }
 
+// P1 findings cache (V3 v1.1, C3) — caches the LLM's P1 coherence-detection
+// output keyed by content hash + rubric version, so a re-score of identical
+// content reuses the exact same findings (deterministic P1, no detection
+// variance, no extra tokens). Never affects a cache-miss run's behavior.
+model P1FindingsCache {
+  id            Int      @id @default(autoincrement())
+  contentHash   String   @unique // sha256(rubricVersion + framing content + memo content)
+  rubricVersion String
+  payload       Json     // P1DetectionPayload: per-chapter + cross-chapter P1 arrays
+  createdAt     DateTime @default(now())
+}
+
 // Pillar 7 benchmark library — seeded from Section 8 of the framework spec.
 // Library is a prior, not a ceiling: J1-justified deviations score full credit.
 model BenchmarkEntry {

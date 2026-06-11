@@ -8,6 +8,13 @@ import { buildTier2Prompt } from "@/lib/prompts/tier2";
 import { buildTier3P7Prompt } from "@/lib/prompts/tier3-p7";
 import { runAllScoring } from "@/lib/scoring/index";
 import { verifyScoring } from "@/lib/scoring/verify";
+import { RUBRIC_VERSION } from "@/lib/scoring/version";
+import {
+  computeP1CacheKey,
+  extractP1Detection,
+  applyP1Detection,
+  type P1DetectionPayload,
+} from "@/lib/scoring/p1Cache";
 import { deriveSpecificGap, buildEditGenerationPrompt } from "@/lib/scoring/editGeneration";
 // Redundancy (Phase R1) — informational only, never touches scoring tables
 import { extractAllClaims } from "@/lib/redundancy/extractClaims";
@@ -313,15 +320,73 @@ export const scoreMemo = inngest.createFunction(
       });
     });
 
+    // ─── Step 4b: P1 findings cache lookup (C3, V3 v1.1) ────────────────────
+    // Re-scores of identical content under the same rubric version reuse the
+    // cached P1 detection verbatim — deterministic P1, no detection variance.
+    // A miss changes nothing about this run's behavior.
+    const p1CacheKey = computeP1CacheKey(RUBRIC_VERSION, framing.content, memoContent);
+    const p1Cache = await step.run("p1-findings-cache-lookup", async () => {
+      const row = await prisma.p1FindingsCache.findUnique({ where: { contentHash: p1CacheKey } });
+      return row ? { status: "hit" as const, payload: row.payload as unknown as P1DetectionPayload } : { status: "miss" as const, payload: null };
+    });
+
     // ─── Step 5: Server scoring ──────────────────────────────────────────────
     const dimensionResults = await step.run("server-scoring", async () => {
+      // On a cache hit, substitute ONLY the P1 detection fields; every other
+      // dimension scores from the fresh Tier outputs as always. A payload that
+      // fails the safety guard (chapter-count mismatch) degrades to a miss.
+      let t1 = tier1Results;
+      let t2 = tier2Result;
+      let cacheStatus: "hit" | "miss" = p1Cache.status;
+      if (p1Cache.status === "hit" && p1Cache.payload) {
+        const applied = applyP1Detection(tier1Results, tier2Result, p1Cache.payload);
+        if (applied) {
+          t1 = applied.tier1;
+          t2 = applied.tier2;
+        } else {
+          cacheStatus = "miss";
+        }
+      }
+
       const allClassifications: AllClassifications = {
-        tier1Chapters: tier1Results,
-        tier2: tier2Result,
+        tier1Chapters: t1,
+        tier2: t2,
         tier3P7: tier3P7Result,
       };
 
-      return runAllScoring(allClassifications);
+      const results = runAllScoring(allClassifications);
+
+      // Transparency: stamp the cache outcome on P1's persisted traceability.
+      const p1 = results.find((r) => r.dimensionKey === "P1");
+      if (p1) {
+        p1.traceabilityLog = {
+          ...(p1.traceabilityLog as Record<string, unknown>),
+          p1_findings_cache: cacheStatus,
+          p1_findings_cache_key: p1CacheKey.slice(0, 16),
+        };
+      }
+
+      return results;
+    });
+
+    // ─── Step 5b: P1 findings cache store (miss only) ────────────────────────
+    // Stores the FRESH detection so the next identical-content re-score hits.
+    await step.run("p1-findings-cache-store", async () => {
+      if (p1Cache.status === "hit") return "skipped (hit)";
+      const payload = extractP1Detection(tier1Results, tier2Result);
+      try {
+        await prisma.p1FindingsCache.create({
+          data: {
+            contentHash: p1CacheKey,
+            rubricVersion: RUBRIC_VERSION,
+            payload: payload as never,
+          },
+        });
+        return "stored";
+      } catch {
+        // Unique-violation race with a concurrent identical run — benign.
+        return "already present";
+      }
     });
 
     // ─── Step 6: Confidence & status ─────────────────────────────────────────
