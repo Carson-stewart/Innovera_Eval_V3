@@ -57,7 +57,7 @@ export function deriveSpecificGap(
   const sub = asRecord(dr.subScores);
   const key = dr.dimensionKey;
 
-  const impact = `Confidence erosion: ${erosionPts} points.`;
+  const impact = `Readiness erosion: ${erosionPts} points.`;
 
   switch (key) {
     case "P1": {
