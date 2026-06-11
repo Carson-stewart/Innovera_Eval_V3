@@ -179,6 +179,15 @@ function asArr(v: unknown): unknown[] {
 
 // ─── Recovery helpers ─────────────────────────────────────────────────────────
 
+/** P1 coherence-conflict count from persisted subScores (display only — no recomputation).
+ *  Returns null when subScores is missing/malformed so callers render a dash. */
+function p1ConflictCount(run: RunData): number | null {
+  const ds = run.dimensionScores.find((d) => d.dimensionKey === "P1");
+  if (!ds) return null;
+  const v = asRecord(ds.subScores).majorReconciliations;
+  return typeof v === "number" ? v : null;
+}
+
 function computeRecovery(run: RunData) {
   return STAGE_1_KEYS.map((k) => {
     const score = pillarScore(run, k);
@@ -256,10 +265,17 @@ function Chip({ label, value, style }: { label?: string; value: string; style?: 
 
 // ─── Traceability renderers ───────────────────────────────────────────────────
 
-function P1Trace({ log }: { log: Record<string, unknown> }) {
+function P1Trace({ log, conflictCount }: { log: Record<string, unknown>; conflictCount: number | null }) {
   const capApplied = log.minor_cap_applied === true;
   return (
     <div>
+      <div className={`mb-3 rounded-lg border px-3 py-2 text-xs font-medium ${
+        conflictCount !== null && conflictCount > 1
+          ? "bg-red-50 border-red-200 text-red-700"
+          : "bg-green-50 border-green-200 text-green-700"
+      }`}>
+        Coherence conflicts: <span className="font-bold">{conflictCount ?? "—"}</span> — memos ship at ≤1
+      </div>
       <SectionLabel>Penalty breakdown</SectionLabel>
       <div className="rounded-lg border border-gray-100 overflow-hidden text-xs">
         {[
@@ -639,6 +655,10 @@ function CriticalRisksPanel({ risks }: { risks: RiskRow[] }) {
 function TraceabilityView({ ds }: { ds: DimensionScoreRow }) {
   const log = asRecord(ds.traceabilityLog);
   const formula = typeof log.formula === "string" ? log.formula : null;
+  const p1Conflicts = (() => {
+    const v = asRecord(ds.subScores).majorReconciliations;
+    return typeof v === "number" ? v : null;
+  })();
 
   return (
     <div className="space-y-4">
@@ -648,7 +668,7 @@ function TraceabilityView({ ds }: { ds: DimensionScoreRow }) {
           <code className="block text-xs bg-gray-100 rounded px-3 py-1.5 font-mono text-gray-700">{formula}</code>
         </div>
       )}
-      {ds.dimensionKey === "P1" && <P1Trace log={log} />}
+      {ds.dimensionKey === "P1" && <P1Trace log={log} conflictCount={p1Conflicts} />}
       {ds.dimensionKey === "P3" && <P3Trace log={log} />}
       {ds.dimensionKey === "P5" && <P5Trace log={log} />}
       {ds.dimensionKey === "P7" && <P7Trace log={log} />}
@@ -758,16 +778,26 @@ function StageMatrix({ run }: { run: RunData }) {
               const score = pillarScore(run, k);
               const name = PILLAR_EXPLANATIONS[k]?.name ?? k;
               return (
-                <div key={k} className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-gray-400 w-7">{k}</span>
-                  <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${score >= 4 ? "bg-green-400" : score >= 3 ? "bg-amber-400" : "bg-red-400"}`}
-                      style={{ width: `${(score / 5) * 100}%` }}
-                    />
+                <div key={k}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono text-gray-400 w-7">{k}</span>
+                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${score >= 4 ? "bg-green-400" : score >= 3 ? "bg-amber-400" : "bg-red-400"}`}
+                        style={{ width: `${(score / 5) * 100}%` }}
+                      />
+                    </div>
+                    <span className={`text-xs font-semibold w-8 text-right ${scoreColor(score)}`}>{score.toFixed(1)}</span>
+                    <span className="text-xs text-gray-500 hidden sm:block w-28 truncate">{name}</span>
                   </div>
-                  <span className={`text-xs font-semibold w-8 text-right ${scoreColor(score)}`}>{score.toFixed(1)}</span>
-                  <span className="text-xs text-gray-500 hidden sm:block w-28 truncate">{name}</span>
+                  {k === "P1" && (() => {
+                    const conflicts = p1ConflictCount(run);
+                    return (
+                      <p className="text-[11px] text-gray-400 pl-9 mt-0.5">
+                        Coherence conflicts: <span className={`font-semibold ${conflicts !== null && conflicts > 1 ? "text-red-600" : "text-gray-600"}`}>{conflicts ?? "—"}</span> — memos ship at ≤1
+                      </p>
+                    );
+                  })()}
                 </div>
               );
             })}
