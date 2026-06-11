@@ -1,13 +1,14 @@
 /**
- * Phase B2 score-identity fixtures for computeP1.
+ * computeP1 fixtures — V3 v1.1 graduated major-reconciliation penalty (C2).
  *
- * The expected values are the STORED database outputs of runs 23, 38, and 41
- * (captured before the findings pass-through was added), reconstructed from
- * their persisted subScores. computeP1 must reproduce them exactly — the B2
- * change is additive persistence only, and these tests pin that.
+ * Phase B pinned these fixtures to the v1.0 flat penalty; under v1.1 the
+ * expectations for runs 23 and 38 INTENTIONALLY change (approved at the C0
+ * checkpoint). The old-formula outputs remain pinned where they belong: in the
+ * C0 replay report's "stored" columns
+ * (scripts/engine-replay/output/approved-replay-report.csv).
  */
 import { describe, it, expect } from "vitest";
-import { computeP1 } from "../stage1/p1";
+import { computeP1, gradedMajorPenalty } from "../stage1/p1";
 import type { Tier2SynthesisOutput, ReconciliationEntry } from "../../prompts/types";
 
 function recon(n: number): ReconciliationEntry[] {
@@ -37,46 +38,55 @@ function tier2Fixture(counts: {
   } as unknown as Tier2SynthesisOutput;
 }
 
-describe("computeP1 — stored-run fixtures (score identity)", () => {
-  // Run 23 (Ecolab_Parallel_Gen.md): stored P1 subScores
-  // flats 0, majors 6, minorGaps 6, drifts 0, reasoning 19, tension bonus 0.5 → CI 2
-  it("reproduces run 23's stored output exactly", () => {
+describe("gradedMajorPenalty — V3 v1.1 schedule", () => {
+  it("f=0 → 0", () => expect(gradedMajorPenalty(0)).toBe(0));
+  it("f=1 → 1.0", () => expect(gradedMajorPenalty(1)).toBe(1.0));
+  it("f=2 → 2.0 (cliff preserved)", () => expect(gradedMajorPenalty(2)).toBe(2.0));
+  it("f=3 → 2.25", () => expect(gradedMajorPenalty(3)).toBe(2.25));
+  it("f=6 → 3.0", () => expect(gradedMajorPenalty(6)).toBe(3.0));
+  it("f=15 → capped at 3.5", () => expect(gradedMajorPenalty(15)).toBe(3.5));
+});
+
+describe("computeP1 — stored-run fixtures under the v1.1 graduated penalty", () => {
+  // Run 23 (Ecolab_Parallel_Gen.md): flats 0, majors 6, minorGaps 6, drifts 0,
+  // reasoning 19, tension 0.5. v1.0 stored CI 2 → v1.1 CI 1 (majorPenalty 3.0).
+  it("run 23's counts: CI 1, penalties 4.5 (intentional v1.1 change)", () => {
     const r = computeP1({
       tier1Chapters: [],
       tier2: tier2Fixture({ flats: 0, majors: 6, minors: 6, drifts: 0, reasoning: 19, tension: true }),
       agentSelfReported: null,
     });
-    expect(r.serverComputed).toBe(2);
-    expect(r.score).toBe(2);
+    expect(r.serverComputed).toBe(1);
+    expect(r.score).toBe(1);
     expect(r.subScores.flatContradictions).toBe(0);
     expect(r.subScores.majorReconciliations).toBe(6);
     expect(r.subScores.minorGaps).toBe(6);
     expect(r.subScores.definitionalDrifts).toBe(0);
     expect(r.subScores.reasoningGaps).toBe(19);
     expect(r.subScores.flatPenalty).toBe(0);
-    expect(r.subScores.majorPenalty).toBe(2);
+    expect(r.subScores.majorPenalty).toBe(3.0);
     expect(r.subScores.minorCombinedPenalty).toBe(1.5);
-    expect(r.subScores.totalPenalties).toBe(3.5);
+    expect(r.subScores.totalPenalties).toBe(4.5);
     expect(r.subScores.bonus).toBe(0.5);
   });
 
-  // Run 38 (MN_4_1.docx): flats 0, majors 14, minorGaps 13, drifts 3, reasoning 27, tension 0.5 → CI 2
-  it("reproduces run 38's stored output exactly", () => {
+  // Run 38 (MN_4_1.docx): majors 14 → majorPenalty capped at 3.5; CI clamps to 1.
+  it("run 38's counts: CI 1 with majorPenalty capped at 3.5 (intentional v1.1 change)", () => {
     const r = computeP1({
       tier1Chapters: [],
       tier2: tier2Fixture({ flats: 0, majors: 14, minors: 13, drifts: 3, reasoning: 27, tension: true }),
       agentSelfReported: null,
     });
-    expect(r.serverComputed).toBe(2);
+    expect(r.serverComputed).toBe(1);
     expect(r.subScores.majorReconciliations).toBe(14);
-    expect(r.subScores.majorPenalty).toBe(2);
+    expect(r.subScores.majorPenalty).toBe(3.5);
     expect(r.subScores.minorCombinedPenalty).toBe(1.5);
-    expect(r.subScores.totalPenalties).toBe(3.5);
+    expect(r.subScores.totalPenalties).toBe(5);
     expect(r.subScores.bonus).toBe(0.5);
   });
 
-  // Run 41 (ecolab3.docx): flats 0, majors 1, minorGaps 9, drifts 0, reasoning 10, tension 0.5 → CI 3
-  it("reproduces run 41's stored output exactly", () => {
+  // Run 41 (ecolab3.docx): majors 1 → unchanged from v1.0 (CI 3).
+  it("run 41's counts: CI 3 — unchanged by the graduated penalty", () => {
     const r = computeP1({
       tier1Chapters: [],
       tier2: tier2Fixture({ flats: 0, majors: 1, minors: 9, drifts: 0, reasoning: 10, tension: true }),
@@ -120,9 +130,10 @@ describe("computeP1 — findings pass-through (B2 additive)", () => {
     expect(r.findings!.totalFound).toBe(60);
     expect(r.findings!.truncated).toBe(true);
     expect(r.findings!.entries).toHaveLength(50);
-    // 2+ majors → −2.0 regardless of count; score identical to an uncapped run
-    expect(r.subScores.majorPenalty).toBe(2);
-    expect(r.serverComputed).toBe(3); // 5 − 2.0, no minors, no bonus
+    // v1.1: 60 majors → graduated penalty capped at 3.5; the FINDINGS storage
+    // cap (50) is independent of the penalty and changes nothing about it
+    expect(r.subScores.majorPenalty).toBe(3.5);
+    expect(r.serverComputed).toBe(1.5); // 5 − 3.5, no minors, no bonus
   });
 
   it("orders entries most-severe-first so the cap drops minors before majors", () => {

@@ -12,15 +12,27 @@ export interface P1Input {
  * P1 — Coherence
  * CI = 5 − penalties + tension_bonus, clamp [1,5]
  *
- * Penalty schedule:
+ * Penalty schedule (V3 v1.1):
  * - 1 flat contradiction: −2.0; 2+ flat contradictions: −3.0 (replaces, not additive)
- * - 1 major reconciliation failure: −1.0; 2+ major: −2.0 (replaces)
+ * - Major reconciliation failures — GRADUATED (v1.1, C2):
+ *     0 → 0;  1 → −1.0;  f ≥ 2 → −min(3.5, 2 + 0.25 × (f − 2))
+ *   The two-failure ship cliff is preserved (2 failures still → −2.0 and, with
+ *   the saturated minor cap and tension bonus, CI = 2.0), while severity now
+ *   registers below it: 6 failures → CI ≈ 1.0; 10+ → penalty cap 3.5.
+ *   (v1.0 used a flat −2.0 for all f ≥ 2, hiding 3 vs 15 failures.)
  * - Minor categories (minor gaps + definitional drifts + reasoning gaps): −0.25 each,
  *   BUT capped at MINOR_COMBINED_CAP (−1.5) in total. These categories can lower the
  *   score but cannot floor it alone — only flat contradictions and major reconciliation
- *   failures are uncapped coherence killers.
- * - Tension bonus: +0.5 (max one)
+ *   failures are uncapped coherence killers. (Unchanged in v1.1 — recalibration is Phase D.)
+ * - Tension bonus: +0.5 (max one). (Unchanged in v1.1.)
  */
+
+/** V3 v1.1 graduated major-reconciliation penalty (C2). */
+export function gradedMajorPenalty(failures: number): number {
+  if (failures === 0) return 0;
+  if (failures === 1) return 1.0;
+  return Math.min(3.5, 2 + 0.25 * (failures - 2));
+}
 
 /** Maximum total penalty from the three minor-deduction categories combined. */
 const MINOR_COMBINED_CAP = 1.5;
@@ -105,7 +117,7 @@ export function computeP1(input: P1Input): DimensionResult {
 
   // ── Uncapped penalties (real coherence killers) ─────────────────────────────
   const flatPenalty = flatContradictions === 0 ? 0 : flatContradictions === 1 ? 2.0 : 3.0;
-  const majorPenalty = majorReconciliations === 0 ? 0 : majorReconciliations === 1 ? 1.0 : 2.0;
+  const majorPenalty = gradedMajorPenalty(majorReconciliations);
 
   // ── Capped minor-category penalties ────────────────────────────────────────
   // Compute each raw sub-penalty, then cap their SUM at MINOR_COMBINED_CAP.
@@ -150,7 +162,8 @@ export function computeP1(input: P1Input): DimensionResult {
     score: ci,
     subScores,
     traceabilityLog: {
-      formula: "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+      formula:
+        "CI = 5 − penalties + tension_bonus, clamp [1,5]; major penalty graduated (v1.1): 0→0, 1→1.0, f≥2→min(3.5, 2 + 0.25×(f−2))",
       flat_contradictions: flatContradictions,
       flat_penalty: flatPenalty,
       major_reconciliation_failures: majorReconciliations,
