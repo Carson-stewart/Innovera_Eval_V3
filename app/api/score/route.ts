@@ -7,6 +7,10 @@ interface ScoreRequestBody {
   framingId: number;
   typology: string;
   approvedRisks: ApprovedRisk[];
+  /** Explicit opt-in for runs that skip the Risk Gate (measurement/verification
+   *  tooling). Such runs are stamped "risk gate bypassed" in dataNote at creation
+   *  so they are self-labeling. The normal UI always sends 5 decided cards. */
+  allowEmptyRisks?: boolean;
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -18,7 +22,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { memoId, framingId, typology, approvedRisks } = body;
+  const { memoId, framingId, typology, approvedRisks, allowEmptyRisks } = body;
 
   if (
     typeof memoId !== "number" ||
@@ -32,6 +36,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
+  if (approvedRisks.length === 0 && allowEmptyRisks !== true) {
+    return NextResponse.json(
+      {
+        error:
+          "approvedRisks is empty: scoring without the Risk Gate produces a run with no " +
+          "risk data (zero ConfirmedRisk rows). If this is an intentional measurement/" +
+          "verification run, pass allowEmptyRisks: true — the run will be stamped " +
+          "'risk gate bypassed' in its dataNote.",
+      },
+      { status: 400 }
+    );
+  }
+
   const { ids } = await inngest.send({
     name: "memo/score.requested",
     data: {
@@ -39,6 +56,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       framingId,
       typology,
       approvedRisks,
+      allowEmptyRisks: allowEmptyRisks === true,
     },
   });
 

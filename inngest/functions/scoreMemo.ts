@@ -35,6 +35,9 @@ interface ScoreMemoPayload {
   framingId: number;
   typology: string;
   approvedRisks: ApprovedRisk[];
+  /** Set by /api/score when the caller explicitly opted into an empty risk set.
+   *  Persistence-labeling only — never read by any scoring step. */
+  allowEmptyRisks?: boolean;
 }
 
 // Max scoreMemo runs allowed to execute simultaneously. This caps PARALLELISM
@@ -476,6 +479,10 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
             statusBadge: badge as "READY_TO_SHIP" | "NEEDS_WORK" | "MAJOR_REWORK",
             stage1Avg,
             stage2Avg,
+            // Self-labeling for Risk-Gate-bypassed runs (empty approvedRisks): zero
+            // ConfirmedRisk rows on such runs mean "risk data missing", not "no risks
+            // found" — stamp that at creation. Metadata only; no score input.
+            ...(approvedRisks.length === 0 && { dataNote: "risk gate bypassed" }),
           },
         });
 
