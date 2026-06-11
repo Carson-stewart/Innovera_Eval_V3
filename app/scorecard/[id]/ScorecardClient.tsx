@@ -313,6 +313,30 @@ function P1Trace({ log, conflictCount, findings }: {
       }`}>
         Coherence conflicts: <span className="font-bold">{conflictCount ?? "—"}</span> — memos ship at ≤1
       </div>
+      {/* D2b: minor/reasoning channel visibility — raw signal of the saturated
+          channel; the penalty itself stays capped (recalibration: Phase E). */}
+      {(() => {
+        const minors = asNum(log.minor_gaps);
+        const drifts = asNum(log.definitional_drifts);
+        const reasoning = asNum(log.reasoning_gaps);
+        const raw = asNum(log.minor_combined_raw);
+        const capApplied2 = log.minor_cap_applied === true;
+        if (minors === null && reasoning === null) return null;
+        return (
+          <div className="mb-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600">
+            Minor gaps: <span className="font-semibold text-gray-800">{minors ?? "—"}</span>
+            {drifts !== null && drifts > 0 && (
+              <> · Definitional drifts: <span className="font-semibold text-gray-800">{drifts}</span></>
+            )}
+            {" "}· Reasoning gaps: <span className="font-semibold text-gray-800">{reasoning ?? "—"}</span>
+            {raw !== null && (
+              <span className="text-gray-500">
+                {" "}(raw penalty {raw.toFixed(2)}, {capApplied2 ? "capped at 1.5" : "under the 1.5 cap"})
+              </span>
+            )}
+          </div>
+        );
+      })()}
       {findings && findings.entries.length > 0 && (
         <div className="mb-4">
           <SectionLabel>Persisted findings ({findings.totalFound}{findings.truncated ? `, showing first ${findings.entries.length}` : ""})</SectionLabel>
