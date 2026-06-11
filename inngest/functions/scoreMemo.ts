@@ -333,12 +333,16 @@ export const scoreMemo = inngest.createFunction(
         ["D1", "D2", "D3", "D4", "D5"].includes(dr.dimensionKey)
       );
 
-      const stage1Scores = stage1Results.map((dr: DimensionResult) => dr.serverComputed ?? 1);
-      const stage2Scores = stage2Results.map((dr: DimensionResult) => dr.serverComputed ?? 1);
+      // V3 v1.1: not-scored pillars (null) are EXCLUDED from readiness via
+      // rescaling inside memoConfidence() — no more ?? 1 worst-case coalescing.
+      const stage1Scores = stage1Results.map((dr: DimensionResult) => dr.serverComputed);
+      const stage2Scores = stage2Results.map((dr: DimensionResult) => dr.serverComputed);
+      const scoredStage1 = stage1Scores.filter((s): s is number => s !== null);
+      const scoredStage2 = stage2Scores.filter((s): s is number => s !== null);
 
       const memoConf = memoConfidence(stage1Scores);
       const decisionConf = decisionConfidence(memoConf, 1.0);
-      const s2Profile = stage2Profile(stage2Scores);
+      const s2Profile = stage2Profile(scoredStage2);
 
       const gaps = deriveGaps(dimensionResults);
       const edits: GapRow[] = []; // edits generated in a separate LLM step below
@@ -347,11 +351,14 @@ export const scoreMemo = inngest.createFunction(
         gaps.map((g: GapRow) => ({ severity: g.severity }))
       );
 
+      // stage1Avg = mean over SCORED pillars; the denominator is persisted as
+      // scoredPillarCount so it is always visible alongside the average.
       const stage1Avg =
-        stage1Scores.reduce((a: number, b: number) => a + b, 0) / stage1Scores.length;
+        scoredStage1.reduce((a: number, b: number) => a + b, 0) / scoredStage1.length;
+      const scoredPillarCount = scoredStage1.length;
       const stage2Avg =
-        stage2Scores.length > 0
-          ? stage2Scores.reduce((a: number, b: number) => a + b, 0) / stage2Scores.length
+        scoredStage2.length > 0
+          ? scoredStage2.reduce((a: number, b: number) => a + b, 0) / scoredStage2.length
           : 0;
 
       const diagnostics = verifyScoring(dimensionResults);
@@ -362,6 +369,7 @@ export const scoreMemo = inngest.createFunction(
         s2Profile,
         badge,
         stage1Avg,
+        scoredPillarCount,
         stage2Avg,
         gaps,
         edits,
@@ -494,6 +502,7 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
         decisionConf,
         badge,
         stage1Avg,
+        scoredPillarCount,
         stage2Avg,
         gaps,
         edits: _unusedEdits, // edits now come from generatedEdits
@@ -513,6 +522,9 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
             riskMultiplier: 1.0,
             statusBadge: badge as "READY_TO_SHIP" | "NEEDS_WORK" | "MAJOR_REWORK",
             stage1Avg,
+            // V3 v1.1: denominator of stage1Avg/readiness (8 unless a pillar
+            // was NOT_SCORED and excluded via rescaling)
+            scoredPillarCount,
             stage2Avg,
             // Completeness metadata — measured from the parsed chapter titles
             // (allChapters is in scope from Step 2). Display only.

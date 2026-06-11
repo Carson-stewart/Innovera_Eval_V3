@@ -529,6 +529,10 @@ export default function ScoringGuidePage() {
                   <p className="text-xs text-gray-500 leading-relaxed">
                     The headline number: 100 minus everything the pillars eroded. It reflects
                     what editors can control — the quality of the analysis and presentation.
+                    If a pillar cannot be scored at all (for example P7 on a memo with no
+                    financial claims), it is excluded and readiness is rescaled over the
+                    scored pillars — an unscored pillar neither erodes the score nor counts
+                    as a perfect 5.
                   </p>
                 </div>
                 <div className="rounded-xl border border-gray-200 bg-white p-4">

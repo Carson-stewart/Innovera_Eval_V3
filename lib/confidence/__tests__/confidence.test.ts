@@ -49,6 +49,36 @@ describe("memoConfidence", () => {
   });
 });
 
+describe("memoConfidence — V3 v1.1 not-scored exclusion (rescaling)", () => {
+  // Run 26's stored Stage-1 vector after the B1 backfill: P7 = null (NOT_SCORED).
+  const run26OldP1: (number | null)[] = [2, 3.634241185664279, 5, 3.3437015248821096, 4, 3, null, 4];
+
+  it("rescales over scored pillars: run 26's stored vector (old P1) → 71.366", () => {
+    // 100 − (8/7) × Σ erosion(7 scored) — NOT simple exclusion (74.94), which
+    // would treat the unscored pillar as an implicit perfect 5.
+    expect(memoConfidence(run26OldP1)).toBeCloseTo(71.36555060157397, 6);
+  });
+
+  it("run 26's vector with the C2 graduated P1 (1.75) → ≈70.65 (approved C0 value)", () => {
+    const withNewP1 = [1.75, ...run26OldP1.slice(1)];
+    expect(memoConfidence(withNewP1)).toBeCloseTo(70.65126488728825, 6);
+  });
+
+  it("with all 8 scored, reduces exactly to the v1.0 formula", () => {
+    const full = [4, 3, 5, 4, 3, 5, 4, 3];
+    const erosionSum = full.reduce((s, v) => s + erosionFromScore(v), 0);
+    expect(memoConfidence(full)).toBeCloseTo(100 - erosionSum, 10);
+  });
+
+  it("a single scored pillar is rescaled to full weight (20 × score)", () => {
+    expect(memoConfidence([3, null, null, null, null, null, null, null])).toBeCloseTo(60, 5);
+  });
+
+  it("throws when no pillar is scored", () => {
+    expect(() => memoConfidence([null, null, null, null, null, null, null, null])).toThrow();
+  });
+});
+
 describe("decisionConfidence", () => {
   it("75 × 1.0 → 75 (v1.0 multiplier)", () => {
     expect(decisionConfidence(75, 1.0)).toBe(75);

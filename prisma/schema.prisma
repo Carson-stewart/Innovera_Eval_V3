@@ -191,6 +191,11 @@ model ScoringRun {
   // only — never an input to any score. Pre-existing runs keep null.
   scorableChapterCount Int?
 
+  // V3 v1.1 (additive, nullable): denominator of stage1Avg and the readiness
+  // rescaling — 8 unless a pillar was NOT_SCORED and excluded. Pre-v1.1 runs
+  // keep null (all their pillars carried a numeric score at scoring time).
+  scoredPillarCount Int?
+
   // Durable link to the framing that produced this run (additive, nullable).
   // Populated on NEW runs only; pre-existing runs keep framingId null
   // (their framing link was ephemeral and isn't reliably recoverable).

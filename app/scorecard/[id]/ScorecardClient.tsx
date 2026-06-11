@@ -83,6 +83,9 @@ export interface RunData {
   /** Completeness metadata: parsed scorable chapters out of the canonical 10.
    *  Null on runs scored before the column existed — display nothing then. */
   scorableChapterCount: number | null;
+  /** V3 v1.1: readiness denominator — scored Stage-1 pillars (8 unless one was
+   *  NOT_SCORED and excluded via rescaling). Null on pre-v1.1 runs. */
+  scoredPillarCount: number | null;
   scoredAt: string;
   memo: {
     id: number;
@@ -800,6 +803,11 @@ function HeroBlock({ run }: { run: RunData }) {
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Memo Readiness</p>
           <p className="text-6xl font-extrabold text-gray-900 leading-none">{run.memoConfidence.toFixed(1)}</p>
           <p className="text-xs text-gray-400 mt-1">out of 100</p>
+          {run.scoredPillarCount !== null && run.scoredPillarCount < 8 && (
+            <p className="text-xs text-amber-700 mt-1">
+              Computed over {run.scoredPillarCount} of 8 pillars (not-scored pillars excluded via rescaling)
+            </p>
+          )}
           {run.scorableChapterCount !== null && (
             <p className="text-xs mt-2">
               <span className="text-gray-500">Scored on {run.scorableChapterCount} of 10 chapters</span>
@@ -1310,8 +1318,11 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
               <SectionLabel>What this score means</SectionLabel>
               <p className="text-xs text-gray-500 leading-relaxed">
                 <span className="font-bold mr-1.5 text-gray-400">Not scored</span>
-                This dimension was not scored on this run (insufficient input data — see the
-                traceability findings above). It contributes no erosion narrative here.
+                {ds.dimensionKey === "P7"
+                  ? "P7: Not scored — insufficient financial claims (excluded from readiness)."
+                  : "This dimension was not scored on this run (insufficient input data) and is excluded from readiness."}{" "}
+                Under V3 v1.1, readiness is rescaled over the scored pillars so an unscored
+                pillar neither erodes nor inflates the score.
               </p>
             </div>
           )}

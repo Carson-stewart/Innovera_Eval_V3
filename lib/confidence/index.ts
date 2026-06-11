@@ -17,16 +17,32 @@ export function erosionFromScore(score: number): number {
 }
 
 /**
- * Memo Confidence = 100 − sum(erosion for each Stage-1 pillar score), clamp [0, 100].
+ * Memo Confidence (Readiness) — V3 v1.1 exclusion rule.
+ *
+ * Not-scored pillars (null, e.g. P7 under the sparse-data protocol) are
+ * EXCLUDED from readiness via rescaling over the scored pillars:
+ *
+ *   readiness = 100 − (8 / scoredCount) × Σ erosion(scored pillars), clamp [0, 100]
+ *   (equivalently 20 × mean(scored pillars) where no per-pillar erosion cap binds)
+ *
+ * Rationale: simple exclusion (no rescale) would let an unscored pillar
+ * contribute zero erosion — an implicit perfect 5 and a sparse-data gaming
+ * vector. Rescaling keeps each scored pillar's weight identical to the
+ * all-8-scored case. With all 8 pillars scored this reduces exactly to the
+ * v1.0 formula (100 − Σ erosion).
+ *
  * Stage-2 scores are NOT included (they form a separate profile).
- * @param stage1Scores Array of 8 Stage-1 pillar scores (P1–P8).
+ * @param stage1Scores Array of 8 Stage-1 pillar scores (P1–P8); null = not scored.
+ * @throws if no pillar is scored (cannot legitimately occur).
  */
-export function memoConfidence(stage1Scores: number[]): number {
-  const totalErosion = stage1Scores.reduce(
-    (sum, score) => sum + erosionFromScore(score),
-    0
-  );
-  return Math.min(Math.max(100 - totalErosion, 0), 100);
+export function memoConfidence(stage1Scores: (number | null)[]): number {
+  const scored = stage1Scores.filter((s): s is number => s !== null);
+  if (scored.length === 0) {
+    throw new Error("memoConfidence: no scored Stage-1 pillars — cannot compute readiness.");
+  }
+  const totalErosion = scored.reduce((sum, score) => sum + erosionFromScore(score), 0);
+  const rescaled = (8 / scored.length) * totalErosion;
+  return Math.min(Math.max(100 - rescaled, 0), 100);
 }
 
 /**
