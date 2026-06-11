@@ -11,8 +11,9 @@ import { PILLAR_GUIDE_DETAILS } from "@/lib/pillars/guide-details";
 export interface DimensionScoreRow {
   id: number;
   dimensionKey: string;
-  score: number;
-  serverComputed: number;
+  /** null = NOT_SCORED (e.g. P7 sparse-data protocol) — render "Not scored", never 0/−1/1 */
+  score: number | null;
+  serverComputed: number | null;
   agentSelfReported: number | null;
   calibrationDrift: boolean;
   subScores: Record<string, unknown>;
@@ -136,20 +137,23 @@ const FIC_LABELS: Record<string, string> = {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function scoreColor(score: number): string {
+function scoreColor(score: number | null): string {
+  if (score === null) return "text-gray-400";
   if (score >= 4) return "text-green-700";
   if (score >= 3) return "text-amber-700";
   return "text-red-700";
 }
 
-function chipStyle(score: number): string {
+function chipStyle(score: number | null): string {
+  if (score === null) return "bg-gray-50 border-gray-300 text-gray-500";
   if (score >= 4) return "bg-green-50 border-green-400 text-green-800";
   if (score >= 3) return "bg-amber-50 border-amber-400 text-amber-800";
   return "bg-red-50 border-red-400 text-red-800";
 }
 
-function pillarScore(run: RunData, key: string): number {
-  return run.dimensionScores.find((d) => d.dimensionKey === key)?.serverComputed ?? 0;
+/** Returns null when the dimension is NOT_SCORED — callers must render "Not scored". */
+function pillarScore(run: RunData, key: string): number | null {
+  return run.dimensionScores.find((d) => d.dimensionKey === key)?.serverComputed ?? null;
 }
 
 function erosion(score: number): number {
@@ -192,29 +196,32 @@ function p1ConflictCount(run: RunData): number | null {
 }
 
 function computeRecovery(run: RunData) {
-  return STAGE_1_KEYS.map((k) => {
+  return STAGE_1_KEYS.flatMap((k) => {
     const score = pillarScore(run, k);
+    if (score === null) return []; // not scored — no recovery headroom claimable
     const headroom = 5 - score;
     const gain = headroom * 2.5;
     const exp = PILLAR_EXPLANATIONS[k];
-    return { key: k, name: exp?.name ?? k, gloss: exp?.gloss ?? "", score, headroom, gain };
+    return [{ key: k, name: exp?.name ?? k, gloss: exp?.gloss ?? "", score, headroom, gain }];
   })
     .filter((p) => p.headroom > 0)
     .sort((a, b) => b.gain - a.gain);
 }
 
 function generateExplanation(run: RunData): string {
-  const topErosion = STAGE_1_KEYS.map((k) => {
+  const topErosion = STAGE_1_KEYS.flatMap((k) => {
     const score = pillarScore(run, k);
+    if (score === null) return []; // not scored — contributes no erosion narrative
     const e = erosion(score);
     const name = PILLAR_EXPLANATIONS[k]?.name ?? k;
-    return { key: k, score, erosion: e, name };
+    return [{ key: k, score, erosion: e, name }];
   })
     .filter((p) => p.erosion > 0)
     .sort((a, b) => b.erosion - a.erosion)
     .slice(0, 3);
 
-  const s2avg = STAGE_2_KEYS.reduce((s, k) => s + pillarScore(run, k), 0) / STAGE_2_KEYS.length;
+  const s2scores = STAGE_2_KEYS.map((k) => pillarScore(run, k)).filter((s): s is number => s !== null);
+  const s2avg = s2scores.length > 0 ? s2scores.reduce((a, b) => a + b, 0) / s2scores.length : 0;
 
   let text = `This memo achieved a Memo Confidence of ${run.memoConfidence.toFixed(1)}/100 (Rubric ${run.rubricVersion}). `;
 
@@ -815,11 +822,13 @@ function StageMatrix({ run }: { run: RunData }) {
                     <span className="text-xs font-mono text-gray-400 w-7">{k}</span>
                     <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full transition-all ${score >= 4 ? "bg-green-400" : score >= 3 ? "bg-amber-400" : "bg-red-400"}`}
-                        style={{ width: `${(score / 5) * 100}%` }}
+                        className={`h-full rounded-full transition-all ${score === null ? "bg-gray-200" : score >= 4 ? "bg-green-400" : score >= 3 ? "bg-amber-400" : "bg-red-400"}`}
+                        style={{ width: `${((score ?? 0) / 5) * 100}%` }}
                       />
                     </div>
-                    <span className={`text-xs font-semibold w-8 text-right ${scoreColor(score)}`}>{score.toFixed(1)}</span>
+                    <span className={`text-xs font-semibold text-right ${score === null ? "w-auto" : "w-8"} ${scoreColor(score)}`}>
+                      {score !== null ? score.toFixed(1) : "Not scored"}
+                    </span>
                     <span className="text-xs text-gray-500 hidden sm:block w-28 truncate">{name}</span>
                   </div>
                   {k === "P1" && (() => {
@@ -886,7 +895,7 @@ function ChipStrip({ run, onChipClick }: { run: RunData; onChipClick: (key: stri
               title={PILLAR_EXPLANATIONS[k]?.gloss}
               className={`border rounded-lg px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-brand-orange-ring ${chipStyle(score)}`}>
               <span className="font-bold">{k}</span>
-              <span>{score.toFixed(2)}</span>
+              <span>{score !== null ? score.toFixed(2) : "Not scored"}</span>
             </button>
           );
         })}
@@ -923,6 +932,8 @@ function enrichGapFromTrace(
 function deriveGapFromTrace(
   ds: DimensionScoreRow
 ): { issue: string; impact: string; fix: string } | null {
+  // NOT_SCORED produces no gap — a null score is missing data, not a deficiency
+  if (ds.serverComputed === null) return null;
   const log = ds.traceabilityLog;
   const sub = asRecord(ds.subScores);
   const score = ds.serverComputed;
@@ -1030,6 +1041,9 @@ function GapsTab({ gaps, dimensionScores }: { gaps: GapRow[]; dimensionScores: D
     .filter(
       (ds) =>
         ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"].includes(ds.dimensionKey) &&
+        // explicit null guard: NOT_SCORED must never synthesize a gap
+        // (JS would coerce null < 4 to true and null <= 2 to HIGH severity)
+        ds.serverComputed !== null &&
         ds.serverComputed < EDIT_THRESHOLD &&
         !gaps.some((g) => g.dimensionKey === ds.dimensionKey)
     )
@@ -1042,7 +1056,7 @@ function GapsTab({ gaps, dimensionScores }: { gaps: GapRow[]; dimensionScores: D
         issue: specific.issue,
         impact: specific.impact,
         fix: specific.fix,
-        severity: ds.serverComputed <= 2 ? "HIGH" : "MEDIUM",
+        severity: ds.serverComputed !== null && ds.serverComputed <= 2 ? "HIGH" : "MEDIUM",
       } as GapRow;
     })
     .filter(Boolean) as GapRow[];
@@ -1174,7 +1188,9 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
           <span className="hidden sm:inline text-xs text-gray-400">{exp?.stage}</span>
         </div>
         <div className="flex items-center gap-3 shrink-0">
-          <span className={`text-xl font-bold ${scoreColor(score)}`}>{score.toFixed(2)}</span>
+          <span className={`${score !== null ? "text-xl" : "text-sm"} font-bold ${scoreColor(score)}`}>
+            {score !== null ? score.toFixed(2) : "Not scored"}
+          </span>
           <svg className={`h-4 w-4 transition-transform ${open ? "rotate-180 text-brand-orange" : "text-gray-400"}`}
             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -1223,7 +1239,7 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
             </div>
             {ds.calibrationDrift && (
               <p className="mt-2 text-xs bg-amber-50 text-amber-700 rounded px-3 py-1.5 border border-amber-200">
-                ⚠ Calibration drift: server={score.toFixed(2)}, agent={ds.agentSelfReported?.toFixed(2) ?? "—"}
+                ⚠ Calibration drift: server={score?.toFixed(2) ?? "Not scored"}, agent={ds.agentSelfReported?.toFixed(2) ?? "—"}
               </p>
             )}
           </div>
@@ -1235,7 +1251,7 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
           </div>
 
           {/* Score meaning for this score */}
-          {guide && (
+          {guide && score !== null && (
             <div>
               <SectionLabel>What this score means</SectionLabel>
               {(() => {
@@ -1248,6 +1264,16 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
                   </p>
                 ) : null;
               })()}
+            </div>
+          )}
+          {guide && score === null && (
+            <div>
+              <SectionLabel>What this score means</SectionLabel>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                <span className="font-bold mr-1.5 text-gray-400">Not scored</span>
+                This dimension was not scored on this run (insufficient input data — see the
+                traceability findings above). It contributes no erosion narrative here.
+              </p>
             </div>
           )}
         </div>
@@ -1288,10 +1314,11 @@ function BreakdownTab({ run, focusKey }: { run: RunData; focusKey: string | null
 
 function ExplanationTab({ run }: { run: RunData }) {
   const summary = generateExplanation(run);
-  const topErosion = STAGE_1_KEYS.map((k) => {
+  const topErosion = STAGE_1_KEYS.flatMap((k) => {
     const score = pillarScore(run, k);
+    if (score === null) return []; // not scored — no erosion attributed
     const e = erosion(score);
-    return { key: k, name: PILLAR_EXPLANATIONS[k]?.name ?? k, score, erosion: e };
+    return [{ key: k, name: PILLAR_EXPLANATIONS[k]?.name ?? k, score, erosion: e }];
   })
     .filter((p) => p.erosion > 0)
     .sort((a, b) => b.erosion - a.erosion);
@@ -1341,11 +1368,13 @@ function ExplanationTab({ run }: { run: RunData }) {
                     <span className="text-xs text-gray-700">{name}</span>
                   </div>
                   <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full ${s >= 4 ? "bg-green-400" : s >= 3 ? "bg-amber-400" : "bg-red-400"}`}
-                      style={{ width: `${(s / 5) * 100}%` }} />
+                    <div className={`h-full rounded-full ${s === null ? "bg-gray-200" : s >= 4 ? "bg-green-400" : s >= 3 ? "bg-amber-400" : "bg-red-400"}`}
+                      style={{ width: `${((s ?? 0) / 5) * 100}%` }} />
                   </div>
                 </div>
-                <span className={`text-xs font-semibold font-mono w-10 text-right ${scoreColor(s)}`}>{s.toFixed(2)}</span>
+                <span className={`text-xs font-semibold font-mono text-right ${s === null ? "w-auto" : "w-10"} ${scoreColor(s)}`}>
+                  {s !== null ? s.toFixed(2) : "Not scored"}
+                </span>
               </div>
             );
           })}
@@ -1994,7 +2023,7 @@ function OverflowMenu({ run, onDelete, onEdit }: { run: RunData; onDelete: () =>
       ["Stage 2 Average", run.stage2Avg.toFixed(2)],
       [],
       ["Dimension", "Score"],
-      ...run.dimensionScores.map((d) => [d.dimensionKey, d.serverComputed.toFixed(2)]),
+      ...run.dimensionScores.map((d) => [d.dimensionKey, d.serverComputed !== null ? d.serverComputed.toFixed(2) : "Not scored"]),
     ];
     const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });

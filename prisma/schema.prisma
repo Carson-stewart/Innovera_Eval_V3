@@ -212,10 +212,12 @@ model DimensionScore {
   id                Int          @id @default(autoincrement())
   scoringRunId      Int
   dimensionKey      DimensionKey
-  score             Float
+  // Nullable: null = NOT_SCORED (e.g. P7 sparse-data protocol with 0 claims).
+  // Previously non-nullable with a ?? -1 sentinel at persist — removed in Phase B1.
+  score             Float?
   subScores         Json         // per-sub-dimension scores
   traceabilityLog   Json         // full TR-log content from the agent
-  serverComputed    Float        // score as computed server-side from classifications
+  serverComputed    Float?       // score as computed server-side from classifications; null = not scored
   agentSelfReported Float?       // score as self-reported by the agent (for drift tracking)
   calibrationDrift  Boolean      @default(false)
 

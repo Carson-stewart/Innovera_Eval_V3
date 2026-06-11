@@ -150,7 +150,7 @@ export default async function ComparePage({ searchParams }: Props) {
               return (
                 <div key={k} className="grid grid-cols-[1fr_80px_1fr] items-center px-4 py-2.5 border-b border-gray-50 last:border-0">
                   <div className={`text-sm font-bold text-right ${scoreColor(sA)}`}>
-                    {sA != null ? sA.toFixed(2) : "—"}
+                    {sA != null ? sA.toFixed(2) : "Not scored"}
                   </div>
                   <div className="text-center px-2">
                     <p className="text-xs font-mono text-gray-400">{k}</p>
@@ -158,7 +158,7 @@ export default async function ComparePage({ searchParams }: Props) {
                     {delta != null && <DeltaBadge delta={delta} />}
                   </div>
                   <div className={`text-sm font-bold ${scoreColor(sB)}`}>
-                    {sB != null ? sB.toFixed(2) : "—"}
+                    {sB != null ? sB.toFixed(2) : "Not scored"}
                   </div>
                 </div>
               );
@@ -176,7 +176,7 @@ export default async function ComparePage({ searchParams }: Props) {
               return (
                 <div key={k} className="grid grid-cols-[1fr_80px_1fr] items-center px-4 py-2.5 border-b border-gray-50 last:border-0">
                   <div className={`text-sm font-bold text-right ${scoreColor(sA)}`}>
-                    {sA != null ? sA.toFixed(2) : "—"}
+                    {sA != null ? sA.toFixed(2) : "Not scored"}
                   </div>
                   <div className="text-center px-2">
                     <p className="text-xs font-mono text-gray-400">{k}</p>
@@ -184,7 +184,7 @@ export default async function ComparePage({ searchParams }: Props) {
                     {delta != null && <DeltaBadge delta={delta} />}
                   </div>
                   <div className={`text-sm font-bold ${scoreColor(sB)}`}>
-                    {sB != null ? sB.toFixed(2) : "—"}
+                    {sB != null ? sB.toFixed(2) : "Not scored"}
                   </div>
                 </div>
               );

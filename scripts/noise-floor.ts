@@ -30,7 +30,10 @@ async function load(srId: number) {
     },
   });
   const dims = new Map<string, number>();
-  for (const d of run!.dimensionScores) dims.set(d.dimensionKey, d.score);
+  // null = NOT_SCORED (nullable since Phase B1) — leave unset so it prints as "n/a"
+  for (const d of run!.dimensionScores) {
+    if (d.score !== null) dims.set(d.dimensionKey, d.score);
+  }
   return { run: run!, dims };
 }
 

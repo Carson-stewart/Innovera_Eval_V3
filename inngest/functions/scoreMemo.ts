@@ -529,10 +529,12 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
             data: {
               scoringRunId: scoringRun.id,
               dimensionKey: dr.dimensionKey as never,
-              score: dr.score ?? -1,
+              // null = NOT_SCORED, persisted as null (the old ?? -1 sentinel
+              // leaked an out-of-range value into stored scores — see run 26 P7)
+              score: dr.score,
               subScores: dr.subScores as never,
               traceabilityLog: dr.traceabilityLog as never,
-              serverComputed: dr.serverComputed ?? -1,
+              serverComputed: dr.serverComputed,
               agentSelfReported: dr.agentSelfReported,
               calibrationDrift: dr.calibrationDrift,
             },
