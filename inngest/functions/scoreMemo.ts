@@ -583,7 +583,7 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
           data: {
             memoId,
             framingId, // durable link to the framing that produced this run (from event.data)
-            rubricVersion: "V3 v1.0",
+            rubricVersion: RUBRIC_VERSION, // "V3 v1.1" — single source: lib/scoring/version.ts
             scoringModel: SCORING_MODEL,
             redundancyVersion: REDUNDANCY_VERSION,
             memoConfidence: memoConf,
