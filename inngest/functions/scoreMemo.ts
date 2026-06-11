@@ -8,6 +8,7 @@ import { buildTier2Prompt } from "@/lib/prompts/tier2";
 import { buildTier3P7Prompt } from "@/lib/prompts/tier3-p7";
 import { runAllScoring } from "@/lib/scoring/index";
 import { verifyScoring } from "@/lib/scoring/verify";
+import { deriveGaps, type GapRow } from "@/lib/scoring/gaps";
 import { RUBRIC_VERSION } from "@/lib/scoring/version";
 import {
   computeP1CacheKey,
@@ -15,7 +16,7 @@ import {
   applyP1Detection,
   type P1DetectionPayload,
 } from "@/lib/scoring/p1Cache";
-import { deriveSpecificGap, buildEditGenerationPrompt } from "@/lib/scoring/editGeneration";
+import { buildEditGenerationPrompt } from "@/lib/scoring/editGeneration";
 // Redundancy (Phase R1) — informational only, never touches scoring tables
 import { extractAllClaims } from "@/lib/redundancy/extractClaims";
 import { embedTexts } from "@/lib/redundancy/embed";
@@ -53,13 +54,9 @@ interface ScoreMemoPayload {
 // build.
 const SCORE_MEMO_CONCURRENCY = 2;
 
-type GapRow = {
-  dimensionKey: string;
-  issue: string;
-  impact: string;
-  fix: string;
-  severity: "HIGH" | "MEDIUM" | "LOW";
-};
+// GapRow + deriveGaps moved to lib/scoring/gaps.ts (D2a) so the explicit
+// ship-rule trigger is unit-testable. Behavior here is unchanged except the
+// trigger itself.
 
 // ─── Completeness metadata (measurement only — never a score input) ──────────
 // The 10 canonical scorable chapters. Counted against parsed chapter titles
@@ -96,44 +93,6 @@ function countScorableChapters(titles: string[]): number {
   ).length;
 }
 
-
-/**
- * Derive Gaps from traceabilityLog findings — NOT from score numbers alone.
- * Each gap issue/fix is grounded in what the engine actually found, matching
- * what the Breakdown tab surfaces.
- */
-function deriveGaps(dimensionResults: DimensionResult[]): GapRow[] {
-  const gaps: GapRow[] = [];
-  const stage1Keys = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"];
-
-  for (const dr of dimensionResults) {
-    if (!stage1Keys.includes(dr.dimensionKey)) continue;
-    if (dr.serverComputed === null) continue;
-    const score = dr.serverComputed;
-    if (score >= 4.0) continue; // no gap for well-scoring pillars
-
-    const specific = deriveSpecificGap(dr);
-    if (!specific) continue;
-
-    gaps.push({
-      dimensionKey: dr.dimensionKey,
-      issue: specific.issue,
-      impact: specific.impact,
-      fix: specific.fix,
-      severity: specific.severity,
-    });
-  }
-
-  // Sort by severity (HIGH first) then by erosion (largest first)
-  return gaps.sort((a, b) => {
-    const sevOrd: Record<string, number> = { HIGH: 0, MEDIUM: 1, LOW: 2 };
-    const sd = (sevOrd[a.severity] ?? 9) - (sevOrd[b.severity] ?? 9);
-    if (sd !== 0) return sd;
-    const scoreA = dimensionResults.find((d) => d.dimensionKey === a.dimensionKey)?.serverComputed ?? 3;
-    const scoreB = dimensionResults.find((d) => d.dimensionKey === b.dimensionKey)?.serverComputed ?? 3;
-    return scoreA - scoreB; // lower score → more erosion → first
-  });
-}
 
 export const scoreMemo = inngest.createFunction(
   {
