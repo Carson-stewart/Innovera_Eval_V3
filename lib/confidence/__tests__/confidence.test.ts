@@ -128,6 +128,41 @@ describe("statusBadge", () => {
   });
 });
 
+describe("statusBadge — V3 v1.1 Stage-2 floor", () => {
+  // Run 25's stored profile: readiness 81.875, gaps all MEDIUM, D = [1.8, 3.8, 4.8, 4.8, 5]
+  it("run 25's vector: would-be READY_TO_SHIP held at NEEDS_WORK by D1 = 1.8", () => {
+    expect(
+      statusBadge(81.875, [{ severity: "MEDIUM" }, { severity: "MEDIUM" }], [1.8, 3.8, 4.8, 4.8, 5])
+    ).toBe("NEEDS_WORK");
+  });
+
+  it("exactly 2.0 trips the floor (<= semantics)", () => {
+    expect(statusBadge(90, [], [2.0, 5, 5, 5, 5])).toBe("NEEDS_WORK");
+  });
+
+  it("D scores above the floor leave READY_TO_SHIP untouched", () => {
+    expect(statusBadge(81.875, [{ severity: "MEDIUM" }], [2.1, 3.8, 4.8, 4.8, 5])).toBe("READY_TO_SHIP");
+  });
+
+  // Run 41's stored profile: readiness 72.656 (< 75), no HIGH gap, D all > 2.0
+  it("run 41's vector: NEEDS_WORK by readiness, unchanged by the floor", () => {
+    expect(statusBadge(72.656, [{ severity: "MEDIUM" }], [4, 4.2, 3.8, 4.4, 3.6])).toBe("NEEDS_WORK");
+  });
+
+  it("MAJOR_REWORK semantics unchanged — floor never upgrades or alters it", () => {
+    expect(statusBadge(80, [{ severity: "HIGH" }], [1.8, 5, 5, 5, 5])).toBe("MAJOR_REWORK");
+    expect(statusBadge(40, [], [5, 5, 5, 5, 5])).toBe("MAJOR_REWORK");
+  });
+
+  it("a not-scored (null) D dimension cannot trip the floor", () => {
+    expect(statusBadge(80, [], [null, 5, 5, 5, 5])).toBe("READY_TO_SHIP");
+  });
+
+  it("omitting stage2Scores preserves v1.0 behavior", () => {
+    expect(statusBadge(80, [])).toBe("READY_TO_SHIP");
+  });
+});
+
 describe("stage2Profile", () => {
   it("returns avg and quadrant without affecting memoConfidence", () => {
     const stage2Scores = [4, 3, 5, 4, 3];

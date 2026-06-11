@@ -780,21 +780,36 @@ function DiagnosticsStrip({ diagnostics }: { diagnostics: DiagRow[] }) {
 
 // ─── Hero block ───────────────────────────────────────────────────────────────
 
-/** Why a MAJOR_REWORK badge fired — mirrors statusBadge() in lib/confidence/index.ts.
+/** Why a badge fired — mirrors statusBadge() in lib/confidence/index.ts.
  *  Reads the STORED Gap rows' severity (never re-derives from dimension scores, which
- *  would misread sentinel values like run 26's persisted P7 = −1). */
-function majorReworkHint(run: RunData): string | null {
-  if (run.statusBadge !== "MAJOR_REWORK") return null;
-  if (run.memoConfidence < 50) return "Readiness below 50.";
-  const highPillars = Array.from(
-    new Set(run.gaps.filter((g) => g.severity === "HIGH").map((g) => g.dimensionKey))
-  );
-  if (highPillars.length > 0) return `Forced by ${highPillars.join(", ")} ≤ 2.0`;
+ *  would misread sentinel values) and, for the v1.1 Stage-2 floor, the stored D scores. */
+function badgeHint(run: RunData): string | null {
+  if (run.statusBadge === "MAJOR_REWORK") {
+    if (run.memoConfidence < 50) return "Readiness below 50.";
+    const highPillars = Array.from(
+      new Set(run.gaps.filter((g) => g.severity === "HIGH").map((g) => g.dimensionKey))
+    );
+    if (highPillars.length > 0) return `Forced by ${highPillars.join(", ")} ≤ 2.0`;
+    return null;
+  }
+  if (run.statusBadge === "NEEDS_WORK") {
+    // V3 v1.1 Stage-2 floor: readiness qualified for READY_TO_SHIP and no HIGH
+    // gap, but a D dimension at or below 2.0 held the badge back.
+    const hasHighGap = run.gaps.some((g) => g.severity === "HIGH");
+    if (run.memoConfidence >= 75 && !hasHighGap) {
+      const floored = STAGE_2_KEYS.filter((k) => {
+        const s = pillarScore(run, k);
+        return s !== null && s <= 2.0;
+      });
+      if (floored.length > 0) return `Held at NEEDS_WORK by ${floored.join(", ")} ≤ 2.0`;
+    }
+    return null;
+  }
   return null;
 }
 
 function HeroBlock({ run }: { run: RunData }) {
-  const reworkHint = majorReworkHint(run);
+  const reworkHint = badgeHint(run);
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
       <div className="flex flex-wrap items-start gap-6">

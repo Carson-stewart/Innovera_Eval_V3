@@ -6,8 +6,8 @@ A collaborative memo evaluation platform. Two modules:
 - Decision Framing Sanity Checker (carry-over): multi-model framing validation.
 
 ## Non-negotiable architecture rules
-1. Stage 1 (Solution Validity, 8 pillars) and Stage 2 (Output Quality, 5 dimensions) are NEVER combined into one number. They are reported separately.
-2. Confidence Erosion: every memo starts at 100; quality issues erode it. Memo Confidence = 100 minus pillar erosion.
+1. Stage 1 (Solution Validity, 8 pillars) and Stage 2 (Output Quality, 5 dimensions) are NEVER combined into one number. They are reported separately. The ship gate may consult BOTH profiles (since V3 v1.1 a Stage 2 dimension ≤ 2.0 holds a would-be Ready-to-Ship at Needs Work) — that is a gate condition, not a combination; no formula ever merges the two scores into one number.
+2. Confidence Erosion: every memo starts at 100; quality issues erode it. Memo Confidence = 100 minus pillar erosion, rescaled over the scored pillars when a pillar is not-scored (V3 v1.1 — an unscored pillar neither erodes nor counts as a perfect 5).
 3. Decision Confidence in v1.0 = equal to Memo Confidence. The Risk Multiplier is held at 1.0 (Critical Risk Suppressor deferred to v1.5). Show it as a quiet placeholder, never a co-equal hero number.
 4. Traceability is one-directional: the agent measures and classifies; the server computes scores from those classifications. NEVER reverse-engineer a classification to hit a target score.
 5. The framing document is sent as the FIRST input in every LLM scoring call, before memo content.

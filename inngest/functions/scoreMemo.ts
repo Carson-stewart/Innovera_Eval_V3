@@ -411,9 +411,13 @@ export const scoreMemo = inngest.createFunction(
 
       const gaps = deriveGaps(dimensionResults);
       const edits: GapRow[] = []; // edits generated in a separate LLM step below
+      // V3 v1.1: the ship gate consults BOTH profiles — Stage-2 scores join as
+      // a floor (any D <= 2.0 holds READY_TO_SHIP back to NEEDS_WORK). The two
+      // score profiles remain separate numbers throughout.
       const badge = statusBadge(
         memoConf,
-        gaps.map((g: GapRow) => ({ severity: g.severity }))
+        gaps.map((g: GapRow) => ({ severity: g.severity })),
+        stage2Scores
       );
 
       // stage1Avg = mean over SCORED pillars; the denominator is persisted as
