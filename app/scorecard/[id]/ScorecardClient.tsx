@@ -728,7 +728,21 @@ function DiagnosticsStrip({ diagnostics }: { diagnostics: DiagRow[] }) {
 
 // ─── Hero block ───────────────────────────────────────────────────────────────
 
+/** Why a MAJOR_REWORK badge fired — mirrors statusBadge() in lib/confidence/index.ts.
+ *  Reads the STORED Gap rows' severity (never re-derives from dimension scores, which
+ *  would misread sentinel values like run 26's persisted P7 = −1). */
+function majorReworkHint(run: RunData): string | null {
+  if (run.statusBadge !== "MAJOR_REWORK") return null;
+  if (run.memoConfidence < 50) return "Readiness below 50.";
+  const highPillars = Array.from(
+    new Set(run.gaps.filter((g) => g.severity === "HIGH").map((g) => g.dimensionKey))
+  );
+  if (highPillars.length > 0) return `Forced by ${highPillars.join(", ")} ≤ 2.0`;
+  return null;
+}
+
 function HeroBlock({ run }: { run: RunData }) {
+  const reworkHint = majorReworkHint(run);
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
       <div className="flex flex-wrap items-start gap-6">
@@ -741,9 +755,14 @@ function HeroBlock({ run }: { run: RunData }) {
 
         <div className="flex flex-col gap-3 mt-1">
           {/* Status badge */}
-          <span className={`rounded-full px-4 py-1.5 text-sm font-semibold ${BADGE_STYLES[run.statusBadge] ?? ""}`}>
-            {BADGE_LABELS[run.statusBadge] ?? run.statusBadge}
-          </span>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={`rounded-full px-4 py-1.5 text-sm font-semibold ${BADGE_STYLES[run.statusBadge] ?? ""}`}>
+              {BADGE_LABELS[run.statusBadge] ?? run.statusBadge}
+            </span>
+            {reworkHint && (
+              <span className="text-xs text-red-600 font-medium">{reworkHint}</span>
+            )}
+          </div>
 
           {/* Decision Confidence — quiet placeholder */}
           <div className="border border-gray-200 rounded-lg px-3 py-2 bg-gray-50">
