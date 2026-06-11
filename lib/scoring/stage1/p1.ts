@@ -1,5 +1,5 @@
 import { clamp, baseMinusPenalties } from "../helpers";
-import type { DimensionResult } from "../../prompts/types";
+import type { DimensionResult, DimensionFindings } from "../../prompts/types";
 import type { Tier1ChapterOutput, Tier2SynthesisOutput } from "../../prompts/types";
 
 export interface P1Input {
@@ -24,6 +24,61 @@ export interface P1Input {
 
 /** Maximum total penalty from the three minor-deduction categories combined. */
 const MINOR_COMBINED_CAP = 1.5;
+
+/** Storage cap for persisted raw findings (bounds row size on pathological memos). */
+const FINDINGS_STORAGE_CAP = 50;
+
+/**
+ * Collect raw finding detail for persistence (Phase B2).
+ *
+ * PURELY ADDITIVE: reads the same arrays the count computation reads, but never
+ * feeds back into any count, penalty, or score. Entries are collected
+ * most-severe-first (flat contradictions → major reconciliations → minor
+ * reconciliations) so the storage cap drops the least important detail first.
+ * Reasoning gaps and definitional drifts are not quote-pair findings and remain
+ * count-only, as before.
+ */
+function collectFindings(
+  tier1Chapters: Tier1ChapterOutput[],
+  tier2: Tier2SynthesisOutput
+): DimensionFindings {
+  const all: DimensionFindings["entries"] = [];
+
+  // Flat contradictions (most severe)
+  for (const e of tier2.p1_cross_chapter_contradictions) {
+    all.push({ kind: "flat_contradiction", scope: "cross_chapter", quoteA: e.quoteA, quoteB: e.quoteB, locations: [e.location] });
+  }
+  for (const ch of tier1Chapters) {
+    for (const e of ch.within_chapter_contradictions) {
+      all.push({ kind: "flat_contradiction", scope: "within_chapter", chapter: ch.chapter_prefix, quoteA: e.quoteA, quoteB: e.quoteB, locations: [e.location] });
+    }
+  }
+
+  // Major reconciliation failures
+  for (const e of tier2.p1_cross_chapter_reconciliation_failures) {
+    all.push({ kind: "major_reconciliation", scope: "cross_chapter", quoteA: e.quoteA, quoteB: e.quoteB, description: e.description, locations: e.locations });
+  }
+  for (const ch of tier1Chapters) {
+    for (const e of ch.within_chapter_reconciliation.major) {
+      all.push({ kind: "major_reconciliation", scope: "within_chapter", chapter: ch.chapter_prefix, quoteA: e.quoteA, quoteB: e.quoteB, description: e.description, locations: e.locations });
+    }
+  }
+
+  // Minor reconciliation entries (least severe quote-pair findings)
+  for (const ch of tier1Chapters) {
+    for (const e of ch.within_chapter_reconciliation.minor) {
+      all.push({ kind: "minor_reconciliation", scope: "within_chapter", chapter: ch.chapter_prefix, quoteA: e.quoteA, quoteB: e.quoteB, description: e.description, locations: e.locations });
+    }
+  }
+  // (cross-chapter minor gaps are plain strings, not quote pairs — count-only as before)
+
+  return {
+    version: 1,
+    totalFound: all.length,
+    truncated: all.length > FINDINGS_STORAGE_CAP,
+    entries: all.slice(0, FINDINGS_STORAGE_CAP),
+  };
+}
 
 export function computeP1(input: P1Input): DimensionResult {
   const { tier1Chapters, tier2 } = input;
@@ -117,5 +172,7 @@ export function computeP1(input: P1Input): DimensionResult {
     serverComputed: ci,
     agentSelfReported: input.agentSelfReported,
     calibrationDrift,
+    // Raw finding detail for persistence — additive output, never a score input
+    findings: collectFindings(tier1Chapters, tier2),
   };
 }

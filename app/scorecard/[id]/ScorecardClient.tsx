@@ -18,6 +18,21 @@ export interface DimensionScoreRow {
   calibrationDrift: boolean;
   subScores: Record<string, unknown>;
   traceabilityLog: Record<string, unknown>;
+  /** Raw finding detail (Phase B2; P1 only for now). Null on pre-B2 runs. */
+  findings?: {
+    version: number;
+    totalFound: number;
+    truncated: boolean;
+    entries: Array<{
+      kind: string;
+      scope: string;
+      chapter?: string;
+      quoteA: string;
+      quoteB: string;
+      description?: string;
+      locations: string[];
+    }>;
+  } | null;
 }
 
 export interface GapRow {
@@ -275,8 +290,17 @@ function Chip({ label, value, style }: { label?: string; value: string; style?: 
 
 // ─── Traceability renderers ───────────────────────────────────────────────────
 
-function P1Trace({ log, conflictCount }: { log: Record<string, unknown>; conflictCount: number | null }) {
+function P1Trace({ log, conflictCount, findings }: {
+  log: Record<string, unknown>;
+  conflictCount: number | null;
+  findings: DimensionScoreRow["findings"];
+}) {
   const capApplied = log.minor_cap_applied === true;
+  const KIND_LABELS: Record<string, string> = {
+    flat_contradiction: "Flat contradiction",
+    major_reconciliation: "Major reconciliation",
+    minor_reconciliation: "Minor reconciliation",
+  };
   return (
     <div>
       <div className={`mb-3 rounded-lg border px-3 py-2 text-xs font-medium ${
@@ -286,6 +310,21 @@ function P1Trace({ log, conflictCount }: { log: Record<string, unknown>; conflic
       }`}>
         Coherence conflicts: <span className="font-bold">{conflictCount ?? "—"}</span> — memos ship at ≤1
       </div>
+      {findings && findings.entries.length > 0 && (
+        <div className="mb-4">
+          <SectionLabel>Persisted findings ({findings.totalFound}{findings.truncated ? `, showing first ${findings.entries.length}` : ""})</SectionLabel>
+          <div className="space-y-1.5">
+            {findings.entries.map((f, i) => (
+              <div key={i} className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-xs text-gray-600 leading-relaxed">
+                <span className="font-semibold text-gray-700">Conflict ({KIND_LABELS[f.kind] ?? f.kind}):</span>{" "}
+                &ldquo;{f.quoteA}&rdquo; <span className="text-gray-400">vs</span> &ldquo;{f.quoteB}&rdquo;{" "}
+                <span className="text-gray-400">({(f.locations ?? []).join(", ") || f.chapter || "location not recorded"})</span>
+                {f.description && <p className="mt-0.5 text-gray-500">{f.description}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <SectionLabel>Penalty breakdown</SectionLabel>
       <div className="rounded-lg border border-gray-100 overflow-hidden text-xs">
         {[
@@ -678,7 +717,7 @@ function TraceabilityView({ ds }: { ds: DimensionScoreRow }) {
           <code className="block text-xs bg-gray-100 rounded px-3 py-1.5 font-mono text-gray-700">{formula}</code>
         </div>
       )}
-      {ds.dimensionKey === "P1" && <P1Trace log={log} conflictCount={p1Conflicts} />}
+      {ds.dimensionKey === "P1" && <P1Trace log={log} conflictCount={p1Conflicts} findings={ds.findings ?? null} />}
       {ds.dimensionKey === "P3" && <P3Trace log={log} />}
       {ds.dimensionKey === "P5" && <P5Trace log={log} />}
       {ds.dimensionKey === "P7" && <P7Trace log={log} />}

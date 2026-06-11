@@ -220,6 +220,11 @@ model DimensionScore {
   serverComputed    Float?       // score as computed server-side from classifications; null = not scored
   agentSelfReported Float?       // score as self-reported by the agent (for drift tracking)
   calibrationDrift  Boolean      @default(false)
+  // Raw per-finding detail (additive, Phase B2). Currently populated for P1 only:
+  // { version, totalFound, truncated, entries: [{ kind, scope, quoteA, quoteB,
+  //   description?, locations[] }] }, entries capped at 50. Null on pre-B2 runs
+  // and on dimensions that don't emit findings. Never a score input.
+  findings          Json?
 
   scoringRun        ScoringRun   @relation(fields: [scoringRunId], references: [id])
 }

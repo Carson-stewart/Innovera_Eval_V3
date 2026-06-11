@@ -301,6 +301,28 @@ export interface DimensionResult {
   agentSelfReported: number | null;
   /** True if |serverComputed - agentSelfReported| >= 1.0 */
   calibrationDrift: boolean;
+  /** Raw finding detail for persistence (Phase B2; P1 only for now).
+   *  Output-side metadata — never an input to any score computation. */
+  findings?: DimensionFindings;
+}
+
+/** Persisted raw-finding payload (DimensionScore.findings JSON column). */
+export interface DimensionFindings {
+  version: 1;
+  /** Total findings the engine saw before the storage cap was applied */
+  totalFound: number;
+  /** True when entries were dropped to respect the storage cap */
+  truncated: boolean;
+  entries: Array<{
+    kind: "flat_contradiction" | "major_reconciliation" | "minor_reconciliation";
+    scope: "within_chapter" | "cross_chapter";
+    /** Chapter the finding came from (within-chapter findings only) */
+    chapter?: string;
+    quoteA: string;
+    quoteB: string;
+    description?: string;
+    locations: string[];
+  }>;
 }
 
 // ─────────────────────────────────────────────

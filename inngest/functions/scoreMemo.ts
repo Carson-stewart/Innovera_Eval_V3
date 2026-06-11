@@ -537,6 +537,9 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
               serverComputed: dr.serverComputed,
               agentSelfReported: dr.agentSelfReported,
               calibrationDrift: dr.calibrationDrift,
+              // Raw finding detail (Phase B2; currently emitted by P1 only).
+              // Dimensions without findings persist null.
+              ...(dr.findings != null && { findings: dr.findings as never }),
             },
           });
         }
