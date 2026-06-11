@@ -54,6 +54,41 @@ type GapRow = {
   severity: "HIGH" | "MEDIUM" | "LOW";
 };
 
+// ─── Completeness metadata (measurement only — never a score input) ──────────
+// The 10 canonical scorable chapters. Counted against parsed chapter titles
+// after normalization; the count is persisted to ScoringRun.scorableChapterCount
+// for display. Does NOT alter the parse output or what gets scored.
+const SCORABLE_CHAPTER_SET = [
+  "customer and demand validation",
+  "product and technology",
+  "market research",
+  "competitor analysis",
+  "gtm and partners",
+  "revenue model",
+  "unit economics",
+  "finance and operations",
+  "team and execution",
+  "legal and ip",
+];
+
+function normalizeChapterTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Count how many of the 10 canonical scorable chapters appear among the parsed
+ *  chapter titles (each canonical chapter counted at most once). */
+function countScorableChapters(titles: string[]): number {
+  const normalized = titles.map(normalizeChapterTitle);
+  return SCORABLE_CHAPTER_SET.filter((target) =>
+    normalized.some((t) => t.includes(target))
+  ).length;
+}
+
 
 /**
  * Derive Gaps from traceabilityLog findings — NOT from score numbers alone.
@@ -479,6 +514,9 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
             statusBadge: badge as "READY_TO_SHIP" | "NEEDS_WORK" | "MAJOR_REWORK",
             stage1Avg,
             stage2Avg,
+            // Completeness metadata — measured from the parsed chapter titles
+            // (allChapters is in scope from Step 2). Display only.
+            scorableChapterCount: countScorableChapters(allChapters.map((c) => c.title)),
             // Self-labeling for Risk-Gate-bypassed runs (empty approvedRisks): zero
             // ConfirmedRisk rows on such runs mean "risk data missing", not "no risks
             // found" — stamp that at creation. Metadata only; no score input.

@@ -64,6 +64,9 @@ export interface RunData {
   statusBadge: string;
   stage1Avg: number;
   stage2Avg: number;
+  /** Completeness metadata: parsed scorable chapters out of the canonical 10.
+   *  Null on runs scored before the column existed — display nothing then. */
+  scorableChapterCount: number | null;
   scoredAt: string;
   memo: {
     id: number;
@@ -751,6 +754,16 @@ function HeroBlock({ run }: { run: RunData }) {
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Memo Readiness</p>
           <p className="text-6xl font-extrabold text-gray-900 leading-none">{run.memoConfidence.toFixed(1)}</p>
           <p className="text-xs text-gray-400 mt-1">out of 100</p>
+          {run.scorableChapterCount !== null && (
+            <p className="text-xs mt-2">
+              <span className="text-gray-500">Scored on {run.scorableChapterCount} of 10 chapters</span>
+              {run.scorableChapterCount < 10 && (
+                <span className="ml-1.5 bg-amber-100 border border-amber-200 text-amber-700 rounded-full px-2 py-0.5 font-medium">
+                  partial memo
+                </span>
+              )}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-3 mt-1">

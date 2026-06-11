@@ -186,6 +186,11 @@ model ScoringRun {
   includeInAnalysis Boolean?
   dataNote          String?
 
+  // Completeness metadata (additive, nullable): how many of the 10 canonical
+  // scorable chapters the parsed memo contained at scoring time. Measurement
+  // only — never an input to any score. Pre-existing runs keep null.
+  scorableChapterCount Int?
+
   // Durable link to the framing that produced this run (additive, nullable).
   // Populated on NEW runs only; pre-existing runs keep framingId null
   // (their framing link was ephemeral and isn't reliably recoverable).
