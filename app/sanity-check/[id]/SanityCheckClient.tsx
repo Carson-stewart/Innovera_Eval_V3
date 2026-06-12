@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { TopBar } from "@/components/shell/TopBar";
 
@@ -21,6 +21,28 @@ export interface SanityIssueRow {
   location: string | null;
   rewrite: string | null;
   escalated: boolean;
+}
+
+// Revision lineage (T2) — assembled server-side; verdicts are per (framing × check).
+export interface FramingLineage {
+  framingId: number;
+  framingName: string;
+  revisionNumber: number | null; // non-null when THIS check's framing is a revision
+  rootId: number;
+  rootName: string;
+  revisions: Array<{
+    id: number;
+    name: string;
+    revisionNumber: number | null;
+    revisionSource: string | null;
+    createdAt: string;
+    latestCheck: {
+      id: number;
+      verdict: string;
+      gateVerdict: string | null;
+      createdAt: string;
+    } | null;
+  }>;
 }
 
 export interface SanityCheckData {
@@ -118,6 +140,127 @@ function assembleRevisedFraming(issues: SanityIssueRow[]): string {
   });
 
   return sections.join("\n\n" + "─".repeat(60) + "\n\n");
+}
+
+// ─── Merged revision assembly (string-level, no LLM) ──────────────────────────
+
+/**
+ * Find `needle` in `haystack` as an exact substring, falling back to a
+ * whitespace-normalized match (collapses runs of whitespace so quoted
+ * locations survive line-wrap differences). Returns the original-index span.
+ */
+function findSpan(haystack: string, needle: string): { start: number; end: number } | null {
+  const direct = haystack.indexOf(needle);
+  if (direct !== -1) return { start: direct, end: direct + needle.length };
+
+  // Whitespace-normalized fallback: build a collapsed copy of the haystack
+  // with a map back to original indices, then search the collapsed needle.
+  const norm = (s: string): { text: string; map: number[] } => {
+    let text = "";
+    const map: number[] = [];
+    let prevSpace = true;
+    for (let i = 0; i < s.length; i++) {
+      if (/\s/.test(s[i])) {
+        if (!prevSpace) {
+          text += " ";
+          map.push(i);
+          prevSpace = true;
+        }
+      } else {
+        text += s[i];
+        map.push(i);
+        prevSpace = false;
+      }
+    }
+    return { text, map };
+  };
+
+  const h = norm(haystack);
+  const n = norm(needle).text.replace(/\s+$/, "");
+  if (!n) return null;
+  const idx = h.text.indexOf(n);
+  if (idx === -1) return null;
+  return { start: h.map[idx], end: h.map[idx + n.length - 1] + 1 };
+}
+
+/**
+ * Locations are often descriptors with an embedded verbatim excerpt, e.g.
+ * `Section 3.7, Q22: 'What capital investment is required…'`. Extract the
+ * longest quoted fragment, requiring sentence-level length (≥ 25 chars) —
+ * shorter quotes are usually section names ('Success Criteria') that would
+ * match the wrong occurrence and mangle the document.
+ */
+function extractQuotedFragment(location: string): string | null {
+  const fragments = Array.from(
+    location.matchAll(/['"‘“]([^'"’”]{25,})['"’”]/g),
+    (m) => m[1]
+  );
+  if (fragments.length === 0) return null;
+  return fragments.reduce((a, b) => (b.length > a.length ? b : a));
+}
+
+export interface MergedAssembly {
+  text: string;
+  appliedCheckIds: string[];
+  appendedCheckIds: string[];
+  totalRewrites: number;
+}
+
+/**
+ * Merged revision mode: apply each finding's rewrite IN PLACE into the
+ * original framing content (replace the quoted `location` span with the
+ * `rewrite`), producing a complete revised document instead of a fix list.
+ * Pure string application — no LLM. Where a location can't be matched (or is
+ * too short to match safely), the rewrite is appended under a clearly-marked
+ * section at the end for manual integration.
+ */
+function assembleMergedRevision(
+  originalContent: string,
+  issues: SanityIssueRow[]
+): MergedAssembly {
+  const withRewrites = issues
+    .filter((i) => i.rewrite && i.rewrite.trim())
+    .sort((a, b) => a.id - b.id); // stable, deterministic application order
+
+  let doc = originalContent;
+  const appliedCheckIds: string[] = [];
+  const appendix: SanityIssueRow[] = [];
+
+  for (const issue of withRewrites) {
+    const location = issue.location?.trim() ?? "";
+    const rewrite = issue.rewrite!.trim();
+    // Locations under 5 non-collapsed chars are too ambiguous to replace safely.
+    // Full-location match first; then the quoted excerpt embedded in a
+    // descriptor location (e.g. `Section 3.7, Q22: 'verbatim text'`).
+    let span = location.length >= 5 ? findSpan(doc, location) : null;
+    if (!span) {
+      const quoted = location ? extractQuotedFragment(location) : null;
+      if (quoted) span = findSpan(doc, quoted);
+    }
+    if (span) {
+      doc = doc.slice(0, span.start) + rewrite + doc.slice(span.end);
+      appliedCheckIds.push(issue.checkId);
+    } else {
+      appendix.push(issue);
+    }
+  }
+
+  if (appendix.length > 0) {
+    const block = appendix
+      .map((i) => `[${i.checkId}] ${i.issue}\n${i.rewrite!.trim()}`)
+      .join("\n\n");
+    doc +=
+      `\n\n${"─".repeat(60)}\n` +
+      `APPENDED REWRITES — original location not matched; integrate manually\n\n` +
+      block;
+  }
+
+  return {
+    text: doc,
+    appliedCheckIds,
+    appendedCheckIds: appendix.map((i) => i.checkId),
+    totalRewrites: withRewrites.length,
+  };
 }
 
 /**
@@ -404,6 +547,187 @@ function TriageMatrix({ check }: { check: SanityCheckData }) {
   );
 }
 
+// ─── Revisions panel (T2 list + T3 re-check) ──────────────────────────────────
+
+const GATE_CHIP_STYLES: Record<string, string> = {
+  BLOCKED: "bg-red-100 text-red-800 border-red-300",
+  PASS_WITH_WARNINGS: "bg-amber-100 text-amber-800 border-amber-300",
+  PASS: "bg-green-100 text-green-800 border-green-300",
+};
+
+const REVISION_SOURCE_LABELS: Record<string, string> = {
+  "sanity-rewrites": "sanity rewrites (fix list)",
+  "sanity-rewrites+manual-edits": "sanity rewrites + manual edits",
+  "sanity-merged": "merged revision",
+  "sanity-merged+manual-edits": "merged revision + manual edits",
+};
+
+function RevisionsPanel({
+  lineage,
+  currentFramingId,
+}: {
+  lineage: FramingLineage;
+  currentFramingId: number;
+}) {
+  const router = useRouter();
+  const [confirmId, setConfirmId] = useState<number | null>(null);
+  const [runningId, setRunningId] = useState<number | null>(null);
+  const [error, setError] = useState("");
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // T3: a revision is just a framing — this is the standard checker path
+  // (normal token cost, hence the explicit confirmation step).
+  async function runCheck(revisionId: number) {
+    setConfirmId(null);
+    setRunningId(revisionId);
+    setError("");
+    try {
+      const res = await fetch("/api/sanity-check/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ framingDocId: revisionId }),
+      });
+      const data = (await res.json()) as { eventId?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Failed to start sanity check");
+      const eid = data.eventId ?? "";
+      if (pollRef.current) clearInterval(pollRef.current);
+      pollRef.current = setInterval(async () => {
+        try {
+          const r = await fetch(
+            `/api/sanity-check/progress?eventId=${encodeURIComponent(eid)}`
+          );
+          const d = (await r.json()) as {
+            status: "running" | "completed" | "failed";
+            sanityCheckId?: number;
+            error?: string;
+          };
+          if (d.status === "completed") {
+            clearInterval(pollRef.current!);
+            if (d.sanityCheckId) {
+              router.push(`/sanity-check/${d.sanityCheckId}`);
+            } else {
+              setRunningId(null);
+              router.refresh();
+            }
+          } else if (d.status === "failed") {
+            clearInterval(pollRef.current!);
+            setRunningId(null);
+            setError(d.error ?? "Sanity check failed.");
+          }
+        } catch {
+          // keep polling on transient errors
+        }
+      }, 2000);
+    } catch (e) {
+      setRunningId(null);
+      setError(e instanceof Error ? e.message : "Failed to start sanity check");
+    }
+  }
+
+  return (
+    <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+      <div>
+        <h2 className="text-base font-semibold text-gray-900">
+          Revisions of {lineage.rootName}
+        </h2>
+        <p className="text-xs text-gray-400 mt-0.5">
+          Each revision is a full framing with its own checks — gate verdicts are
+          never inherited. Check a revision, then score memos against it.
+        </p>
+      </div>
+
+      {lineage.revisions.length === 0 ? (
+        <p className="text-sm text-gray-400 italic">
+          No revisions yet — use “Save as revision” above to persist the revised framing.
+        </p>
+      ) : (
+        <div className="divide-y divide-gray-100">
+          {lineage.revisions.map((rev) => {
+            const isCurrent = rev.id === currentFramingId;
+            const lc = rev.latestCheck;
+            return (
+              <div key={rev.id} className="py-3 flex flex-wrap items-center gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-gray-800 truncate">
+                    {rev.name}
+                    {isCurrent && (
+                      <span className="ml-2 text-xs text-brand-orange font-semibold">
+                        (this check’s framing)
+                      </span>
+                    )}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(rev.createdAt).toLocaleDateString()} ·{" "}
+                    {REVISION_SOURCE_LABELS[rev.revisionSource ?? ""] ?? "sanity rewrites"}
+                  </p>
+                </div>
+
+                {lc ? (
+                  <a
+                    href={`/sanity-check/${lc.id}`}
+                    className={`text-xs font-semibold rounded-full px-2.5 py-1 border hover:opacity-80 ${
+                      (lc.gateVerdict && GATE_CHIP_STYLES[lc.gateVerdict]) ??
+                      "bg-gray-100 text-gray-600 border-gray-200"
+                    }`}
+                    title={`Latest check ${new Date(lc.createdAt).toLocaleDateString()}`}
+                  >
+                    {lc.gateVerdict
+                      ? `Gate: ${lc.gateVerdict.replace(/_/g, " ")}`
+                      : String(lc.verdict).replace(/_/g, " ")}
+                    {" · "}
+                    {new Date(lc.createdAt).toLocaleDateString()}
+                  </a>
+                ) : (
+                  <span className="text-xs rounded-full px-2.5 py-1 bg-gray-100 border border-gray-200 text-gray-500">
+                    not checked
+                  </span>
+                )}
+
+                {confirmId === rev.id ? (
+                  <span className="flex items-center gap-2 text-xs bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5">
+                    <span className="text-amber-800">
+                      Runs the full 48-check suite (LLM cost). Continue?
+                    </span>
+                    <button
+                      onClick={() => runCheck(rev.id)}
+                      className="px-2 py-0.5 rounded bg-brand-orange text-white font-semibold"
+                    >
+                      Run
+                    </button>
+                    <button
+                      onClick={() => setConfirmId(null)}
+                      className="px-2 py-0.5 rounded border border-gray-300 bg-white text-gray-600"
+                    >
+                      Cancel
+                    </button>
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => setConfirmId(rev.id)}
+                    disabled={runningId !== null}
+                    className="text-xs px-3 py-1.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                  >
+                    {runningId === rev.id ? (
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="inline-block w-3 h-3 border-2 border-brand-orange-border border-t-transparent rounded-full animate-spin" />
+                        Checking…
+                      </span>
+                    ) : (
+                      "Run sanity check"
+                    )}
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {error && <p className="text-xs text-red-600">{error}</p>}
+    </section>
+  );
+}
+
 // ─── Severity groups for Consolidated Report ──────────────────────────────────
 
 function groupBySeverity(issues: SanityIssueRow[]): {
@@ -434,13 +758,45 @@ function groupBySeverity(issues: SanityIssueRow[]): {
 // ─── Report tab type ──────────────────────────────────────────────────────────
 type ReportTab = "critical" | "structural" | "advisory";
 
-export function SanityCheckClient({ check }: { check: SanityCheckData }) {
+// Revised Framing panel assembly modes: fix list (per-finding rewrites, the
+// original behavior) vs merged document (rewrites applied into the original).
+type AssemblyMode = "fix-list" | "merged";
+
+export function SanityCheckClient({
+  check,
+  lineage,
+  framingContent,
+}: {
+  check: SanityCheckData;
+  lineage: FramingLineage;
+  framingContent: string;
+}) {
   const router = useRouter();
 
-  // Revised framing = assembled from per-check rewrites (NOT the DB auto-summary)
-  const [revisedFraming, setRevisedFraming] = useState(() =>
-    assembleRevisedFraming(check.sanityIssues)
+  // Two assembly baselines, both from per-check rewrites (NOT the DB auto-summary)
+  const fixListAssembled = useMemo(
+    () => assembleRevisedFraming(check.sanityIssues),
+    [check.sanityIssues]
   );
+  const mergeResult = useMemo(
+    () => assembleMergedRevision(framingContent, check.sanityIssues),
+    [framingContent, check.sanityIssues]
+  );
+
+  const [assemblyMode, setAssemblyMode] = useState<AssemblyMode>("fix-list");
+  // Inline edits are kept per mode, so switching modes never discards them.
+  const [panelTexts, setPanelTexts] = useState<Record<AssemblyMode, string>>(() => ({
+    "fix-list": fixListAssembled,
+    merged: mergeResult.text,
+  }));
+  const revisedFraming = panelTexts[assemblyMode];
+  const setRevisedFraming = useCallback(
+    (text: string) => setPanelTexts((prev) => ({ ...prev, [assemblyMode]: text })),
+    [assemblyMode]
+  );
+  // Save-as-revision (T2): persists the panel text as a new versioned Framing row
+  const [saveRevisionState, setSaveRevisionState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [saveRevisionMsg, setSaveRevisionMsg] = useState("");
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
   const [deleteStep, setDeleteStep] = useState<"idle" | "confirm">("idle");
   const [deleting, setDeleting] = useState(false);
@@ -467,6 +823,7 @@ export function SanityCheckClient({ check }: { check: SanityCheckData }) {
   // Export the revised framing as a Markdown text file — NOT CSV (it's prose, not tabular)
   const handleExportMarkdown = useCallback(() => {
     const md = `# Revised Framing — Sanity Check #${check.id}\n\n` +
+      `**Mode:** ${assemblyMode === "merged" ? "Merged document" : "Fix list"}\n` +
       `**Typology detected:** ${check.typology ?? "unknown"} (${check.typologyConfidence ?? "—"} confidence)\n` +
       `**Verdict:** ${check.verdict}\n` +
       `**Pass:** ${check.passCount}  **Fail:** ${check.failCount}  **Advisory:** ${check.enhanceCount}\n\n` +
@@ -479,7 +836,36 @@ export function SanityCheckClient({ check }: { check: SanityCheckData }) {
     a.download = `revised-framing-${check.id}.md`;
     a.click();
     URL.revokeObjectURL(url);
-  }, [check, revisedFraming]);
+  }, [check, revisedFraming, assemblyMode]);
+
+  // Save the (possibly inline-edited) revised framing as a versioned Framing
+  // row (T2). The original framing row is never modified — insert-only.
+  const handleSaveRevision = useCallback(async () => {
+    setSaveRevisionState("saving");
+    setSaveRevisionMsg("");
+    try {
+      // Compare against the baseline of the CURRENT mode to detect manual edits.
+      const assembled = assemblyMode === "merged" ? mergeResult.text : fixListAssembled;
+      const res = await fetch(`/api/framing/${check.framingId}/revise`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: revisedFraming,
+          sourceCheckId: check.id,
+          manualEdits: revisedFraming !== assembled, // noted in revisionSource
+          mode: assemblyMode,                        // fix-list | merged
+        }),
+      });
+      const data = (await res.json()) as { name?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Save failed");
+      setSaveRevisionState("saved");
+      setSaveRevisionMsg(`Saved as "${data.name}"`);
+      router.refresh(); // revisions list below picks up the new row
+    } catch (e) {
+      setSaveRevisionState("error");
+      setSaveRevisionMsg(e instanceof Error ? e.message : "Save failed");
+    }
+  }, [check.framingId, check.id, assemblyMode, mergeResult.text, fixListAssembled, revisedFraming, router]);
 
   const handleDelete = useCallback(async () => {
     setDeleting(true);
@@ -523,6 +909,15 @@ export function SanityCheckClient({ check }: { check: SanityCheckData }) {
                 <span className="text-gray-400">
                   {new Date(check.createdAt).toLocaleDateString()}
                 </span>
+                {lineage.revisionNumber !== null && (
+                  <span className="text-gray-600">
+                    Framing:{" "}
+                    <span className="font-semibold text-gray-800">{lineage.framingName}</span>
+                    <span className="ml-1 text-gray-500">
+                      (revision {lineage.revisionNumber} of {lineage.rootName})
+                    </span>
+                  </span>
+                )}
               </div>
             </div>
 
@@ -619,7 +1014,9 @@ export function SanityCheckClient({ check }: { check: SanityCheckData }) {
             <div>
               <h2 className="text-base font-semibold text-gray-900">Revised Framing</h2>
               <p className="text-xs text-gray-400 mt-0.5">
-                Assembled from per-check rewrite suggestions. Edit inline, then copy or export.
+                {assemblyMode === "merged"
+                  ? "Rewrites applied into the original framing — a complete revised document, ready to check."
+                  : "Per-check rewrite suggestions as a fix list. Edit inline, then copy or export."}
               </p>
             </div>
             <div className="flex gap-2 shrink-0">
@@ -635,16 +1032,85 @@ export function SanityCheckClient({ check }: { check: SanityCheckData }) {
               >
                 Export .md
               </button>
+              <button
+                onClick={handleSaveRevision}
+                disabled={saveRevisionState === "saving" || !revisedFraming.trim()}
+                className="px-3 py-1.5 rounded-lg bg-brand-orange text-white text-sm font-medium hover:bg-brand-orange-hover disabled:opacity-50 transition-colors"
+              >
+                {saveRevisionState === "saving" ? "Saving…" : "Save as revision"}
+              </button>
             </div>
           </div>
+          {/* Assembly mode toggle — pick BEFORE "Save as revision" */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden">
+              {(
+                [
+                  { id: "fix-list" as AssemblyMode, label: "Fix list" },
+                  { id: "merged" as AssemblyMode, label: "Merged document" },
+                ] as const
+              ).map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => {
+                    setAssemblyMode(m.id);
+                    if (saveRevisionState === "saved") setSaveRevisionState("idle");
+                  }}
+                  className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                    assemblyMode === m.id
+                      ? "bg-brand-orange text-white"
+                      : "bg-white text-gray-600 hover:bg-gray-50"
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+            {assemblyMode === "merged" && (
+              <span className="text-xs text-gray-500">
+                {mergeResult.totalRewrites === 0 ? (
+                  "No rewrites generated — merged document equals the original framing."
+                ) : (
+                  <>
+                    {mergeResult.appliedCheckIds.length} of {mergeResult.totalRewrites} rewrites
+                    applied in place
+                    {mergeResult.appendedCheckIds.length > 0 && (
+                      <>
+                        {" · "}
+                        <span className="text-amber-700">
+                          {mergeResult.appendedCheckIds.length} appended (location not matched:{" "}
+                          {mergeResult.appendedCheckIds.join(", ")})
+                        </span>
+                      </>
+                    )}
+                  </>
+                )}
+              </span>
+            )}
+          </div>
+
           <textarea
             value={revisedFraming}
-            onChange={(e) => setRevisedFraming(e.target.value)}
+            onChange={(e) => {
+              setRevisedFraming(e.target.value);
+              if (saveRevisionState === "saved") setSaveRevisionState("idle"); // edits after save → new save needed
+            }}
             rows={16}
             className="w-full rounded-lg border border-gray-200 p-3 text-sm text-gray-800 font-mono resize-y focus:outline-none focus:ring-2 focus:ring-brand-orange-ring leading-relaxed"
             placeholder="No rewrites generated for this run."
           />
+          {saveRevisionState === "saved" && (
+            <p className="text-xs text-green-700">
+              ✓ {saveRevisionMsg} — listed under Revisions below. The original framing is unchanged.
+            </p>
+          )}
+          {saveRevisionState === "error" && (
+            <p className="text-xs text-red-600">{saveRevisionMsg}</p>
+          )}
         </section>
+
+        {/* ── 4b. Revisions (T2/T3) ─────────────────────────────────────────── */}
+        <RevisionsPanel lineage={lineage} currentFramingId={check.framingId} />
 
         {/* ── 5. Diagnostics Strip (collapsible, collapsed by default) ──────── */}
         <section className="bg-white rounded-xl border border-gray-200 overflow-hidden">

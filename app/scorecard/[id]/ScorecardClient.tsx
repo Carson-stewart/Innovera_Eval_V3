@@ -2386,12 +2386,23 @@ function EditMemoModal({
 
 type Tab = "gaps" | "edits" | "breakdown" | "explanation" | "recovery" | "redundancy";
 
+// T4: framing provenance — present only when the run was scored against a
+// framing revision (computed server-side; silent when unknowable).
+export interface FramingProvenance {
+  framingName: string;
+  revisionNumber: number;
+  originalName: string;
+  generatedAgainstEarlier: boolean;
+}
+
 export function ScorecardClient({
   run: initialRun,
   verificationGroup = null,
+  framingProvenance = null,
 }: {
   run: RunData;
   verificationGroup?: VerificationRunSummary[] | null;
+  framingProvenance?: FramingProvenance | null;
 }) {
   const [run, setRun] = useState(initialRun);
   const [activeTab, setActiveTab] = useState<Tab>("gaps");
@@ -2434,6 +2445,19 @@ export function ScorecardClient({
             <span className="text-gray-200">·</span>
             <p className="text-xs text-gray-400">Run #{run.id} · {run.rubricVersion}</p>
           </div>
+
+          {/* T4: framing-revision provenance (absent unless scored against a revision) */}
+          {framingProvenance && (
+            <p className="text-xs text-gray-500 -mt-2">
+              Scored against framing revision {framingProvenance.revisionNumber}{" "}
+              (original: {framingProvenance.originalName}).
+              {framingProvenance.generatedAgainstEarlier && (
+                <span className="text-amber-700 font-medium">
+                  {" "}Memo generated against an earlier framing version.
+                </span>
+              )}
+            </p>
+          )}
 
           {/* 1. Diagnostics strip */}
           <DiagnosticsStrip diagnostics={run.diagnostics} />

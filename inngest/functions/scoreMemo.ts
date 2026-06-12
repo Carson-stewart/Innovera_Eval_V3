@@ -411,7 +411,17 @@ export const scoreMemo = inngest.createFunction(
     // ─── Step 7: Generate concrete Edits (LLM, temp 0) ───────────────────────
     // Reads final scores + traceabilityLogs + memo content.
     // Writes ONLY Edit rows — never alters any DimensionScore (AG-C5).
-    const generatedEdits = await step.run("generate-edits", async () => {
+    // Output is a structured marker, not a bare array: a green step that
+    // persisted zero edits must say why in the journal (runs #66/#69 completed
+    // with "[]" while four pillars sat under the edit threshold).
+    type EditGenStatus = "ok" | "no_low_scoring" | "empty_after_parse" | "llm_error";
+    type EditGenResult = {
+      edits: GapRow[];
+      status: EditGenStatus;
+      attempts: number;
+      diagnostic: string | null;
+    };
+    const generatedEdits = await step.run("generate-edits", async (): Promise<EditGenResult> => {
       const PILLAR_NAMES: Record<string, string> = {
         P1: "Coherence", P2: "Problem Formulation", P3: "Structural Accuracy",
         P4: "Coverage", P5: "Evidence Quality", P6: "Assumption Quality",
@@ -426,7 +436,9 @@ export const scoreMemo = inngest.createFunction(
           dr.serverComputed < EDIT_THRESHOLD
       );
 
-      if (lowScoring.length === 0) return [];
+      if (lowScoring.length === 0) {
+        return { edits: [], status: "no_low_scoring", attempts: 0, diagnostic: null };
+      }
 
       // Use scored chapters only for prompt (keeps the prompt manageable)
       const memoCtx = buildMemoContext(
@@ -436,32 +448,85 @@ export const scoreMemo = inngest.createFunction(
         0
       );
       const prompt = buildEditGenerationPrompt(lowScoring, memoCtx.content, PILLAR_NAMES);
+      const lowKeys = lowScoring.map((d) => d.dimensionKey).join(",");
 
-      let raw: { edits?: unknown[] } = { edits: [] };
-      try {
-        raw = await callModelJSON<{ edits?: unknown[] }>({
-          system: prompt.system,
-          messages: prompt.messages,
+      const attemptOnce = async (
+        attempt: number
+      ): Promise<Omit<EditGenResult, "attempts">> => {
+        let raw: { edits?: unknown[] };
+        try {
+          raw = await callModelJSON<{ edits?: unknown[] }>({
+            system: prompt.system,
+            messages: prompt.messages,
+          });
+        } catch (err) {
+          // Edit generation failure is non-fatal (gaps still exist), but it
+          // must be loggable — a swallowed error here is indistinguishable
+          // from "model returned no edits" in the journal.
+          const e = err as { name?: string; message?: string; raw?: string };
+          const diagnostic = `${e?.name ?? "Error"}: ${String(e?.message ?? "").slice(0, 300)}`;
+          console.error("[generate-edits] LLM call failed:", {
+            attempt,
+            lowScoring: lowKeys,
+            error: diagnostic,
+            // JsonParseError carries the unparseable raw model output
+            rawResponse:
+              typeof e?.raw === "string"
+                ? `len=${e.raw.length} head=${e.raw.slice(0, 500)}`
+                : undefined,
+          });
+          return { edits: [], status: "llm_error", diagnostic };
+        }
+
+        const candidates = raw.edits;
+        const objects = (candidates ?? []).filter(
+          (e): e is Record<string, unknown> => e != null && typeof e === "object"
+        );
+        const editRows: GapRow[] = objects
+          .map((e) => ({
+            dimensionKey: String(e.dimensionKey ?? "P1"),
+            issue: String(e.issue ?? ""),
+            impact: String(e.impact ?? ""),
+            fix: String(e.fix ?? ""),
+            severity: (["HIGH", "MEDIUM", "LOW"].includes(String(e.severity))
+              ? e.severity
+              : "MEDIUM") as "HIGH" | "MEDIUM" | "LOW",
+          }))
+          .filter((e) => e.issue && e.fix); // drop empty entries
+
+        if (editRows.length > 0) {
+          return { edits: editRows, status: "ok", diagnostic: null };
+        }
+
+        // Low-scoring pillars exist but nothing survived — record which
+        // stage emptied the result and what the model actually returned.
+        const responseStr = JSON.stringify(raw);
+        const emptiedBy = !Array.isArray(candidates)
+          ? "edits key missing or not an array"
+          : candidates.length === 0
+            ? "edits array empty in response"
+            : objects.length === 0
+              ? `all ${candidates.length} entries non-objects`
+              : `all ${objects.length} entries dropped by issue&&fix filter`;
+        const diagnostic = `${emptiedBy} (response len=${responseStr.length})`;
+        console.error("[generate-edits] empty result with low-scoring pillars:", {
+          attempt,
+          lowScoring: lowKeys,
+          emptiedBy,
+          responseLength: responseStr.length,
+          responseHead: responseStr.slice(0, 500),
         });
-      } catch {
-        // Edit generation failure is non-fatal — return empty (gaps still exist)
-        return [];
+        return { edits: [], status: "empty_after_parse", diagnostic };
+      };
+
+      let result = await attemptOnce(1);
+      if (result.edits.length === 0) {
+        // One bounded retry: runs #66/#69 produced empty responses on a prompt
+        // that yields 10–14 edits on the same memo family (#67/#68).
+        result = await attemptOnce(2);
+        return { ...result, attempts: 2 };
       }
-
-      const editRows: GapRow[] = (raw.edits ?? [])
-        .filter((e): e is Record<string, unknown> => e != null && typeof e === "object")
-        .map((e) => ({
-          dimensionKey: String(e.dimensionKey ?? "P1"),
-          issue: String(e.issue ?? ""),
-          impact: String(e.impact ?? ""),
-          fix: String(e.fix ?? ""),
-          severity: (["HIGH", "MEDIUM", "LOW"].includes(String(e.severity))
-            ? e.severity
-            : "MEDIUM") as "HIGH" | "MEDIUM" | "LOW",
-        }))
-        .filter((e) => e.issue && e.fix); // drop empty entries
-
-      return editRows;
+      return { ...result, attempts: 1 };
     });
 
     // ─── Step 8: Check critical-risk coverage (informational, temp 0) ───────────
@@ -624,7 +689,7 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
         }
 
         // Edits come from the separate generate-edits step (not confidenceData.edits)
-        for (const edit of generatedEdits) {
+        for (const edit of generatedEdits.edits) {
           await tx.edit.create({
             data: {
               scoringRunId: scoringRun.id,

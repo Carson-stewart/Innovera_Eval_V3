@@ -158,6 +158,18 @@ model Framing {
   typology     Typology?
   createdAt    DateTime          @default(now())
 
+  // Revision lineage (additive, nullable; pre-existing rows keep null).
+  // A revision IS a full Framing row — checker- and scorer-compatible by
+  // construction. The parent row is never modified by revision creation.
+  // Gate verdicts belong to (framing row × check run); never inherited.
+  parentFramingId Int?
+  revisionNumber  Int?    // 1, 2, … within the parent's revision chain
+  revisionSource  String? // "sanity-rewrites" | "sanity-rewrites+manual-edits"
+  sourceCheckId   Int?    // the SanityCheck the revision text was assembled from
+
+  parent    Framing?  @relation("FramingRevisions", fields: [parentFramingId], references: [id])
+  revisions Framing[] @relation("FramingRevisions")
+
   sanityChecks SanityCheck[]
   scoringRuns  ScoringRun[]
 }

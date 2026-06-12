@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useRef, useCallback, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { TopBar } from "@/components/shell/TopBar";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -132,8 +132,18 @@ function UploadZone({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
+// useSearchParams requires a Suspense boundary at the page level (Next 14 CSR bailout).
 export default function ScoreMemoPage() {
+  return (
+    <Suspense>
+      <ScoreMemoFlow />
+    </Suspense>
+  );
+}
+
+function ScoreMemoFlow() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // ── Flow state
   const [flowStep, setFlowStep] = useState<FlowStep>("step1");
@@ -174,6 +184,15 @@ export default function ScoreMemoPage() {
     gateVerdict?: string | null;
     criticalCount?: number;
     sanityCheckId?: number;
+    createdAt?: string; // latest check's date — shown so multi-run framings are unambiguous
+  } | null>(null);
+
+  // ── Handoff (T1): framing preselected via /score-memo?framingId=N from a
+  // Sanity Check report. null = normal flow (today's behavior, unchanged).
+  const [handoff, setHandoff] = useState<{
+    name: string;
+    revisionNumber: number | null;
+    parentName: string | null;
   } | null>(null);
 
   // ── Progress
@@ -202,6 +221,66 @@ export default function ScoreMemoPage() {
     } catch {
       setFramingGate(null); // chip absent on lookup failure — never blocks (advisory)
     }
+  }
+
+  // ── T1 handoff: preselect the framing named in ?framingId= ────────────────
+  useEffect(() => {
+    const param = searchParams.get("framingId");
+    if (!param) return; // direct navigation — today's behavior, unchanged
+    const id = parseInt(param, 10);
+    if (isNaN(id)) return;
+    let cancelled = false;
+    (async () => {
+      setFramingLoading(true);
+      try {
+        const res = await fetch(`/api/framing/${id}`);
+        if (res.status === 404) {
+          // deleted between check and scoring — graceful fallback to upload
+          if (!cancelled) {
+            setFramingError(
+              "The framing from your sanity check is no longer available. Upload or paste a framing to continue."
+            );
+          }
+          return;
+        }
+        const data = (await res.json()) as {
+          framingId?: number; name?: string; content?: string;
+          revisionNumber?: number | null; parentName?: string | null; error?: string;
+        };
+        if (!res.ok) throw new Error(data.error ?? "Failed to load framing");
+        if (cancelled) return;
+        setFramingId(data.framingId ?? null);
+        setFramingContent(data.content ?? "");
+        setFramingEditText(data.content ?? "");
+        setHandoff({
+          name: data.name ?? `Framing #${id}`,
+          revisionNumber: data.revisionNumber ?? null,
+          parentName: data.parentName ?? null,
+        });
+        void fetchFramingGate(data.framingId ?? null);
+      } catch (e) {
+        if (!cancelled) {
+          setFramingError(e instanceof Error ? e.message : "Failed to load framing");
+        }
+      } finally {
+        if (!cancelled) setFramingLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  /** Override the handoff: clear the preselected framing so a different one
+   *  can be uploaded. The gate chip resets with it ("not run" until the new
+   *  framing's gate is looked up). */
+  function clearPreselectedFraming() {
+    setHandoff(null);
+    setFramingId(null);
+    setFramingContent("");
+    setFramingEditText("");
+    setFramingGate(null);
+    setFramingError("");
+    setFramingPasteMode(false);
   }
 
   async function handleFramingFile(file: File) {
@@ -564,6 +643,26 @@ export default function ScoreMemoPage() {
 
               {framingId && (
                 <div className="mt-4 space-y-2">
+                  {/* T1 handoff banner: preselected framing with provenance + override */}
+                  {handoff && (
+                    <div className="flex flex-wrap items-center gap-2 bg-brand-orange-light border border-brand-orange-border rounded-lg px-3 py-2">
+                      <span className="text-sm font-medium text-gray-800">{handoff.name}</span>
+                      {handoff.revisionNumber !== null && handoff.parentName && (
+                        <span className="text-xs text-gray-500">
+                          revision {handoff.revisionNumber} of {handoff.parentName}
+                        </span>
+                      )}
+                      <span className="text-xs rounded-full px-2 py-0.5 bg-white border border-brand-orange-border text-brand-orange font-medium">
+                        from Sanity Check
+                      </span>
+                      <button
+                        onClick={clearPreselectedFraming}
+                        className="ml-auto text-xs text-gray-500 underline hover:text-gray-700"
+                      >
+                        Use a different framing
+                      </button>
+                    </div>
+                  )}
                   {/* Framing gate chip (checker v1.2 — advisory: informational, never blocks) */}
                   {(() => {
                     if (!framingGate || framingGate.status === "not-run" || !framingGate.gateVerdict) {
@@ -580,12 +679,16 @@ export default function ScoreMemoPage() {
                         : v === "PASS_WITH_WARNINGS"
                         ? "bg-amber-100 border-amber-300 text-amber-800"
                         : "bg-green-100 border-green-300 text-green-800";
+                    // Latest check's date shown so framings with multiple runs are unambiguous
+                    const dateSuffix = framingGate.createdAt
+                      ? ` · ${new Date(framingGate.createdAt).toLocaleDateString()}`
+                      : "";
                     const label =
                       v === "BLOCKED"
-                        ? `Framing gate: BLOCKED — ${framingGate.criticalCount ?? 0} Critical finding${(framingGate.criticalCount ?? 0) !== 1 ? "s" : ""}`
+                        ? `Framing gate: BLOCKED — ${framingGate.criticalCount ?? 0} Critical finding${(framingGate.criticalCount ?? 0) !== 1 ? "s" : ""}${dateSuffix}`
                         : v === "PASS_WITH_WARNINGS"
-                        ? "Framing gate: pass with warnings"
-                        : "Framing gate: PASS";
+                        ? `Framing gate: pass with warnings${dateSuffix}`
+                        : `Framing gate: PASS${dateSuffix}`;
                     return (
                       <a
                         href={`/sanity-check/${framingGate.sanityCheckId}`}
@@ -597,13 +700,21 @@ export default function ScoreMemoPage() {
                   })()}
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700">Framing content</span>
-                    {!framingEditing && (
+                    {!framingEditing && !handoff && (
                       <button
                         onClick={() => { setFramingEditing(true); setFramingEditText(framingContent); }}
                         className="text-xs text-brand-orange underline"
                       >
                         ✏ Edit
                       </button>
+                    )}
+                    {handoff && (
+                      <span
+                        className="text-xs text-gray-400"
+                        title="This framing has a checker verdict attached. Editing it here would orphan that verdict — use Save as revision on the Sanity Check page instead."
+                      >
+                        checked framing — edit via revision
+                      </span>
                     )}
                   </div>
                   {framingEditing ? (
