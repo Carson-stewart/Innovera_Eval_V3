@@ -1,8 +1,12 @@
 import { inngest } from "../client";
 import { prisma } from "@/lib/db";
 import { callModelJSON } from "@/lib/openrouter";
-import { CHECKS_BY_CATEGORY } from "@/lib/framing/checks";
+import { CHECKS_BY_CATEGORY, ALL_CHECKS, SINGLE_SOURCE_CHECK } from "@/lib/framing/checks";
 import type { FramingCheck } from "@/lib/framing/checks";
+import { runSingleSourceCheck, buildAdjudicationPrompt, type AdjudicationVerdict } from "@/lib/framing/singleSource";
+import { buildAnchorInventory } from "@/lib/framing/quantities";
+import { computeGateVerdict } from "@/lib/framing/gate";
+import { CHECKER_VERSION } from "@/lib/framing/version";
 
 // ─── Payload ─────────────────────────────────────────────────────────────────
 
@@ -265,13 +269,9 @@ function buildTriageMatrix(allResults: CheckResult[]): Record<string, string> {
 // ─── Helper: map CheckResult severity to SanityIssue severity ────────────────
 
 function mapSeverity(checkId: string): "HIGH" | "MEDIUM" | "LOW" {
-  const allChecks = [
-    ...CHECKS_BY_CATEGORY.A,
-    ...CHECKS_BY_CATEGORY.B,
-    ...CHECKS_BY_CATEGORY.C,
-    ...CHECKS_BY_CATEGORY.D,
-  ];
-  const check = allChecks.find((c) => c.id === checkId);
+  // ALL_CHECKS includes D18 (checker v1.2); identical to the old category-union
+  // scan for the original 48.
+  const check = ALL_CHECKS.find((c) => c.id === checkId);
   if (!check) return "MEDIUM";
   switch (check.severity) {
     case "Critical":
@@ -294,25 +294,15 @@ function mapCategory(checkId: string): string {
 }
 
 function getFidelityTier(checkId: string): string {
-  const allChecks = [
-    ...CHECKS_BY_CATEGORY.A,
-    ...CHECKS_BY_CATEGORY.B,
-    ...CHECKS_BY_CATEGORY.C,
-    ...CHECKS_BY_CATEGORY.D,
-  ];
-  const check = allChecks.find((c) => c.id === checkId);
+  const check = ALL_CHECKS.find((c) => c.id === checkId);
   return check?.fidelity ?? "MEDIUM";
 }
 
 function getEvidenceBasis(checkId: string): string {
-  const allChecks = [
-    ...CHECKS_BY_CATEGORY.A,
-    ...CHECKS_BY_CATEGORY.B,
-    ...CHECKS_BY_CATEGORY.C,
-    ...CHECKS_BY_CATEGORY.D,
-  ];
-  const check = allChecks.find((c) => c.id === checkId);
-  return check?.evidenceBasis ?? "Structurally inferred";
+  const check = ALL_CHECKS.find((c) => c.id === checkId);
+  // evidenceDetail (v1.2, e.g. D18's run-64 sentence) takes precedence over the
+  // generic basis enum; unset for the original 48 checks.
+  return check?.evidenceDetail ?? check?.evidenceBasis ?? "Structurally inferred";
 }
 
 // ─── Inngest function ─────────────────────────────────────────────────────────
@@ -478,20 +468,57 @@ export const sanityCheck = inngest.createFunction(
       };
     });
 
+    // ─── Step 6b: Pass 5 — D18 Single Source of Truth (checker v1.2) ────────
+    // Two-stage: stage 1 is deterministic quantity extraction (no LLM); stage 2
+    // adjudicates each candidate pair with a short LLM call following the same
+    // callModelJSON pattern as the category passes. D18 is intentionally NOT in
+    // the Category-D prompt — this dedicated pass evaluates it.
+    const pass5Result = await step.run("pass5-single-source", async () => {
+      return await runSingleSourceCheck(framing.content, async (pair) => {
+        const prompt = buildAdjudicationPrompt(pair);
+        return await callModelJSON<AdjudicationVerdict>({
+          system: prompt.system,
+          messages: prompt.messages,
+        });
+      });
+    });
+
+    // ─── Step 6c: Anchor inventory (checker v1.2 — deterministic, no LLM) ───
+    const anchorInventory = await step.run("anchor-inventory", async () => {
+      return buildAnchorInventory(framing.content);
+    });
+
     // ─── Step 7: Server verdict ─────────────────────────────────────────────
     // Model never sets the verdict. Server computes it from finding counts.
     const verdictData = await step.run("server-verdict", async () => {
+      const d18Result: CheckResult = {
+        checkId: SINGLE_SOURCE_CHECK.id,
+        evaluator: "primary",
+        status: pass5Result.status,
+        confidence: pass5Result.confidence,
+        location: pass5Result.location,
+        issue: pass5Result.issue,
+        impact: pass5Result.impact,
+        rewrite: pass5Result.rewrite,
+      };
+
       const allResults: CheckResult[] = [
         ...pass1Result.results,
         ...pass2Result.results,
         ...pass3Result.results,
         ...pass4Result.results,
+        d18Result,
       ];
 
       const { verdict, passCount, failCount, enhanceCount, advisoryCount } =
         computeVerdict({ allResults });
 
       const triageMatrix = buildTriageMatrix(allResults);
+
+      // T3 gate verdict (checker v1.2) — separate from the READY_FOR_* verdict.
+      const failedIds = allResults.filter((r) => r.status === "FAIL").map((r) => r.checkId);
+      const anchorRepetitionWarnings = anchorInventory.filter((a) => a.count > 1).length;
+      const gateVerdict = computeGateVerdict(failedIds, anchorRepetitionWarnings);
 
       return {
         verdict,
@@ -501,6 +528,7 @@ export const sanityCheck = inngest.createFunction(
         advisoryCount,
         triageMatrix,
         allResults,
+        gateVerdict,
       };
     });
 
@@ -517,12 +545,20 @@ export const sanityCheck = inngest.createFunction(
       } = verdictData;
 
       // Build a revised framing stub — Pass 0 structure summary + typology
+      const anchorWarnings = anchorInventory
+        .filter((a) => a.count > 1)
+        .map(
+          (a) =>
+            `Anchor "${a.value}" (${a.label}): stated ${a.count} times — anchors stated repeatedly in framings become the memo's most-repeated claims; state once and mark as authoritative.`
+        );
       const revisedFraming = [
-        `[Sanity Check v1.0 — Auto-generated summary]`,
+        `[Sanity Check ${CHECKER_VERSION} — Auto-generated summary]`,
         `Typology detected: ${pass0Result.typology ?? "Unknown"} (confidence: ${pass0Result.typologyConfidence ?? "N/A"})`,
         `Structure: ${pass0Result.structureSummary}`,
         `Verdict: ${verdict}`,
+        `Gate verdict: ${verdictData.gateVerdict}`,
         `Checks: ${passCount} PASS | ${failCount} FAIL | ${enhanceCount} ADVISORY`,
+        ...anchorWarnings,
       ].join("\n");
 
       const result = await prisma.$transaction(async (tx) => {
@@ -542,6 +578,10 @@ export const sanityCheck = inngest.createFunction(
             revisedFraming,
             typology: pass0Result.typology ?? null,
             typologyConfidence: pass0Result.typologyConfidence ?? null,
+            // Checker v1.2 additions (additive columns)
+            checkerVersion: CHECKER_VERSION,
+            gateVerdict: verdictData.gateVerdict,
+            anchorInventory: anchorInventory as never,
           },
         });
 

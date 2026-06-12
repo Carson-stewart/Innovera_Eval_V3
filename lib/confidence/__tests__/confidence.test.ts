@@ -49,6 +49,36 @@ describe("memoConfidence", () => {
   });
 });
 
+describe("memoConfidence — V3 v1.1 not-scored exclusion (rescaling)", () => {
+  // Run 26's stored Stage-1 vector after the B1 backfill: P7 = null (NOT_SCORED).
+  const run26OldP1: (number | null)[] = [2, 3.634241185664279, 5, 3.3437015248821096, 4, 3, null, 4];
+
+  it("rescales over scored pillars: run 26's stored vector (old P1) → 71.366", () => {
+    // 100 − (8/7) × Σ erosion(7 scored) — NOT simple exclusion (74.94), which
+    // would treat the unscored pillar as an implicit perfect 5.
+    expect(memoConfidence(run26OldP1)).toBeCloseTo(71.36555060157397, 6);
+  });
+
+  it("run 26's vector with the C2 graduated P1 (1.75) → ≈70.65 (approved C0 value)", () => {
+    const withNewP1 = [1.75, ...run26OldP1.slice(1)];
+    expect(memoConfidence(withNewP1)).toBeCloseTo(70.65126488728825, 6);
+  });
+
+  it("with all 8 scored, reduces exactly to the v1.0 formula", () => {
+    const full = [4, 3, 5, 4, 3, 5, 4, 3];
+    const erosionSum = full.reduce((s, v) => s + erosionFromScore(v), 0);
+    expect(memoConfidence(full)).toBeCloseTo(100 - erosionSum, 10);
+  });
+
+  it("a single scored pillar is rescaled to full weight (20 × score)", () => {
+    expect(memoConfidence([3, null, null, null, null, null, null, null])).toBeCloseTo(60, 5);
+  });
+
+  it("throws when no pillar is scored", () => {
+    expect(() => memoConfidence([null, null, null, null, null, null, null, null])).toThrow();
+  });
+});
+
 describe("decisionConfidence", () => {
   it("75 × 1.0 → 75 (v1.0 multiplier)", () => {
     expect(decisionConfidence(75, 1.0)).toBe(75);
@@ -95,6 +125,41 @@ describe("statusBadge", () => {
 
   it("MEDIUM gap alone does not trigger MAJOR_REWORK", () => {
     expect(statusBadge(80, [{ severity: "MEDIUM" }])).toBe("READY_TO_SHIP");
+  });
+});
+
+describe("statusBadge — V3 v1.1 Stage-2 floor", () => {
+  // Run 25's stored profile: readiness 81.875, gaps all MEDIUM, D = [1.8, 3.8, 4.8, 4.8, 5]
+  it("run 25's vector: would-be READY_TO_SHIP held at NEEDS_WORK by D1 = 1.8", () => {
+    expect(
+      statusBadge(81.875, [{ severity: "MEDIUM" }, { severity: "MEDIUM" }], [1.8, 3.8, 4.8, 4.8, 5])
+    ).toBe("NEEDS_WORK");
+  });
+
+  it("exactly 2.0 trips the floor (<= semantics)", () => {
+    expect(statusBadge(90, [], [2.0, 5, 5, 5, 5])).toBe("NEEDS_WORK");
+  });
+
+  it("D scores above the floor leave READY_TO_SHIP untouched", () => {
+    expect(statusBadge(81.875, [{ severity: "MEDIUM" }], [2.1, 3.8, 4.8, 4.8, 5])).toBe("READY_TO_SHIP");
+  });
+
+  // Run 41's stored profile: readiness 72.656 (< 75), no HIGH gap, D all > 2.0
+  it("run 41's vector: NEEDS_WORK by readiness, unchanged by the floor", () => {
+    expect(statusBadge(72.656, [{ severity: "MEDIUM" }], [4, 4.2, 3.8, 4.4, 3.6])).toBe("NEEDS_WORK");
+  });
+
+  it("MAJOR_REWORK semantics unchanged — floor never upgrades or alters it", () => {
+    expect(statusBadge(80, [{ severity: "HIGH" }], [1.8, 5, 5, 5, 5])).toBe("MAJOR_REWORK");
+    expect(statusBadge(40, [], [5, 5, 5, 5, 5])).toBe("MAJOR_REWORK");
+  });
+
+  it("a not-scored (null) D dimension cannot trip the floor", () => {
+    expect(statusBadge(80, [], [null, 5, 5, 5, 5])).toBe("READY_TO_SHIP");
+  });
+
+  it("omitting stage2Scores preserves v1.0 behavior", () => {
+    expect(statusBadge(80, [])).toBe("READY_TO_SHIP");
   });
 });
 

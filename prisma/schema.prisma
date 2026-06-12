@@ -158,6 +158,18 @@ model Framing {
   typology     Typology?
   createdAt    DateTime          @default(now())
 
+  // Revision lineage (additive, nullable; pre-existing rows keep null).
+  // A revision IS a full Framing row — checker- and scorer-compatible by
+  // construction. The parent row is never modified by revision creation.
+  // Gate verdicts belong to (framing row × check run); never inherited.
+  parentFramingId Int?
+  revisionNumber  Int?    // 1, 2, … within the parent's revision chain
+  revisionSource  String? // "sanity-rewrites" | "sanity-rewrites+manual-edits"
+  sourceCheckId   Int?    // the SanityCheck the revision text was assembled from
+
+  parent    Framing?  @relation("FramingRevisions", fields: [parentFramingId], references: [id])
+  revisions Framing[] @relation("FramingRevisions")
+
   sanityChecks SanityCheck[]
   scoringRuns  ScoringRun[]
 }
@@ -186,6 +198,23 @@ model ScoringRun {
   includeInAnalysis Boolean?
   dataNote          String?
 
+  // Completeness metadata (additive, nullable): how many of the 10 canonical
+  // scorable chapters the parsed memo contained at scoring time. Measurement
+  // only — never an input to any score. Pre-existing runs keep null.
+  scorableChapterCount Int?
+
+  // V3 v1.1 (additive, nullable): denominator of stage1Avg and the readiness
+  // rescaling — 8 unless a pillar was NOT_SCORED and excluded. Pre-v1.1 runs
+  // keep null (all their pillars carried a numeric score at scoring time).
+  scoredPillarCount Int?
+
+  // D3 k-run verification (additive, nullable): id of the anchor run this run
+  // verifies. The anchor itself keeps null (historical rows are never
+  // modified); a verification group = the anchor + all runs pointing at it.
+  // Display-level grouping only — no stored score is ever averaged into any
+  // single run's record.
+  verificationGroupId Int?
+
   // Durable link to the framing that produced this run (additive, nullable).
   // Populated on NEW runs only; pre-existing runs keep framingId null
   // (their framing link was ephemeral and isn't reliably recoverable).
@@ -207,12 +236,19 @@ model DimensionScore {
   id                Int          @id @default(autoincrement())
   scoringRunId      Int
   dimensionKey      DimensionKey
-  score             Float
+  // Nullable: null = NOT_SCORED (e.g. P7 sparse-data protocol with 0 claims).
+  // Previously non-nullable with a ?? -1 sentinel at persist — removed in Phase B1.
+  score             Float?
   subScores         Json         // per-sub-dimension scores
   traceabilityLog   Json         // full TR-log content from the agent
-  serverComputed    Float        // score as computed server-side from classifications
+  serverComputed    Float?       // score as computed server-side from classifications; null = not scored
   agentSelfReported Float?       // score as self-reported by the agent (for drift tracking)
   calibrationDrift  Boolean      @default(false)
+  // Raw per-finding detail (additive, Phase B2). Currently populated for P1 only:
+  // { version, totalFound, truncated, entries: [{ kind, scope, quoteA, quoteB,
+  //   description?, locations[] }] }, entries capped at 50. Null on pre-B2 runs
+  // and on dimensions that don't emit findings. Never a score input.
+  findings          Json?
 
   scoringRun        ScoringRun   @relation(fields: [scoringRunId], references: [id])
 }
@@ -285,6 +321,14 @@ model SanityCheck {
   typologyConfidence  String?
   createdAt           DateTime      @default(now())
 
+  // Checker v1.2 additions (additive, nullable; pre-v1.2 rows keep null):
+  // CHECKER_VERSION stamp; T3 gate verdict (BLOCKED | PASS_WITH_WARNINGS | PASS,
+  // separate from the READY_FOR_* verdict above); T2 anchor inventory
+  // ([{ value, unit, label, count, locations[] }]).
+  checkerVersion  String?
+  gateVerdict     String?
+  anchorInventory Json?
+
   framing         Framing       @relation(fields: [framingId], references: [id])
   sanityIssues    SanityIssue[]
 }
@@ -353,6 +397,18 @@ model RedundancyAnalysis {
   createdAt          DateTime @default(now())
 
   scoringRun         ScoringRun @relation(fields: [scoringRunId], references: [id])
+}
+
+// P1 findings cache (V3 v1.1, C3) — caches the LLM's P1 coherence-detection
+// output keyed by content hash + rubric version, so a re-score of identical
+// content reuses the exact same findings (deterministic P1, no detection
+// variance, no extra tokens). Never affects a cache-miss run's behavior.
+model P1FindingsCache {
+  id            Int      @id @default(autoincrement())
+  contentHash   String   @unique // sha256(rubricVersion + framing content + memo content)
+  rubricVersion String
+  payload       Json     // P1DetectionPayload: per-chapter + cross-chapter P1 arrays
+  createdAt     DateTime @default(now())
 }
 
 // Pillar 7 benchmark library — seeded from Section 8 of the framework spec.

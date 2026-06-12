@@ -8,7 +8,15 @@ import { buildTier2Prompt } from "@/lib/prompts/tier2";
 import { buildTier3P7Prompt } from "@/lib/prompts/tier3-p7";
 import { runAllScoring } from "@/lib/scoring/index";
 import { verifyScoring } from "@/lib/scoring/verify";
-import { deriveSpecificGap, buildEditGenerationPrompt } from "@/lib/scoring/editGeneration";
+import { deriveGaps, type GapRow } from "@/lib/scoring/gaps";
+import { RUBRIC_VERSION } from "@/lib/scoring/version";
+import {
+  computeP1CacheKey,
+  extractP1Detection,
+  applyP1Detection,
+  type P1DetectionPayload,
+} from "@/lib/scoring/p1Cache";
+import { buildEditGenerationPrompt } from "@/lib/scoring/editGeneration";
 // Redundancy (Phase R1) — informational only, never touches scoring tables
 import { extractAllClaims } from "@/lib/redundancy/extractClaims";
 import { embedTexts } from "@/lib/redundancy/embed";
@@ -35,6 +43,12 @@ interface ScoreMemoPayload {
   framingId: number;
   typology: string;
   approvedRisks: ApprovedRisk[];
+  /** Set by /api/score when the caller explicitly opted into an empty risk set.
+   *  Persistence-labeling only — never read by any scoring step. */
+  allowEmptyRisks?: boolean;
+  /** D3: anchor run id when this run is a k-run verification re-score.
+   *  Persistence-labeling only — never read by any scoring step. */
+  verificationGroupId?: number;
 }
 
 // Max scoreMemo runs allowed to execute simultaneously. This caps PARALLELISM
@@ -43,52 +57,45 @@ interface ScoreMemoPayload {
 // build.
 const SCORE_MEMO_CONCURRENCY = 2;
 
-type GapRow = {
-  dimensionKey: string;
-  issue: string;
-  impact: string;
-  fix: string;
-  severity: "HIGH" | "MEDIUM" | "LOW";
-};
+// GapRow + deriveGaps moved to lib/scoring/gaps.ts (D2a) so the explicit
+// ship-rule trigger is unit-testable. Behavior here is unchanged except the
+// trigger itself.
 
+// ─── Completeness metadata (measurement only — never a score input) ──────────
+// The 10 canonical scorable chapters. Counted against parsed chapter titles
+// after normalization; the count is persisted to ScoringRun.scorableChapterCount
+// for display. Does NOT alter the parse output or what gets scored.
+const SCORABLE_CHAPTER_SET = [
+  "customer and demand validation",
+  "product and technology",
+  "market research",
+  "competitor analysis",
+  "gtm and partners",
+  "revenue model",
+  "unit economics",
+  "finance and operations",
+  "team and execution",
+  "legal and ip",
+];
 
-/**
- * Derive Gaps from traceabilityLog findings — NOT from score numbers alone.
- * Each gap issue/fix is grounded in what the engine actually found, matching
- * what the Breakdown tab surfaces.
- */
-function deriveGaps(dimensionResults: DimensionResult[]): GapRow[] {
-  const gaps: GapRow[] = [];
-  const stage1Keys = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"];
-
-  for (const dr of dimensionResults) {
-    if (!stage1Keys.includes(dr.dimensionKey)) continue;
-    if (dr.serverComputed === null) continue;
-    const score = dr.serverComputed;
-    if (score >= 4.0) continue; // no gap for well-scoring pillars
-
-    const specific = deriveSpecificGap(dr);
-    if (!specific) continue;
-
-    gaps.push({
-      dimensionKey: dr.dimensionKey,
-      issue: specific.issue,
-      impact: specific.impact,
-      fix: specific.fix,
-      severity: specific.severity,
-    });
-  }
-
-  // Sort by severity (HIGH first) then by erosion (largest first)
-  return gaps.sort((a, b) => {
-    const sevOrd: Record<string, number> = { HIGH: 0, MEDIUM: 1, LOW: 2 };
-    const sd = (sevOrd[a.severity] ?? 9) - (sevOrd[b.severity] ?? 9);
-    if (sd !== 0) return sd;
-    const scoreA = dimensionResults.find((d) => d.dimensionKey === a.dimensionKey)?.serverComputed ?? 3;
-    const scoreB = dimensionResults.find((d) => d.dimensionKey === b.dimensionKey)?.serverComputed ?? 3;
-    return scoreA - scoreB; // lower score → more erosion → first
-  });
+function normalizeChapterTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
+
+/** Count how many of the 10 canonical scorable chapters appear among the parsed
+ *  chapter titles (each canonical chapter counted at most once). */
+function countScorableChapters(titles: string[]): number {
+  const normalized = titles.map(normalizeChapterTitle);
+  return SCORABLE_CHAPTER_SET.filter((target) =>
+    normalized.some((t) => t.includes(target))
+  ).length;
+}
+
 
 export const scoreMemo = inngest.createFunction(
   {
@@ -103,7 +110,7 @@ export const scoreMemo = inngest.createFunction(
   async ({ event, step }: { event: { data: ScoreMemoPayload }; step: {
     run: <T>(id: string, fn: () => Promise<T>) => Promise<T>;
   } }) => {
-    const { memoId, framingId, typology, approvedRisks } = event.data;
+    const { memoId, framingId, typology, approvedRisks, verificationGroupId } = event.data;
 
     // ─── Step 1: Load inputs ─────────────────────────────────────────────────
     // IMPORTANT: This step result is cached in the Inngest run journal.
@@ -275,15 +282,73 @@ export const scoreMemo = inngest.createFunction(
       });
     });
 
+    // ─── Step 4b: P1 findings cache lookup (C3, V3 v1.1) ────────────────────
+    // Re-scores of identical content under the same rubric version reuse the
+    // cached P1 detection verbatim — deterministic P1, no detection variance.
+    // A miss changes nothing about this run's behavior.
+    const p1CacheKey = computeP1CacheKey(RUBRIC_VERSION, framing.content, memoContent);
+    const p1Cache = await step.run("p1-findings-cache-lookup", async () => {
+      const row = await prisma.p1FindingsCache.findUnique({ where: { contentHash: p1CacheKey } });
+      return row ? { status: "hit" as const, payload: row.payload as unknown as P1DetectionPayload } : { status: "miss" as const, payload: null };
+    });
+
     // ─── Step 5: Server scoring ──────────────────────────────────────────────
     const dimensionResults = await step.run("server-scoring", async () => {
+      // On a cache hit, substitute ONLY the P1 detection fields; every other
+      // dimension scores from the fresh Tier outputs as always. A payload that
+      // fails the safety guard (chapter-count mismatch) degrades to a miss.
+      let t1 = tier1Results;
+      let t2 = tier2Result;
+      let cacheStatus: "hit" | "miss" = p1Cache.status;
+      if (p1Cache.status === "hit" && p1Cache.payload) {
+        const applied = applyP1Detection(tier1Results, tier2Result, p1Cache.payload);
+        if (applied) {
+          t1 = applied.tier1;
+          t2 = applied.tier2;
+        } else {
+          cacheStatus = "miss";
+        }
+      }
+
       const allClassifications: AllClassifications = {
-        tier1Chapters: tier1Results,
-        tier2: tier2Result,
+        tier1Chapters: t1,
+        tier2: t2,
         tier3P7: tier3P7Result,
       };
 
-      return runAllScoring(allClassifications);
+      const results = runAllScoring(allClassifications);
+
+      // Transparency: stamp the cache outcome on P1's persisted traceability.
+      const p1 = results.find((r) => r.dimensionKey === "P1");
+      if (p1) {
+        p1.traceabilityLog = {
+          ...(p1.traceabilityLog as Record<string, unknown>),
+          p1_findings_cache: cacheStatus,
+          p1_findings_cache_key: p1CacheKey.slice(0, 16),
+        };
+      }
+
+      return results;
+    });
+
+    // ─── Step 5b: P1 findings cache store (miss only) ────────────────────────
+    // Stores the FRESH detection so the next identical-content re-score hits.
+    await step.run("p1-findings-cache-store", async () => {
+      if (p1Cache.status === "hit") return "skipped (hit)";
+      const payload = extractP1Detection(tier1Results, tier2Result);
+      try {
+        await prisma.p1FindingsCache.create({
+          data: {
+            contentHash: p1CacheKey,
+            rubricVersion: RUBRIC_VERSION,
+            payload: payload as never,
+          },
+        });
+        return "stored";
+      } catch {
+        // Unique-violation race with a concurrent identical run — benign.
+        return "already present";
+      }
     });
 
     // ─── Step 6: Confidence & status ─────────────────────────────────────────
@@ -295,25 +360,36 @@ export const scoreMemo = inngest.createFunction(
         ["D1", "D2", "D3", "D4", "D5"].includes(dr.dimensionKey)
       );
 
-      const stage1Scores = stage1Results.map((dr: DimensionResult) => dr.serverComputed ?? 1);
-      const stage2Scores = stage2Results.map((dr: DimensionResult) => dr.serverComputed ?? 1);
+      // V3 v1.1: not-scored pillars (null) are EXCLUDED from readiness via
+      // rescaling inside memoConfidence() — no more ?? 1 worst-case coalescing.
+      const stage1Scores = stage1Results.map((dr: DimensionResult) => dr.serverComputed);
+      const stage2Scores = stage2Results.map((dr: DimensionResult) => dr.serverComputed);
+      const scoredStage1 = stage1Scores.filter((s): s is number => s !== null);
+      const scoredStage2 = stage2Scores.filter((s): s is number => s !== null);
 
       const memoConf = memoConfidence(stage1Scores);
       const decisionConf = decisionConfidence(memoConf, 1.0);
-      const s2Profile = stage2Profile(stage2Scores);
+      const s2Profile = stage2Profile(scoredStage2);
 
       const gaps = deriveGaps(dimensionResults);
       const edits: GapRow[] = []; // edits generated in a separate LLM step below
+      // V3 v1.1: the ship gate consults BOTH profiles — Stage-2 scores join as
+      // a floor (any D <= 2.0 holds READY_TO_SHIP back to NEEDS_WORK). The two
+      // score profiles remain separate numbers throughout.
       const badge = statusBadge(
         memoConf,
-        gaps.map((g: GapRow) => ({ severity: g.severity }))
+        gaps.map((g: GapRow) => ({ severity: g.severity })),
+        stage2Scores
       );
 
+      // stage1Avg = mean over SCORED pillars; the denominator is persisted as
+      // scoredPillarCount so it is always visible alongside the average.
       const stage1Avg =
-        stage1Scores.reduce((a: number, b: number) => a + b, 0) / stage1Scores.length;
+        scoredStage1.reduce((a: number, b: number) => a + b, 0) / scoredStage1.length;
+      const scoredPillarCount = scoredStage1.length;
       const stage2Avg =
-        stage2Scores.length > 0
-          ? stage2Scores.reduce((a: number, b: number) => a + b, 0) / stage2Scores.length
+        scoredStage2.length > 0
+          ? scoredStage2.reduce((a: number, b: number) => a + b, 0) / scoredStage2.length
           : 0;
 
       const diagnostics = verifyScoring(dimensionResults);
@@ -324,6 +400,7 @@ export const scoreMemo = inngest.createFunction(
         s2Profile,
         badge,
         stage1Avg,
+        scoredPillarCount,
         stage2Avg,
         gaps,
         edits,
@@ -334,7 +411,17 @@ export const scoreMemo = inngest.createFunction(
     // ─── Step 7: Generate concrete Edits (LLM, temp 0) ───────────────────────
     // Reads final scores + traceabilityLogs + memo content.
     // Writes ONLY Edit rows — never alters any DimensionScore (AG-C5).
-    const generatedEdits = await step.run("generate-edits", async () => {
+    // Output is a structured marker, not a bare array: a green step that
+    // persisted zero edits must say why in the journal (runs #66/#69 completed
+    // with "[]" while four pillars sat under the edit threshold).
+    type EditGenStatus = "ok" | "no_low_scoring" | "empty_after_parse" | "llm_error";
+    type EditGenResult = {
+      edits: GapRow[];
+      status: EditGenStatus;
+      attempts: number;
+      diagnostic: string | null;
+    };
+    const generatedEdits = await step.run("generate-edits", async (): Promise<EditGenResult> => {
       const PILLAR_NAMES: Record<string, string> = {
         P1: "Coherence", P2: "Problem Formulation", P3: "Structural Accuracy",
         P4: "Coverage", P5: "Evidence Quality", P6: "Assumption Quality",
@@ -349,7 +436,9 @@ export const scoreMemo = inngest.createFunction(
           dr.serverComputed < EDIT_THRESHOLD
       );
 
-      if (lowScoring.length === 0) return [];
+      if (lowScoring.length === 0) {
+        return { edits: [], status: "no_low_scoring", attempts: 0, diagnostic: null };
+      }
 
       // Use scored chapters only for prompt (keeps the prompt manageable)
       const memoCtx = buildMemoContext(
@@ -359,32 +448,85 @@ export const scoreMemo = inngest.createFunction(
         0
       );
       const prompt = buildEditGenerationPrompt(lowScoring, memoCtx.content, PILLAR_NAMES);
+      const lowKeys = lowScoring.map((d) => d.dimensionKey).join(",");
 
-      let raw: { edits?: unknown[] } = { edits: [] };
-      try {
-        raw = await callModelJSON<{ edits?: unknown[] }>({
-          system: prompt.system,
-          messages: prompt.messages,
+      const attemptOnce = async (
+        attempt: number
+      ): Promise<Omit<EditGenResult, "attempts">> => {
+        let raw: { edits?: unknown[] };
+        try {
+          raw = await callModelJSON<{ edits?: unknown[] }>({
+            system: prompt.system,
+            messages: prompt.messages,
+          });
+        } catch (err) {
+          // Edit generation failure is non-fatal (gaps still exist), but it
+          // must be loggable — a swallowed error here is indistinguishable
+          // from "model returned no edits" in the journal.
+          const e = err as { name?: string; message?: string; raw?: string };
+          const diagnostic = `${e?.name ?? "Error"}: ${String(e?.message ?? "").slice(0, 300)}`;
+          console.error("[generate-edits] LLM call failed:", {
+            attempt,
+            lowScoring: lowKeys,
+            error: diagnostic,
+            // JsonParseError carries the unparseable raw model output
+            rawResponse:
+              typeof e?.raw === "string"
+                ? `len=${e.raw.length} head=${e.raw.slice(0, 500)}`
+                : undefined,
+          });
+          return { edits: [], status: "llm_error", diagnostic };
+        }
+
+        const candidates = raw.edits;
+        const objects = (candidates ?? []).filter(
+          (e): e is Record<string, unknown> => e != null && typeof e === "object"
+        );
+        const editRows: GapRow[] = objects
+          .map((e) => ({
+            dimensionKey: String(e.dimensionKey ?? "P1"),
+            issue: String(e.issue ?? ""),
+            impact: String(e.impact ?? ""),
+            fix: String(e.fix ?? ""),
+            severity: (["HIGH", "MEDIUM", "LOW"].includes(String(e.severity))
+              ? e.severity
+              : "MEDIUM") as "HIGH" | "MEDIUM" | "LOW",
+          }))
+          .filter((e) => e.issue && e.fix); // drop empty entries
+
+        if (editRows.length > 0) {
+          return { edits: editRows, status: "ok", diagnostic: null };
+        }
+
+        // Low-scoring pillars exist but nothing survived — record which
+        // stage emptied the result and what the model actually returned.
+        const responseStr = JSON.stringify(raw);
+        const emptiedBy = !Array.isArray(candidates)
+          ? "edits key missing or not an array"
+          : candidates.length === 0
+            ? "edits array empty in response"
+            : objects.length === 0
+              ? `all ${candidates.length} entries non-objects`
+              : `all ${objects.length} entries dropped by issue&&fix filter`;
+        const diagnostic = `${emptiedBy} (response len=${responseStr.length})`;
+        console.error("[generate-edits] empty result with low-scoring pillars:", {
+          attempt,
+          lowScoring: lowKeys,
+          emptiedBy,
+          responseLength: responseStr.length,
+          responseHead: responseStr.slice(0, 500),
         });
-      } catch {
-        // Edit generation failure is non-fatal — return empty (gaps still exist)
-        return [];
+        return { edits: [], status: "empty_after_parse", diagnostic };
+      };
+
+      let result = await attemptOnce(1);
+      if (result.edits.length === 0) {
+        // One bounded retry: runs #66/#69 produced empty responses on a prompt
+        // that yields 10–14 edits on the same memo family (#67/#68).
+        result = await attemptOnce(2);
+        return { ...result, attempts: 2 };
       }
-
-      const editRows: GapRow[] = (raw.edits ?? [])
-        .filter((e): e is Record<string, unknown> => e != null && typeof e === "object")
-        .map((e) => ({
-          dimensionKey: String(e.dimensionKey ?? "P1"),
-          issue: String(e.issue ?? ""),
-          impact: String(e.impact ?? ""),
-          fix: String(e.fix ?? ""),
-          severity: (["HIGH", "MEDIUM", "LOW"].includes(String(e.severity))
-            ? e.severity
-            : "MEDIUM") as "HIGH" | "MEDIUM" | "LOW",
-        }))
-        .filter((e) => e.issue && e.fix); // drop empty entries
-
-      return editRows;
+      return { ...result, attempts: 1 };
     });
 
     // ─── Step 8: Check critical-risk coverage (informational, temp 0) ───────────
@@ -456,6 +598,7 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
         decisionConf,
         badge,
         stage1Avg,
+        scoredPillarCount,
         stage2Avg,
         gaps,
         edits: _unusedEdits, // edits now come from generatedEdits
@@ -467,7 +610,7 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
           data: {
             memoId,
             framingId, // durable link to the framing that produced this run (from event.data)
-            rubricVersion: "V3 v1.0",
+            rubricVersion: RUBRIC_VERSION, // "V3 v1.1" — single source: lib/scoring/version.ts
             scoringModel: SCORING_MODEL,
             redundancyVersion: REDUNDANCY_VERSION,
             memoConfidence: memoConf,
@@ -475,7 +618,20 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
             riskMultiplier: 1.0,
             statusBadge: badge as "READY_TO_SHIP" | "NEEDS_WORK" | "MAJOR_REWORK",
             stage1Avg,
+            // V3 v1.1: denominator of stage1Avg/readiness (8 unless a pillar
+            // was NOT_SCORED and excluded via rescaling)
+            scoredPillarCount,
+            // D3: anchor run id for k-run verification groups (display-level
+            // grouping only; null on normal runs)
+            ...(typeof verificationGroupId === "number" && { verificationGroupId }),
             stage2Avg,
+            // Completeness metadata — measured from the parsed chapter titles
+            // (allChapters is in scope from Step 2). Display only.
+            scorableChapterCount: countScorableChapters(allChapters.map((c) => c.title)),
+            // Self-labeling for Risk-Gate-bypassed runs (empty approvedRisks): zero
+            // ConfirmedRisk rows on such runs mean "risk data missing", not "no risks
+            // found" — stamp that at creation. Metadata only; no score input.
+            ...(approvedRisks.length === 0 && { dataNote: "risk gate bypassed" }),
           },
         });
 
@@ -484,12 +640,17 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
             data: {
               scoringRunId: scoringRun.id,
               dimensionKey: dr.dimensionKey as never,
-              score: dr.score ?? -1,
+              // null = NOT_SCORED, persisted as null (the old ?? -1 sentinel
+              // leaked an out-of-range value into stored scores — see run 26 P7)
+              score: dr.score,
               subScores: dr.subScores as never,
               traceabilityLog: dr.traceabilityLog as never,
-              serverComputed: dr.serverComputed ?? -1,
+              serverComputed: dr.serverComputed,
               agentSelfReported: dr.agentSelfReported,
               calibrationDrift: dr.calibrationDrift,
+              // Raw finding detail (Phase B2; currently emitted by P1 only).
+              // Dimensions without findings persist null.
+              ...(dr.findings != null && { findings: dr.findings as never }),
             },
           });
         }
@@ -528,7 +689,7 @@ Classify how well this memo addresses the critical risk above. Return the JSON o
         }
 
         // Edits come from the separate generate-edits step (not confidenceData.edits)
-        for (const edit of generatedEdits) {
+        for (const edit of generatedEdits.edits) {
           await tx.edit.create({
             data: {
               scoringRunId: scoringRun.id,

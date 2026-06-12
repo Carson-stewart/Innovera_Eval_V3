@@ -1,0 +1,134 @@
+# Decision Frame: Ecolab – Vision AI & Digital Auditing for Large Grocery Retail
+
+## 1. Context
+
+Ecolab is exploring the opportunity to develop and commercialize Vision AI–powered digital monitoring, auditing and compliance solutions for large grocery retailers in the US. Today, Ecolab supports retailers across food safety, environmental safety, pest management, employee behavior, and operational compliance through a combination of digital tools and extensive on-site field teams.
+
+Ecolab has a growing experience in deploying hardware and AI technologies in adjacent markets — such as Vision AI in restaurants and drive throughs (via internal development and the FingerMark partnership), robotics investments (e.g., Miso Robotics), and multiple industrial technology partners. These deployments are increasing in frequency, but have not yet been tested at grocery-retail scale.
+
+This initiative is currently at step 0 – concept, with only preliminary slides and no pilot, solution design, technical architecture, or validated business case.
+
+## 2. Decision Statement
+
+Core Question
+
+Should Ecolab proceed with the development and commercialization of a Vision AI–enabled digital auditing and compliance service/solution for large grocery retailers, and does the initiative present a credible path to achieving ~$25M in ARR within ~18 months of commercial launch?
+
+Sub-Questions
+
+- Does Ecolab hold a strong enough relationship with top 10 grocery retail brands (effectively 60-70% of the market) to be able to ‘push’ a new product/service into the market and capture a significant share within 18-24 months.
+- Which use cases — inventory shrink, cleanliness, theft monitoring, spoilage, employee behavior, process efficiency — provide the strongest value add to the client and which ones will have the fastest adoption?
+- What is the common baseline for the current technical infrastructure (cameras, data access, analytics) within grocery retailers in the US? Where are new hardware installations required?
+- Will privacy, accessibility, and regulatory constraints be an obstacle and if so how significant will this obstacle be?
+- What does the digital landscape of competitors and vendors in Vision AI, compliance monitoring and loss-prevention devices and analytics look like?
+- Which are the optimal partners (down to specific brand names) for the technological parts of the solution?
+- What is the potential ROI, pricing model, TAM, and achievable market share, and does this support the ~$25M ARR target?
+- Can Vision AI accelerate sales of Ecolab’s core products and services and support Ecolab’s broader digital transition?
+
+## 3. Options (MECE)
+
+- GO / NO-GO DecisionProceed into pilot design, partner evaluation, and commercialization roadmap vs. pause pending stronger evidence.
+- Pathway Options (if GO)Partner-Led (No Build): Ecolab becomes a partner of a current retail Vision AI technology provider to add it’s services and workflows with a goal to mainly benefit from selling more of its services, trainings and chemicals.
+- Hybrid/Partner (some light build/integrations): Ecolab provides the workflow, auditing logic to be integrated into the technology; tech partners provide vision models and/or hardware, and/or software and/or store-level integration. Services and trainings stay with Ecolab.
+- Embedded Insights Provider: Ecolab delivers audit insights inside retailer-owned platforms (for chains building internal digital systems).
+
+## 4. Objectives
+
+Success for Ecolab’s Vision AI initiative is defined as:
+
+- Demonstrated significant reduction across shrink, spoilage, cleanliness, employee safety behavior. But most importantly significant risk of a fine, investigation or temporary shut-down of a location due to violation of sanitary/compliance norms.
+- Increased sales of core Ecolab products and services through data-driven recommendations embedded in daily retail operations within 18-24 months.
+- Establishment of a scalable offering with recurring revenue within 18 months.
+- Clear positioning for Ecolab to expand into a broader digital product and/or services portfolio beyond traditional chemical product lines and current services.
+- A feasible, partner-supported solution architecture and deployment model.
+- A validated and credible pathway toward ~$25M ARR within ~18-24 months of commercial launch.
+
+## 5. Evaluation Criteria
+
+Evaluation Criterion
+
+Weight
+
+Definition
+
+Market Demand & Pain Points
+
+40%
+
+Strength of retailer needs across core use cases (shrink, cleanliness, spoilage, theft, behaviors, efficiency).
+
+Financial Potential
+
+20%
+
+ROI for retailers; revenue opportunity; pricing and market-share feasibility.
+
+Time-to-Market
+
+15%
+
+Ability to deliver MVP quickly from concept stage.
+
+Strategic Fit
+
+25%
+
+Contribution to Ecolab’s core business, service pull-through, and digital growth strategy.
+
+## 6. Assumptions
+
+- One of the key value propositions for clients would be avoiding issues like recalls and inventory shrink + potential store closures due to infestations or unsanitary conditions.
+- The initiative is in concept stage with no grocery pilots.
+- Camera and data infrastructure across grocery retailers is uneven; some stores may require new hardware or software.
+- Video-related privacy and regulatory constraints can impact feasibility.
+- Some retailers already develop internal digital platforms; In that case Ecolab may function as a module provider rather than platform owner.
+- Ecolab’s hardware deployments in restaurants/industrial settings are increasing, this could be a secondary market to be explored, but grocery implementation remains untested.
+- Ecolab’s field teams are essential for workflow integration, training and behavioral adoption of employees to work well with insights that technology delivers.
+
+## 7. Dependencies & Interactions
+
+- Retailer infrastructure readiness: camera coverage, data accessibility, network capacity, store systems.
+- Privacy & legal approvals: compliance with employee/customer monitoring rules and data-sharing regulations.
+- Partner ecosystem: software and hardware vendors; system integrators; industrial partners; consulting firms.
+- Ecolab field teams: training, validation, reinforcement of recommended actions.
+- Retail workflow integration: ability to embed insights into existing store operations and systems.
+- Digital landscape alignment: differentiation vs. existing vision AI, loss-prevention, and store-analytics vendors.
+
+## 8. Risks
+
+- Client Adoption Risk: Retail staff may not act on insights and require additional training thus limiting realized ROI.
+- Privacy & Data Access Risk: Retailers may restrict sharing of video feeds or behavioral data.
+- Infrastructure Risk: Stores lacking adequate camera or network infrastructure may face costly upgrades.
+- ROI Variability: Benefits differ significantly by store type, format, region, or operational maturity.
+- Competitive Risk: Multiple vendors already serve shrink, safety, and store-analytics needs.
+- Integration Risk: Scaling across many stores requires complex hardware + system integrations.
+- Commercial Timing Risk: Achieving ~$25M ARR in ~18 months requires strong early adoption and multi-chain commitments.
+
+## 9. Constraints
+
+- Limited internal data; analysis must rely heavily on market research.
+- Ecolab typically sees stronger results when partners deploy digital tools.
+- Retailers operate under strict privacy regulations.
+- Grocery budgets require short payback periods.
+- Authorization to proceed from top management usually takes months.
+
+## 10. Remaining Information Gaps
+
+- Retail infrastructure & access: camera quality, analytics readiness, video-sharing feasibility.
+- Internal capability: product, engineering, and field resources for deployment and support.
+- Existing internal inputs: prior cost models, pilots, or digital assets.
+
+## 12. Stakeholders
+
+- Decision Owners: Ecolab digital leadership or C-suite (to be confirmed)
+- Project Leads: Oliver Bodmer, Ecolab Digital & Innovation teams
+- Input Providers: Microsoft Vision AI; robotics partners (FingerMark, Miso Robotics); consulting firms; industrial partners; Ecolab field teams
+- Retail Stakeholders: Store operations, loss prevention, food safety, compliance, IT/security, legal/privacy
+
+## 13. Decision Type
+
+Strategic: This decision determines whether Ecolab enters a new digital capability area with material implications for investment, technology development, and service-line growth.
+
+Reversible: Early stages are reversible, but investment becomes increasingly difficult to unwind once pilots and platform development proceed.
+
+Medium Stakes: This initiative could become a point for Ecolab’s expansion into a blended model of digital services mixed with trainings and it’s existing services and products.

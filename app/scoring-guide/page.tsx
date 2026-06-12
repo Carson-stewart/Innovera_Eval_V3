@@ -306,7 +306,7 @@ export default function ScoringGuidePage() {
                   {
                     n: "2",
                     title: "Absolute Scoring",
-                    body: "The memo is scored across 13 dimensions. Each dimension produces a 1–5 score, which becomes an amount of readiness erosion. The erosions add up to the final Memo Readiness.",
+                    body: "The memo is scored across 13 dimensions, each producing a 1–5 score. The 8 Stage 1 pillars erode Memo Readiness — their erosions add up to the final number. The 5 Stage 2 dimensions form a separate Output Quality profile that is deliberately never combined with it.",
                   },
                   {
                     n: "3",
@@ -529,6 +529,10 @@ export default function ScoringGuidePage() {
                   <p className="text-xs text-gray-500 leading-relaxed">
                     The headline number: 100 minus everything the pillars eroded. It reflects
                     what editors can control — the quality of the analysis and presentation.
+                    If a pillar cannot be scored at all (for example P7 on a memo with no
+                    financial claims), it is excluded and readiness is rescaled over the
+                    scored pillars — an unscored pillar neither erodes the score nor counts
+                    as a perfect 5.
                   </p>
                 </div>
                 <div className="rounded-xl border border-gray-200 bg-white p-4">

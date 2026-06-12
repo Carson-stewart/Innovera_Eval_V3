@@ -5,18 +5,38 @@ import { useRouter } from "next/navigation";
 import { TopBar } from "@/components/shell/TopBar";
 import { PILLAR_EXPLANATIONS, STAGE_1_KEYS, STAGE_2_KEYS } from "@/lib/pillars/explanations";
 import { PILLAR_GUIDE_DETAILS } from "@/lib/pillars/guide-details";
+import {
+  aggregateVerification,
+  type VerificationRunSummary,
+} from "@/lib/confidence/verification";
 
 // ─── Types (match serialised Prisma output) ───────────────────────────────────
 
 export interface DimensionScoreRow {
   id: number;
   dimensionKey: string;
-  score: number;
-  serverComputed: number;
+  /** null = NOT_SCORED (e.g. P7 sparse-data protocol) — render "Not scored", never 0/−1/1 */
+  score: number | null;
+  serverComputed: number | null;
   agentSelfReported: number | null;
   calibrationDrift: boolean;
   subScores: Record<string, unknown>;
   traceabilityLog: Record<string, unknown>;
+  /** Raw finding detail (Phase B2; P1 only for now). Null on pre-B2 runs. */
+  findings?: {
+    version: number;
+    totalFound: number;
+    truncated: boolean;
+    entries: Array<{
+      kind: string;
+      scope: string;
+      chapter?: string;
+      quoteA: string;
+      quoteB: string;
+      description?: string;
+      locations: string[];
+    }>;
+  } | null;
 }
 
 export interface GapRow {
@@ -64,6 +84,14 @@ export interface RunData {
   statusBadge: string;
   stage1Avg: number;
   stage2Avg: number;
+  /** Completeness metadata: parsed scorable chapters out of the canonical 10.
+   *  Null on runs scored before the column existed — display nothing then. */
+  scorableChapterCount: number | null;
+  /** V3 v1.1: readiness denominator — scored Stage-1 pillars (8 unless one was
+   *  NOT_SCORED and excluded via rescaling). Null on pre-v1.1 runs. */
+  scoredPillarCount: number | null;
+  /** D3: anchor run id when this run is a verification re-score; null otherwise. */
+  verificationGroupId: number | null;
   scoredAt: string;
   memo: {
     id: number;
@@ -133,20 +161,23 @@ const FIC_LABELS: Record<string, string> = {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function scoreColor(score: number): string {
+function scoreColor(score: number | null): string {
+  if (score === null) return "text-gray-400";
   if (score >= 4) return "text-green-700";
   if (score >= 3) return "text-amber-700";
   return "text-red-700";
 }
 
-function chipStyle(score: number): string {
+function chipStyle(score: number | null): string {
+  if (score === null) return "bg-gray-50 border-gray-300 text-gray-500";
   if (score >= 4) return "bg-green-50 border-green-400 text-green-800";
   if (score >= 3) return "bg-amber-50 border-amber-400 text-amber-800";
   return "bg-red-50 border-red-400 text-red-800";
 }
 
-function pillarScore(run: RunData, key: string): number {
-  return run.dimensionScores.find((d) => d.dimensionKey === key)?.serverComputed ?? 0;
+/** Returns null when the dimension is NOT_SCORED — callers must render "Not scored". */
+function pillarScore(run: RunData, key: string): number | null {
+  return run.dimensionScores.find((d) => d.dimensionKey === key)?.serverComputed ?? null;
 }
 
 function erosion(score: number): number {
@@ -179,30 +210,42 @@ function asArr(v: unknown): unknown[] {
 
 // ─── Recovery helpers ─────────────────────────────────────────────────────────
 
+/** P1 coherence-conflict count from persisted subScores (display only — no recomputation).
+ *  Returns null when subScores is missing/malformed so callers render a dash. */
+function p1ConflictCount(run: RunData): number | null {
+  const ds = run.dimensionScores.find((d) => d.dimensionKey === "P1");
+  if (!ds) return null;
+  const v = asRecord(ds.subScores).majorReconciliations;
+  return typeof v === "number" ? v : null;
+}
+
 function computeRecovery(run: RunData) {
-  return STAGE_1_KEYS.map((k) => {
+  return STAGE_1_KEYS.flatMap((k) => {
     const score = pillarScore(run, k);
+    if (score === null) return []; // not scored — no recovery headroom claimable
     const headroom = 5 - score;
     const gain = headroom * 2.5;
     const exp = PILLAR_EXPLANATIONS[k];
-    return { key: k, name: exp?.name ?? k, gloss: exp?.gloss ?? "", score, headroom, gain };
+    return [{ key: k, name: exp?.name ?? k, gloss: exp?.gloss ?? "", score, headroom, gain }];
   })
     .filter((p) => p.headroom > 0)
     .sort((a, b) => b.gain - a.gain);
 }
 
 function generateExplanation(run: RunData): string {
-  const topErosion = STAGE_1_KEYS.map((k) => {
+  const topErosion = STAGE_1_KEYS.flatMap((k) => {
     const score = pillarScore(run, k);
+    if (score === null) return []; // not scored — contributes no erosion narrative
     const e = erosion(score);
     const name = PILLAR_EXPLANATIONS[k]?.name ?? k;
-    return { key: k, score, erosion: e, name };
+    return [{ key: k, score, erosion: e, name }];
   })
     .filter((p) => p.erosion > 0)
     .sort((a, b) => b.erosion - a.erosion)
     .slice(0, 3);
 
-  const s2avg = STAGE_2_KEYS.reduce((s, k) => s + pillarScore(run, k), 0) / STAGE_2_KEYS.length;
+  const s2scores = STAGE_2_KEYS.map((k) => pillarScore(run, k)).filter((s): s is number => s !== null);
+  const s2avg = s2scores.length > 0 ? s2scores.reduce((a, b) => a + b, 0) / s2scores.length : 0;
 
   let text = `This memo achieved a Memo Confidence of ${run.memoConfidence.toFixed(1)}/100 (Rubric ${run.rubricVersion}). `;
 
@@ -256,10 +299,65 @@ function Chip({ label, value, style }: { label?: string; value: string; style?: 
 
 // ─── Traceability renderers ───────────────────────────────────────────────────
 
-function P1Trace({ log }: { log: Record<string, unknown> }) {
+function P1Trace({ log, conflictCount, findings }: {
+  log: Record<string, unknown>;
+  conflictCount: number | null;
+  findings: DimensionScoreRow["findings"];
+}) {
   const capApplied = log.minor_cap_applied === true;
+  const KIND_LABELS: Record<string, string> = {
+    flat_contradiction: "Flat contradiction",
+    major_reconciliation: "Major reconciliation",
+    minor_reconciliation: "Minor reconciliation",
+  };
   return (
     <div>
+      <div className={`mb-3 rounded-lg border px-3 py-2 text-xs font-medium ${
+        conflictCount !== null && conflictCount > 1
+          ? "bg-red-50 border-red-200 text-red-700"
+          : "bg-green-50 border-green-200 text-green-700"
+      }`}>
+        Coherence conflicts: <span className="font-bold">{conflictCount ?? "—"}</span> — memos ship at ≤1
+      </div>
+      {/* D2b: minor/reasoning channel visibility — raw signal of the saturated
+          channel; the penalty itself stays capped (recalibration: Phase E). */}
+      {(() => {
+        const minors = asNum(log.minor_gaps);
+        const drifts = asNum(log.definitional_drifts);
+        const reasoning = asNum(log.reasoning_gaps);
+        const raw = asNum(log.minor_combined_raw);
+        const capApplied2 = log.minor_cap_applied === true;
+        if (minors === null && reasoning === null) return null;
+        return (
+          <div className="mb-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600">
+            Minor gaps: <span className="font-semibold text-gray-800">{minors ?? "—"}</span>
+            {drifts !== null && drifts > 0 && (
+              <> · Definitional drifts: <span className="font-semibold text-gray-800">{drifts}</span></>
+            )}
+            {" "}· Reasoning gaps: <span className="font-semibold text-gray-800">{reasoning ?? "—"}</span>
+            {raw !== null && (
+              <span className="text-gray-500">
+                {" "}(raw penalty {raw.toFixed(2)}, {capApplied2 ? "capped at 1.5" : "under the 1.5 cap"})
+              </span>
+            )}
+          </div>
+        );
+      })()}
+      {findings && findings.entries.length > 0 && (
+        <div className="mb-4">
+          <SectionLabel>Persisted findings ({findings.totalFound}{findings.truncated ? `, showing first ${findings.entries.length}` : ""})</SectionLabel>
+          <div className="space-y-1.5">
+            {findings.entries.map((f, i) => (
+              <div key={i} className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-xs text-gray-600 leading-relaxed">
+                <span className="font-semibold text-gray-700">Conflict ({KIND_LABELS[f.kind] ?? f.kind}):</span>{" "}
+                &ldquo;{f.quoteA}&rdquo; <span className="text-gray-400">vs</span> &ldquo;{f.quoteB}&rdquo;{" "}
+                <span className="text-gray-400">({(f.locations ?? []).join(", ") || f.chapter || "location not recorded"})</span>
+                {f.description && <p className="mt-0.5 text-gray-500">{f.description}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <SectionLabel>Penalty breakdown</SectionLabel>
       <div className="rounded-lg border border-gray-100 overflow-hidden text-xs">
         {[
@@ -639,6 +737,10 @@ function CriticalRisksPanel({ risks }: { risks: RiskRow[] }) {
 function TraceabilityView({ ds }: { ds: DimensionScoreRow }) {
   const log = asRecord(ds.traceabilityLog);
   const formula = typeof log.formula === "string" ? log.formula : null;
+  const p1Conflicts = (() => {
+    const v = asRecord(ds.subScores).majorReconciliations;
+    return typeof v === "number" ? v : null;
+  })();
 
   return (
     <div className="space-y-4">
@@ -648,7 +750,7 @@ function TraceabilityView({ ds }: { ds: DimensionScoreRow }) {
           <code className="block text-xs bg-gray-100 rounded px-3 py-1.5 font-mono text-gray-700">{formula}</code>
         </div>
       )}
-      {ds.dimensionKey === "P1" && <P1Trace log={log} />}
+      {ds.dimensionKey === "P1" && <P1Trace log={log} conflictCount={p1Conflicts} findings={ds.findings ?? null} />}
       {ds.dimensionKey === "P3" && <P3Trace log={log} />}
       {ds.dimensionKey === "P5" && <P5Trace log={log} />}
       {ds.dimensionKey === "P7" && <P7Trace log={log} />}
@@ -708,7 +810,36 @@ function DiagnosticsStrip({ diagnostics }: { diagnostics: DiagRow[] }) {
 
 // ─── Hero block ───────────────────────────────────────────────────────────────
 
+/** Why a badge fired — mirrors statusBadge() in lib/confidence/index.ts.
+ *  Reads the STORED Gap rows' severity (never re-derives from dimension scores, which
+ *  would misread sentinel values) and, for the v1.1 Stage-2 floor, the stored D scores. */
+function badgeHint(run: RunData): string | null {
+  if (run.statusBadge === "MAJOR_REWORK") {
+    if (run.memoConfidence < 50) return "Readiness below 50.";
+    const highPillars = Array.from(
+      new Set(run.gaps.filter((g) => g.severity === "HIGH").map((g) => g.dimensionKey))
+    );
+    if (highPillars.length > 0) return `Forced by ${highPillars.join(", ")} ≤ 2.0`;
+    return null;
+  }
+  if (run.statusBadge === "NEEDS_WORK") {
+    // V3 v1.1 Stage-2 floor: readiness qualified for READY_TO_SHIP and no HIGH
+    // gap, but a D dimension at or below 2.0 held the badge back.
+    const hasHighGap = run.gaps.some((g) => g.severity === "HIGH");
+    if (run.memoConfidence >= 75 && !hasHighGap) {
+      const floored = STAGE_2_KEYS.filter((k) => {
+        const s = pillarScore(run, k);
+        return s !== null && s <= 2.0;
+      });
+      if (floored.length > 0) return `Held at NEEDS_WORK by ${floored.join(", ")} ≤ 2.0`;
+    }
+    return null;
+  }
+  return null;
+}
+
 function HeroBlock({ run }: { run: RunData }) {
+  const reworkHint = badgeHint(run);
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
       <div className="flex flex-wrap items-start gap-6">
@@ -717,13 +848,33 @@ function HeroBlock({ run }: { run: RunData }) {
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Memo Readiness</p>
           <p className="text-6xl font-extrabold text-gray-900 leading-none">{run.memoConfidence.toFixed(1)}</p>
           <p className="text-xs text-gray-400 mt-1">out of 100</p>
+          {run.scoredPillarCount !== null && run.scoredPillarCount < 8 && (
+            <p className="text-xs text-amber-700 mt-1">
+              Computed over {run.scoredPillarCount} of 8 pillars (not-scored pillars excluded via rescaling)
+            </p>
+          )}
+          {run.scorableChapterCount !== null && (
+            <p className="text-xs mt-2">
+              <span className="text-gray-500">Scored on {run.scorableChapterCount} of 10 chapters</span>
+              {run.scorableChapterCount < 10 && (
+                <span className="ml-1.5 bg-amber-100 border border-amber-200 text-amber-700 rounded-full px-2 py-0.5 font-medium">
+                  partial memo
+                </span>
+              )}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-3 mt-1">
           {/* Status badge */}
-          <span className={`rounded-full px-4 py-1.5 text-sm font-semibold ${BADGE_STYLES[run.statusBadge] ?? ""}`}>
-            {BADGE_LABELS[run.statusBadge] ?? run.statusBadge}
-          </span>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={`rounded-full px-4 py-1.5 text-sm font-semibold ${BADGE_STYLES[run.statusBadge] ?? ""}`}>
+              {BADGE_LABELS[run.statusBadge] ?? run.statusBadge}
+            </span>
+            {reworkHint && (
+              <span className="text-xs text-red-600 font-medium">{reworkHint}</span>
+            )}
+          </div>
 
           {/* Decision Confidence — quiet placeholder */}
           <div className="border border-gray-200 rounded-lg px-3 py-2 bg-gray-50">
@@ -732,6 +883,118 @@ function HeroBlock({ run }: { run: RunData }) {
             <p className="text-xs text-gray-400 italic">Same as Memo Readiness (Suppressor pending v1.5)</p>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── D3: k-run verification strip ────────────────────────────────────────────
+
+function VerificationStrip({ group, currentRunId }: { group: VerificationRunSummary[]; currentRunId: number }) {
+  const agg = aggregateVerification(group);
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          Verification group — {agg.count} run{agg.count !== 1 ? "s" : ""}
+        </p>
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${BADGE_STYLES[agg.consensusBadge] ?? "bg-gray-100 text-gray-600"}`}>
+          Consensus: {BADGE_LABELS[agg.consensusBadge] ?? agg.consensusBadge}
+        </span>
+      </div>
+      <div className="space-y-1 mb-3">
+        {group.map((r) => (
+          <div key={r.runId} className="flex items-center gap-3 text-xs">
+            <a href={`/scorecard/${r.runId}`}
+              className={`font-mono w-16 ${r.runId === currentRunId ? "font-bold text-gray-900" : "text-brand-orange hover:underline"}`}>
+              Run #{r.runId}
+            </a>
+            <span className="font-semibold tabular-nums w-12 text-gray-800">{r.memoConfidence.toFixed(1)}</span>
+            <span className={`rounded-full px-2 py-0.5 ${BADGE_STYLES[r.statusBadge] ?? "bg-gray-100 text-gray-600"}`}>
+              {BADGE_LABELS[r.statusBadge] ?? r.statusBadge}
+            </span>
+            <span className="text-gray-400">{new Date(r.scoredAt).toLocaleString()}</span>
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-gray-500">
+        Mean readiness <span className="font-semibold text-gray-700">{agg.meanReadiness.toFixed(1)}</span>
+        {" "}· spread <span className={`font-semibold ${agg.spread > 5 ? "text-amber-700" : "text-gray-700"}`}>{agg.spread.toFixed(1)}</span>
+        {" "}· consensus badge is worst-of-group (conservative by design). P1 is pinned by the
+        findings cache across the group, so the spread measures the other pillars&apos; variance.
+        No stored score is averaged into any single run&apos;s record.
+      </p>
+    </div>
+  );
+}
+
+function VerifyScoreModal({ run, onClose }: { run: RunData; onClose: () => void }) {
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function fire() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/verify-score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ runId: run.id }),
+      });
+      const data = (await res.json()) as { queued?: number; note?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Verification request failed");
+      setResult(data.note ?? `${data.queued} verification runs queued.`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Verification request failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
+      <div className="bg-white rounded-xl shadow-xl border border-gray-200 w-full max-w-md p-6">
+        <p className="text-sm font-semibold text-gray-900 mb-2">Verify score (3 runs)</p>
+        {result ? (
+          <>
+            <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-4">{result}</p>
+            <div className="flex justify-end">
+              <button onClick={onClose}
+                className="px-4 py-1.5 text-sm font-medium rounded-lg bg-gray-900 text-white hover:bg-gray-700">
+                Done
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-xs text-gray-600 leading-relaxed mb-3">
+              This re-scores <span className="font-semibold">{run.memo.name}</span> twice more
+              through the full pipeline with the original Risk Gate decisions carried over,
+              then shows a 3-run aggregate (per-run readiness, mean, spread, and a
+              worst-of-three consensus badge).
+            </p>
+            <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
+              <span className="font-semibold">Token cost:</span> two additional full scoring
+              runs (~2× this run&apos;s LLM calls). The P1 findings cache makes the coherence
+              portion free and deterministic; everything else is re-detected live. This spend
+              cannot be undone.
+            </p>
+            {error && (
+              <p className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3">{error}</p>
+            )}
+            <div className="flex justify-end gap-2">
+              <button onClick={onClose} disabled={busy}
+                className="px-4 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">
+                Cancel
+              </button>
+              <button onClick={fire} disabled={busy}
+                className="px-4 py-1.5 text-sm font-medium rounded-lg bg-brand-orange text-white hover:bg-brand-orange-hover disabled:opacity-50">
+                {busy ? "Queuing…" : "Confirm — run 2 more scorings"}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -758,16 +1021,28 @@ function StageMatrix({ run }: { run: RunData }) {
               const score = pillarScore(run, k);
               const name = PILLAR_EXPLANATIONS[k]?.name ?? k;
               return (
-                <div key={k} className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-gray-400 w-7">{k}</span>
-                  <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${score >= 4 ? "bg-green-400" : score >= 3 ? "bg-amber-400" : "bg-red-400"}`}
-                      style={{ width: `${(score / 5) * 100}%` }}
-                    />
+                <div key={k}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono text-gray-400 w-7">{k}</span>
+                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${score === null ? "bg-gray-200" : score >= 4 ? "bg-green-400" : score >= 3 ? "bg-amber-400" : "bg-red-400"}`}
+                        style={{ width: `${((score ?? 0) / 5) * 100}%` }}
+                      />
+                    </div>
+                    <span className={`text-xs font-semibold text-right ${score === null ? "w-auto" : "w-8"} ${scoreColor(score)}`}>
+                      {score !== null ? score.toFixed(1) : "Not scored"}
+                    </span>
+                    <span className="text-xs text-gray-500 hidden sm:block w-28 truncate">{name}</span>
                   </div>
-                  <span className={`text-xs font-semibold w-8 text-right ${scoreColor(score)}`}>{score.toFixed(1)}</span>
-                  <span className="text-xs text-gray-500 hidden sm:block w-28 truncate">{name}</span>
+                  {k === "P1" && (() => {
+                    const conflicts = p1ConflictCount(run);
+                    return (
+                      <p className="text-[11px] text-gray-400 pl-9 mt-0.5">
+                        Coherence conflicts: <span className={`font-semibold ${conflicts !== null && conflicts > 1 ? "text-red-600" : "text-gray-600"}`}>{conflicts ?? "—"}</span> — memos ship at ≤1
+                      </p>
+                    );
+                  })()}
                 </div>
               );
             })}
@@ -824,7 +1099,7 @@ function ChipStrip({ run, onChipClick }: { run: RunData; onChipClick: (key: stri
               title={PILLAR_EXPLANATIONS[k]?.gloss}
               className={`border rounded-lg px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-brand-orange-ring ${chipStyle(score)}`}>
               <span className="font-bold">{k}</span>
-              <span>{score.toFixed(2)}</span>
+              <span>{score !== null ? score.toFixed(2) : "Not scored"}</span>
             </button>
           );
         })}
@@ -861,6 +1136,8 @@ function enrichGapFromTrace(
 function deriveGapFromTrace(
   ds: DimensionScoreRow
 ): { issue: string; impact: string; fix: string } | null {
+  // NOT_SCORED produces no gap — a null score is missing data, not a deficiency
+  if (ds.serverComputed === null) return null;
   const log = ds.traceabilityLog;
   const sub = asRecord(ds.subScores);
   const score = ds.serverComputed;
@@ -968,6 +1245,9 @@ function GapsTab({ gaps, dimensionScores }: { gaps: GapRow[]; dimensionScores: D
     .filter(
       (ds) =>
         ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"].includes(ds.dimensionKey) &&
+        // explicit null guard: NOT_SCORED must never synthesize a gap
+        // (JS would coerce null < 4 to true and null <= 2 to HIGH severity)
+        ds.serverComputed !== null &&
         ds.serverComputed < EDIT_THRESHOLD &&
         !gaps.some((g) => g.dimensionKey === ds.dimensionKey)
     )
@@ -980,7 +1260,7 @@ function GapsTab({ gaps, dimensionScores }: { gaps: GapRow[]; dimensionScores: D
         issue: specific.issue,
         impact: specific.impact,
         fix: specific.fix,
-        severity: ds.serverComputed <= 2 ? "HIGH" : "MEDIUM",
+        severity: ds.serverComputed !== null && ds.serverComputed <= 2 ? "HIGH" : "MEDIUM",
       } as GapRow;
     })
     .filter(Boolean) as GapRow[];
@@ -1112,7 +1392,9 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
           <span className="hidden sm:inline text-xs text-gray-400">{exp?.stage}</span>
         </div>
         <div className="flex items-center gap-3 shrink-0">
-          <span className={`text-xl font-bold ${scoreColor(score)}`}>{score.toFixed(2)}</span>
+          <span className={`${score !== null ? "text-xl" : "text-sm"} font-bold ${scoreColor(score)}`}>
+            {score !== null ? score.toFixed(2) : "Not scored"}
+          </span>
           <svg className={`h-4 w-4 transition-transform ${open ? "rotate-180 text-brand-orange" : "text-gray-400"}`}
             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -1161,7 +1443,7 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
             </div>
             {ds.calibrationDrift && (
               <p className="mt-2 text-xs bg-amber-50 text-amber-700 rounded px-3 py-1.5 border border-amber-200">
-                ⚠ Calibration drift: server={score.toFixed(2)}, agent={ds.agentSelfReported?.toFixed(2) ?? "—"}
+                ⚠ Calibration drift: server={score?.toFixed(2) ?? "Not scored"}, agent={ds.agentSelfReported?.toFixed(2) ?? "—"}
               </p>
             )}
           </div>
@@ -1173,7 +1455,7 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
           </div>
 
           {/* Score meaning for this score */}
-          {guide && (
+          {guide && score !== null && (
             <div>
               <SectionLabel>What this score means</SectionLabel>
               {(() => {
@@ -1186,6 +1468,19 @@ function BreakdownRow({ ds, defaultOpen = false }: { ds: DimensionScoreRow; defa
                   </p>
                 ) : null;
               })()}
+            </div>
+          )}
+          {guide && score === null && (
+            <div>
+              <SectionLabel>What this score means</SectionLabel>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                <span className="font-bold mr-1.5 text-gray-400">Not scored</span>
+                {ds.dimensionKey === "P7"
+                  ? "P7: Not scored — insufficient financial claims (excluded from readiness)."
+                  : "This dimension was not scored on this run (insufficient input data) and is excluded from readiness."}{" "}
+                Under V3 v1.1, readiness is rescaled over the scored pillars so an unscored
+                pillar neither erodes nor inflates the score.
+              </p>
             </div>
           )}
         </div>
@@ -1226,10 +1521,11 @@ function BreakdownTab({ run, focusKey }: { run: RunData; focusKey: string | null
 
 function ExplanationTab({ run }: { run: RunData }) {
   const summary = generateExplanation(run);
-  const topErosion = STAGE_1_KEYS.map((k) => {
+  const topErosion = STAGE_1_KEYS.flatMap((k) => {
     const score = pillarScore(run, k);
+    if (score === null) return []; // not scored — no erosion attributed
     const e = erosion(score);
-    return { key: k, name: PILLAR_EXPLANATIONS[k]?.name ?? k, score, erosion: e };
+    return [{ key: k, name: PILLAR_EXPLANATIONS[k]?.name ?? k, score, erosion: e }];
   })
     .filter((p) => p.erosion > 0)
     .sort((a, b) => b.erosion - a.erosion);
@@ -1279,11 +1575,13 @@ function ExplanationTab({ run }: { run: RunData }) {
                     <span className="text-xs text-gray-700">{name}</span>
                   </div>
                   <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full ${s >= 4 ? "bg-green-400" : s >= 3 ? "bg-amber-400" : "bg-red-400"}`}
-                      style={{ width: `${(s / 5) * 100}%` }} />
+                    <div className={`h-full rounded-full ${s === null ? "bg-gray-200" : s >= 4 ? "bg-green-400" : s >= 3 ? "bg-amber-400" : "bg-red-400"}`}
+                      style={{ width: `${((s ?? 0) / 5) * 100}%` }} />
                   </div>
                 </div>
-                <span className={`text-xs font-semibold font-mono w-10 text-right ${scoreColor(s)}`}>{s.toFixed(2)}</span>
+                <span className={`text-xs font-semibold font-mono text-right ${s === null ? "w-auto" : "w-10"} ${scoreColor(s)}`}>
+                  {s !== null ? s.toFixed(2) : "Not scored"}
+                </span>
               </div>
             );
           })}
@@ -1913,7 +2211,7 @@ function DeleteModal({
 
 // ─── Overflow menu ────────────────────────────────────────────────────────────
 
-function OverflowMenu({ run, onDelete, onEdit }: { run: RunData; onDelete: () => void; onEdit: () => void }) {
+function OverflowMenu({ run, onDelete, onEdit, onVerify }: { run: RunData; onDelete: () => void; onEdit: () => void; onVerify: () => void }) {
   const [open, setOpen] = useState(false);
 
   function exportRunCSV() {
@@ -1932,7 +2230,7 @@ function OverflowMenu({ run, onDelete, onEdit }: { run: RunData; onDelete: () =>
       ["Stage 2 Average", run.stage2Avg.toFixed(2)],
       [],
       ["Dimension", "Score"],
-      ...run.dimensionScores.map((d) => [d.dimensionKey, d.serverComputed.toFixed(2)]),
+      ...run.dimensionScores.map((d) => [d.dimensionKey, d.serverComputed !== null ? d.serverComputed.toFixed(2) : "Not scored"]),
     ];
     const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -1966,6 +2264,13 @@ function OverflowMenu({ run, onDelete, onEdit }: { run: RunData; onDelete: () =>
               className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
               Edit memo details
             </button>
+            {run.verificationGroupId === null && (
+              <button
+                onClick={() => { setOpen(false); onVerify(); }}
+                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                Verify score (3 runs)…
+              </button>
+            )}
             <div className="border-t border-gray-100 my-1" />
             <button
               onClick={() => { setOpen(false); onDelete(); }}
@@ -2081,13 +2386,31 @@ function EditMemoModal({
 
 type Tab = "gaps" | "edits" | "breakdown" | "explanation" | "recovery" | "redundancy";
 
-export function ScorecardClient({ run: initialRun }: { run: RunData }) {
+// T4: framing provenance — present only when the run was scored against a
+// framing revision (computed server-side; silent when unknowable).
+export interface FramingProvenance {
+  framingName: string;
+  revisionNumber: number;
+  originalName: string;
+  generatedAgainstEarlier: boolean;
+}
+
+export function ScorecardClient({
+  run: initialRun,
+  verificationGroup = null,
+  framingProvenance = null,
+}: {
+  run: RunData;
+  verificationGroup?: VerificationRunSummary[] | null;
+  framingProvenance?: FramingProvenance | null;
+}) {
   const [run, setRun] = useState(initialRun);
   const [activeTab, setActiveTab] = useState<Tab>("gaps");
   const [focusKey, setFocusKey] = useState<string | null>(null);
   const [showDelete, setShowDelete] = useState(false);
   const [showEloModal, setShowEloModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
 
   function handleChipClick(key: string) {
     setActiveTab("breakdown");
@@ -2110,7 +2433,7 @@ export function ScorecardClient({ run: initialRun }: { run: RunData }) {
     <>
       <TopBar
         title={run.memo.name}
-        actions={<OverflowMenu run={run} onDelete={() => setShowDelete(true)} onEdit={() => setShowEditModal(true)} />}
+        actions={<OverflowMenu run={run} onDelete={() => setShowDelete(true)} onEdit={() => setShowEditModal(true)} onVerify={() => setShowVerifyModal(true)} />}
       />
 
       <main className="flex-1 overflow-y-auto">
@@ -2123,6 +2446,19 @@ export function ScorecardClient({ run: initialRun }: { run: RunData }) {
             <p className="text-xs text-gray-400">Run #{run.id} · {run.rubricVersion}</p>
           </div>
 
+          {/* T4: framing-revision provenance (absent unless scored against a revision) */}
+          {framingProvenance && (
+            <p className="text-xs text-gray-500 -mt-2">
+              Scored against framing revision {framingProvenance.revisionNumber}{" "}
+              (original: {framingProvenance.originalName}).
+              {framingProvenance.generatedAgainstEarlier && (
+                <span className="text-amber-700 font-medium">
+                  {" "}Memo generated against an earlier framing version.
+                </span>
+              )}
+            </p>
+          )}
+
           {/* 1. Diagnostics strip */}
           <DiagnosticsStrip diagnostics={run.diagnostics} />
 
@@ -2131,6 +2467,9 @@ export function ScorecardClient({ run: initialRun }: { run: RunData }) {
 
           {/* 2. Hero */}
           <HeroBlock run={run} />
+
+          {/* 2b. D3: verification group strip (anchor + re-scores) */}
+          {verificationGroup && <VerificationStrip group={verificationGroup} currentRunId={run.id} />}
 
           {/* 3. Stage matrix */}
           <StageMatrix run={run} />
@@ -2181,6 +2520,7 @@ export function ScorecardClient({ run: initialRun }: { run: RunData }) {
       </main>
 
       {showDelete && <DeleteModal runId={run.id} onClose={() => setShowDelete(false)} />}
+      {showVerifyModal && <VerifyScoreModal run={run} onClose={() => setShowVerifyModal(false)} />}
       {showEloModal && (
         <EloComparisonModal
           currentMemoId={run.memo.id}

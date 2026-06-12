@@ -2,6 +2,11 @@
  * scripts/noise-floor.ts — Step 4 measurement.
  * Compares each measurement run against the stored in-set run for the same memo.
  * Read-only. Reports SRI spread, claimCount spread, and per-dimension deltas.
+ *
+ * Creating new measurement runs (the re-scores this script compares): POST
+ * /api/score with `allowEmptyRisks: true` — since the A4 guard, an empty
+ * approvedRisks array without that flag is rejected with a 400. Flagged runs
+ * are stamped dataNote = "risk gate bypassed" at creation (self-labeling).
  */
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -25,7 +30,10 @@ async function load(srId: number) {
     },
   });
   const dims = new Map<string, number>();
-  for (const d of run!.dimensionScores) dims.set(d.dimensionKey, d.score);
+  // null = NOT_SCORED (nullable since Phase B1) — leave unset so it prints as "n/a"
+  for (const d of run!.dimensionScores) {
+    if (d.score !== null) dims.set(d.dimensionKey, d.score);
+  }
   return { run: run!, dims };
 }
 

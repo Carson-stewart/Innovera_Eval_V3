@@ -22,6 +22,8 @@ export interface HistoryRun {
   statusBadge: string;
   stage1Avg: number;
   stage2Avg: number;
+  /** P1 coherence-conflict count from persisted subScores; null when not stored */
+  p1Conflicts: number | null;
   scoredAt: string;
   memo: { id: number; name: string; typology: string };
   eloRating: number | null;
@@ -37,7 +39,7 @@ const TYPOLOGY_LABELS: Record<string, string> = {
 // ─── CSV export ───────────────────────────────────────────────────────────────
 
 function exportCSV(rows: HistoryRun[]) {
-  const headers = ["Run ID", "Memo Name", "Typology", "Readiness", "Status", "ELO", "Rubric Version", "Date"];
+  const headers = ["Run ID", "Memo Name", "Typology", "Readiness", "Conflicts", "Status", "ELO", "Rubric Version", "Date"];
   const lines = [
     headers.join(","),
     ...rows.map((r) =>
@@ -46,6 +48,7 @@ function exportCSV(rows: HistoryRun[]) {
         `"${r.memo.name.replace(/"/g, '""')}"`,
         TYPOLOGY_LABELS[r.memo.typology] ?? r.memo.typology,
         r.memoConfidence.toFixed(1),
+        r.p1Conflicts ?? "",
         r.statusBadge,
         r.eloRating != null ? Math.round(r.eloRating) : "",
         r.rubricVersion,
@@ -265,6 +268,21 @@ export function HistoryClient({ initialRuns, eloPoints, rubricVersions }: Props)
             />
           </div>
         </div>
+      ),
+    },
+    {
+      key: "conflicts",
+      header: "Conflicts",
+      width: "w-20",
+      align: "right",
+      hideOnMobile: true,
+      render: (r) => (
+        <span
+          className={`text-sm font-mono ${r.p1Conflicts !== null && r.p1Conflicts > 1 ? "text-red-600 font-semibold" : "text-gray-600"}`}
+          title="P1 coherence conflicts — memos ship at ≤1"
+        >
+          {r.p1Conflicts ?? "—"}
+        </span>
       ),
     },
     {

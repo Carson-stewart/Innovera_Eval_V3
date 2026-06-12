@@ -1,0 +1,4454 @@
+[
+  {
+    "runId": 15,
+    "note": "No RedundancyAnalysis row for this run.",
+    "sriStored": null,
+    "claimCount": null,
+    "uniqueClusterCount": null,
+    "claims": [],
+    "clusters": []
+  },
+  {
+    "runId": 23,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 46 singleton cluster(s) of 47 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.021,
+    "claimCount": 48,
+    "uniqueClusterCount": 47,
+    "claims": [
+      {
+        "claimId": "run23-cl1-i1",
+        "text": "The global computer vision AI in retail market is valued between $1.66 billion and $1.87 billion in 2024.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run23-cl1"
+      },
+      {
+        "claimId": "run23-cl1-i2",
+        "text": "The global computer vision AI in retail market has projections reaching up to $12.56 billion by 2033 at a ~25% compound annual growth rate (CAGR).",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run23-cl1"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run23-cl1",
+        "label": "The global computer vision AI in retail market is valued between $1.66 billion and $1.87 billion in 2024.",
+        "memberClaimIds": [
+          "run23-cl1-i1",
+          "run23-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 24,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 39 singleton cluster(s) of 39 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0,
+    "claimCount": 39,
+    "uniqueClusterCount": 39,
+    "claims": [],
+    "clusters": []
+  },
+  {
+    "runId": 25,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 17 singleton cluster(s) of 17 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0,
+    "claimCount": 17,
+    "uniqueClusterCount": 17,
+    "claims": [],
+    "clusters": []
+  },
+  {
+    "runId": 26,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 45 singleton cluster(s) of 46 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.042,
+    "claimCount": 48,
+    "uniqueClusterCount": 46,
+    "claims": [
+      {
+        "claimId": "run26-cl1-i1",
+        "text": "PASHA currently lacks in-house expertise and operational experience at the required scale for data center operations.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run26-cl1"
+      },
+      {
+        "claimId": "run26-cl1-i2",
+        "text": "PASHA lacks in-house experience with large-scale, carrier-neutral, and internationally certified data centers.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run26-cl1"
+      },
+      {
+        "claimId": "run26-cl1-i3",
+        "text": "PASHA lacks a proven operational team for Tier III/IV data centers.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run26-cl1"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run26-cl1",
+        "label": "PASHA lacks a proven operational team for Tier III/IV data centers.",
+        "memberClaimIds": [
+          "run26-cl1-i1",
+          "run26-cl1-i2",
+          "run26-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 27,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 14 singleton cluster(s) of 14 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0,
+    "claimCount": 14,
+    "uniqueClusterCount": 14,
+    "claims": [],
+    "clusters": []
+  },
+  {
+    "runId": 28,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 34 singleton cluster(s) of 39 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.204,
+    "claimCount": 49,
+    "uniqueClusterCount": 39,
+    "claims": [
+      {
+        "claimId": "run28-cl1-i1",
+        "text": "The target of reaching $25M in annual recurring revenue within 24 months is impossible given 9-to-12-month enterprise sales cycles and 3-to-6-month sales ramp times.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl1"
+      },
+      {
+        "claimId": "run28-cl1-i2",
+        "text": "The $25M ARR target lacks a bottom-up acquisition model — enterprise sales cycles and pilot conversion rates must be measured to forecast CAC accurately.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl1"
+      },
+      {
+        "claimId": "run28-cl1-i3",
+        "text": "Achieving $25M ARR at an assumed $9,500 annual per-store price point requires deploying the solution across more than 2,600 stores.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl1"
+      },
+      {
+        "claimId": "run28-cl1-i4",
+        "text": "The $25M ARR target within 18–24 months is mathematically unrealistic given 9–12 month enterprise sales cycles and the required volume of 2,600+ store deployments.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl1"
+      },
+      {
+        "claimId": "run28-cl2-i1",
+        "text": "The US grocery Vision AI serviceable addressable market is $190M to $215M.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl2"
+      },
+      {
+        "claimId": "run28-cl2-i2",
+        "text": "Ecolab must capture 11% to 13% of the US grocery Vision AI segment to reach its $25M ARR target.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl2"
+      },
+      {
+        "claimId": "run28-cl2-i3",
+        "text": "Ecolab must capture the required share of the US grocery Vision AI serviceable addressable market valued at $190M to $215M to reach its revenue target.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl2"
+      },
+      {
+        "claimId": "run28-cl3-i1",
+        "text": "The venture lacks a dedicated enterprise SaaS sales leader and AI product manager, creating a critical capability gap for commercial execution.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl3"
+      },
+      {
+        "claimId": "run28-cl3-i2",
+        "text": "The venture currently lacks critical enterprise SaaS sales, AI product management, and biometric privacy expertise required for commercial execution.",
+        "chapter": "Team and Execution",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl3"
+      },
+      {
+        "claimId": "run28-cl4-i1",
+        "text": "Strict biometric privacy laws and legacy camera infrastructure limitations represent the primary barriers to scalable deployment.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl4"
+      },
+      {
+        "claimId": "run28-cl4-i2",
+        "text": "Biometric privacy laws present the most severe regulatory risk, requiring strict consent mechanisms that complicate national deployment.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl4"
+      },
+      {
+        "claimId": "run28-cl5-i1",
+        "text": "Ecolab cannot compete on proprietary AI models or data scale, necessitating a partner-led architecture to bypass technical moats.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl5"
+      },
+      {
+        "claimId": "run28-cl5-i2",
+        "text": "Ecolab must execute a partner-led architecture, prioritizing Microsoft Vision AI for foundational models and FingerMark for hardware integration.",
+        "chapter": "GTM and Partners",
+        "hasEmbedding": null,
+        "clusterId": "run28-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run28-cl1",
+        "label": "Achieving $25M ARR at an assumed $9,500 annual per-store price point requires deploying the solution across more than 2,",
+        "memberClaimIds": [
+          "run28-cl1-i1",
+          "run28-cl1-i2",
+          "run28-cl1-i3",
+          "run28-cl1-i4"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run28-cl2",
+        "label": "The US grocery Vision AI serviceable addressable market is $190M to $215M.",
+        "memberClaimIds": [
+          "run28-cl2-i1",
+          "run28-cl2-i2",
+          "run28-cl2-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run28-cl3",
+        "label": "The venture lacks a dedicated enterprise SaaS sales leader and AI product manager, creating a critical capability gap fo",
+        "memberClaimIds": [
+          "run28-cl3-i1",
+          "run28-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run28-cl4",
+        "label": "Strict biometric privacy laws and legacy camera infrastructure limitations represent the primary barriers to scalable de",
+        "memberClaimIds": [
+          "run28-cl4-i1",
+          "run28-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run28-cl5",
+        "label": "Ecolab cannot compete on proprietary AI models or data scale, necessitating a partner-led architecture to bypass technic",
+        "memberClaimIds": [
+          "run28-cl5-i1",
+          "run28-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 29,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 42 singleton cluster(s) of 45 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.082,
+    "claimCount": 49,
+    "uniqueClusterCount": 45,
+    "claims": [
+      {
+        "claimId": "run29-cl1-i1",
+        "text": "Ecolab must partner for core Vision AI models and edge hardware, as it lacks proprietary datasets and infrastructure.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run29-cl1"
+      },
+      {
+        "claimId": "run29-cl1-i2",
+        "text": "Ecolab lacks proprietary retail image datasets, edge computing infrastructure, and pre-trained vision models.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run29-cl1"
+      },
+      {
+        "claimId": "run29-cl1-i3",
+        "text": "Ecolab enters at the concept stage with zero proprietary computer vision models, no grocery video training data, and no existing point-of-sale integrations.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run29-cl1"
+      },
+      {
+        "claimId": "run29-cl2-i1",
+        "text": "US retailers lose 5.5% of gross sales ($162.7 billion annually) to in-store inefficiencies and shrink.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run29-cl2"
+      },
+      {
+        "claimId": "run29-cl2-i2",
+        "text": "Shrink costs US retailers $162.7 billion annually.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run29-cl2"
+      },
+      {
+        "claimId": "run29-cl3-i1",
+        "text": "The global computer vision AI in retail market is valued between $1.66 billion and $1.87 billion in 2024.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run29-cl3"
+      },
+      {
+        "claimId": "run29-cl3-i2",
+        "text": "The global computer vision AI in retail market has projections reaching up to $12.56 billion by 2033 at a ~25% compound annual growth rate (CAGR).",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run29-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run29-cl1",
+        "label": "Ecolab lacks proprietary retail image datasets, edge computing infrastructure, and pre-trained vision models.",
+        "memberClaimIds": [
+          "run29-cl1-i1",
+          "run29-cl1-i2",
+          "run29-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run29-cl2",
+        "label": "Shrink costs US retailers $162.7 billion annually.",
+        "memberClaimIds": [
+          "run29-cl2-i1",
+          "run29-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run29-cl3",
+        "label": "The global computer vision AI in retail market is valued between $1.66 billion and $1.87 billion in 2024.",
+        "memberClaimIds": [
+          "run29-cl3-i1",
+          "run29-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 30,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 45 singleton cluster(s) of 50 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.107,
+    "claimCount": 56,
+    "uniqueClusterCount": 50,
+    "claims": [
+      {
+        "claimId": "run30-cl1-i1",
+        "text": "Visiomex is a Turkish machine vision company developing Orbiteye, a standalone artificial intelligence industrial inspection device.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl1"
+      },
+      {
+        "claimId": "run30-cl1-i2",
+        "text": "Visiomex has 10 active Orbiteye units sold, 10 contracts in negotiation, and 50 active inquiries in Turkey.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl1"
+      },
+      {
+        "claimId": "run30-cl1-i3",
+        "text": "Visiomex generates approximately 50% EBITDA margins on its $85K Orbiteye hardware-plus-software units in Turkey.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl1"
+      },
+      {
+        "claimId": "run30-cl2-i1",
+        "text": "Visiomex currently lacks Western regulatory certifications, granted patents, and localized support infrastructure.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl2"
+      },
+      {
+        "claimId": "run30-cl2-i2",
+        "text": "Visiomex currently possesses zero structural moats in Western Europe, lacking granted patents, local support infrastructure, and mandatory regulatory certifications.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl2"
+      },
+      {
+        "claimId": "run30-cl3-i1",
+        "text": "The lack of CE marking and ISO 9001 certification legally blocks immediate hardware commercialization and distributor onboarding in Western Europe.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl3"
+      },
+      {
+        "claimId": "run30-cl3-i2",
+        "text": "The system currently lacks CE marking and ISO 9001 certifications, acting as a hard blocker for Western European market entry.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl3"
+      },
+      {
+        "claimId": "run30-cl4-i1",
+        "text": "77% of AI vision implementations never advance beyond the pilot phase due to integration complexity and high failure rates.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl4"
+      },
+      {
+        "claimId": "run30-cl4-i2",
+        "text": "Buyer risk aversion is the primary adoption barrier, as the vast majority of AI vision implementations stall in the pilot phase due to integration complexity.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl4"
+      },
+      {
+        "claimId": "run30-cl5-i1",
+        "text": "Visiomex controls the proprietary in-house design of its camera, lens, and electronics.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl5"
+      },
+      {
+        "claimId": "run30-cl5-i2",
+        "text": "Visiomex designs its camera, lens, electronics, and hybrid 2D/3D optical systems entirely in-house.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run30-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run30-cl1",
+        "label": "Visiomex has 10 active Orbiteye units sold, 10 contracts in negotiation, and 50 active inquiries in Turkey.",
+        "memberClaimIds": [
+          "run30-cl1-i1",
+          "run30-cl1-i2",
+          "run30-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run30-cl2",
+        "label": "Visiomex currently lacks Western regulatory certifications, granted patents, and localized support infrastructure.",
+        "memberClaimIds": [
+          "run30-cl2-i1",
+          "run30-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run30-cl3",
+        "label": "The system currently lacks CE marking and ISO 9001 certifications, acting as a hard blocker for Western European market ",
+        "memberClaimIds": [
+          "run30-cl3-i1",
+          "run30-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run30-cl4",
+        "label": "77% of AI vision implementations never advance beyond the pilot phase due to integration complexity and high failure rat",
+        "memberClaimIds": [
+          "run30-cl4-i1",
+          "run30-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run30-cl5",
+        "label": "Visiomex controls the proprietary in-house design of its camera, lens, and electronics.",
+        "memberClaimIds": [
+          "run30-cl5-i1",
+          "run30-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 31,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 48 singleton cluster(s) of 53 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.264,
+    "claimCount": 72,
+    "uniqueClusterCount": 53,
+    "claims": [
+      {
+        "claimId": "run31-cl1-i1",
+        "text": "The AI Factory model requires a power tariff below $0.05/kWh to be viable.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl1"
+      },
+      {
+        "claimId": "run31-cl1-i2",
+        "text": "Current commercial power rates are higher than the $0.05/kWh threshold required for AI Factory viability.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl1"
+      },
+      {
+        "claimId": "run31-cl1-i3",
+        "text": "The AI Factory option is commercially viable only if PASHA secures a binding power tariff below the target threshold.",
+        "chapter": "GTM and Partners",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl1"
+      },
+      {
+        "claimId": "run31-cl1-i4",
+        "text": "The AI Factory economic model is commercially unviable if power tariffs exceed $0.05/kWh.",
+        "chapter": "Revenue Model",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl1"
+      },
+      {
+        "claimId": "run31-cl1-i5",
+        "text": "The AI Factory model is commercially invalid if power costs exceed $0.07/kWh.",
+        "chapter": "Finance & Operations Analysis (Execution Checklist)",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl1"
+      },
+      {
+        "claimId": "run31-cl2-i1",
+        "text": "Kazakhstan has already secured a partnership with Google Cloud for a Tier IV facility launching in 2026.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl2"
+      },
+      {
+        "claimId": "run31-cl2-i2",
+        "text": "Kazakhstan has lower energy costs and a Google partnership.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl2"
+      },
+      {
+        "claimId": "run31-cl2-i3",
+        "text": "Kazakhstan has secured the low-cost, hyperscaler-led position to the East validated by the Google Cloud partnership.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl2"
+      },
+      {
+        "claimId": "run31-cl2-i4",
+        "text": "Google's entry into Kazakhstan validates it as the regional cloud hub.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl2"
+      },
+      {
+        "claimId": "run31-cl3-i1",
+        "text": "The project requires an estimated $200–300M capital deployment.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl3"
+      },
+      {
+        "claimId": "run31-cl3-i2",
+        "text": "The financial plan requires a capital injection of $200–250M, structured as $100M in equity and $150M in debt.",
+        "chapter": "Operations Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl3"
+      },
+      {
+        "claimId": "run31-cl4-i1",
+        "text": "Uzbekistan offers a tax-free regime for IT services until 2040.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl4"
+      },
+      {
+        "claimId": "run31-cl4-i2",
+        "text": "Uzbekistan offers tax holidays until 2040.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl4"
+      },
+      {
+        "claimId": "run31-cl5-i1",
+        "text": "A $0.01 increase in power costs reduces net margins by 15–20%.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl5"
+      },
+      {
+        "claimId": "run31-cl5-i2",
+        "text": "A $0.01/kWh increase in power tariffs erodes net margins by 15–20%.",
+        "chapter": "Operations Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run31-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run31-cl1",
+        "label": "The AI Factory model requires a power tariff below $0.05/kWh to be viable.",
+        "memberClaimIds": [
+          "run31-cl1-i1",
+          "run31-cl1-i2",
+          "run31-cl1-i3",
+          "run31-cl1-i4",
+          "run31-cl1-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run31-cl2",
+        "label": "Kazakhstan has lower energy costs and a Google partnership.",
+        "memberClaimIds": [
+          "run31-cl2-i1",
+          "run31-cl2-i2",
+          "run31-cl2-i3",
+          "run31-cl2-i4"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run31-cl3",
+        "label": "The project requires an estimated $200–300M capital deployment.",
+        "memberClaimIds": [
+          "run31-cl3-i1",
+          "run31-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run31-cl4",
+        "label": "Uzbekistan offers tax holidays until 2040.",
+        "memberClaimIds": [
+          "run31-cl4-i1",
+          "run31-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run31-cl5",
+        "label": "A $0.01 increase in power costs reduces net margins by 15–20%.",
+        "memberClaimIds": [
+          "run31-cl5-i1",
+          "run31-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 32,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 32 singleton cluster(s) of 37 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.26,
+    "claimCount": 50,
+    "uniqueClusterCount": 37,
+    "claims": [
+      {
+        "claimId": "run32-cl1-i1",
+        "text": "LGIT currently lacks ISO 13485 and ISO 10993 medical certifications required for immediate market access.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl1-i2",
+        "text": "LGIT has zero first-party buyer validation and generates no commercial medical revenue.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl1-i3",
+        "text": "LGIT's current consumer-grade materials lack ISO 10993 biocompatibility clearances.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl1-i4",
+        "text": "LGIT lacks medical-grade quality management systems (ISO 13485).",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl1-i5",
+        "text": "LGIT lacks clinical validation infrastructure.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl1-i6",
+        "text": "LGIT completely lacks medical regulatory certifications and established OEM relationships.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl1-i7",
+        "text": "LGIT's leadership team lacks essential medical device experience in regulatory compliance, quality systems, and clinical application engineering.",
+        "chapter": "Team and Execution",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl1-i8",
+        "text": "LGIT currently lacks a medical device manufacturing certification footprint.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl1"
+      },
+      {
+        "claimId": "run32-cl2-i1",
+        "text": "LGIT targets $350M revenue capture within the target planning horizon.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl2"
+      },
+      {
+        "claimId": "run32-cl2-i2",
+        "text": "LGIT targets an internal rate of return (IRR) exceeding 20% within three years.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl2"
+      },
+      {
+        "claimId": "run32-cl2-i3",
+        "text": "LGIT targets an operating profit margin above 30% within three years.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl2"
+      },
+      {
+        "claimId": "run32-cl3-i1",
+        "text": "Three OEMs control 99% of the CGMS market.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl3"
+      },
+      {
+        "claimId": "run32-cl3-i2",
+        "text": "A few dominant players control the vast majority of the CGMS market.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl3"
+      },
+      {
+        "claimId": "run32-cl4-i1",
+        "text": "The structural cost of medical quality consumes 6.8% to 9.4% of sales.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl4"
+      },
+      {
+        "claimId": "run32-cl4-i2",
+        "text": "The direct cost of quality in medical device manufacturing consumes 6.8% to 9.4% of annual sales.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl4"
+      },
+      {
+        "claimId": "run32-cl5-i1",
+        "text": "Top-quartile MedTech CDMOs achieve 22% margins.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl5"
+      },
+      {
+        "claimId": "run32-cl5-i2",
+        "text": "Top-performing MedTech CDMOs average 22% profit margins.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run32-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run32-cl1",
+        "label": "LGIT lacks clinical validation infrastructure.",
+        "memberClaimIds": [
+          "run32-cl1-i1",
+          "run32-cl1-i2",
+          "run32-cl1-i3",
+          "run32-cl1-i4",
+          "run32-cl1-i5",
+          "run32-cl1-i6",
+          "run32-cl1-i7",
+          "run32-cl1-i8"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run32-cl2",
+        "label": "LGIT targets an operating profit margin above 30% within three years.",
+        "memberClaimIds": [
+          "run32-cl2-i1",
+          "run32-cl2-i2",
+          "run32-cl2-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run32-cl3",
+        "label": "Three OEMs control 99% of the CGMS market.",
+        "memberClaimIds": [
+          "run32-cl3-i1",
+          "run32-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run32-cl4",
+        "label": "The structural cost of medical quality consumes 6.8% to 9.4% of sales.",
+        "memberClaimIds": [
+          "run32-cl4-i1",
+          "run32-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run32-cl5",
+        "label": "Top-quartile MedTech CDMOs achieve 22% margins.",
+        "memberClaimIds": [
+          "run32-cl5-i1",
+          "run32-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 33,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 46 singleton cluster(s) of 51 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.089,
+    "claimCount": 56,
+    "uniqueClusterCount": 51,
+    "claims": [
+      {
+        "claimId": "run33-cl1-i1",
+        "text": "LG Innotek is evaluating an expansion from consumer electronics substrates into the medical device value chain, specifically targeting continuous glucose monitors, neurostimulation, and brain-computer interfaces.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl1"
+      },
+      {
+        "claimId": "run33-cl1-i2",
+        "text": "LG Innotek has secured initial traction through active development with a major continuous glucose monitor company.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl1"
+      },
+      {
+        "claimId": "run33-cl2-i1",
+        "text": "LG Innotek currently possesses a zero-footprint regulatory status.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl2"
+      },
+      {
+        "claimId": "run33-cl2-i2",
+        "text": "LG Innotek lacks an established medical regulatory footprint.",
+        "chapter": "GTM and Partners",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl2"
+      },
+      {
+        "claimId": "run33-cl3-i1",
+        "text": "Two incumbents control over 85% of United States prescriptions in the continuous glucose monitor segment.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl3"
+      },
+      {
+        "claimId": "run33-cl3-i2",
+        "text": "The CGM segment has a duopoly controlling over 85% of US prescriptions.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl3"
+      },
+      {
+        "claimId": "run33-cl4-i1",
+        "text": "LG Innotek's proprietary microfabrication assets provide a deep technical moat.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl4"
+      },
+      {
+        "claimId": "run33-cl4-i2",
+        "text": "LG Innotek holds a 2-3 year technological advantage in extreme miniaturization.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl4"
+      },
+      {
+        "claimId": "run33-cl5-i1",
+        "text": "Handling sensitive biometric data will subject the company to multi-jurisdictional privacy laws (HIPAA, GDPR).",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl5"
+      },
+      {
+        "claimId": "run33-cl5-i2",
+        "text": "Processing biometric data through medical modules triggers strict HIPAA and GDPR obligations.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run33-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run33-cl1",
+        "label": "LG Innotek has secured initial traction through active development with a major continuous glucose monitor company.",
+        "memberClaimIds": [
+          "run33-cl1-i1",
+          "run33-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run33-cl2",
+        "label": "LG Innotek lacks an established medical regulatory footprint.",
+        "memberClaimIds": [
+          "run33-cl2-i1",
+          "run33-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run33-cl3",
+        "label": "The CGM segment has a duopoly controlling over 85% of US prescriptions.",
+        "memberClaimIds": [
+          "run33-cl3-i1",
+          "run33-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run33-cl4",
+        "label": "LG Innotek's proprietary microfabrication assets provide a deep technical moat.",
+        "memberClaimIds": [
+          "run33-cl4-i1",
+          "run33-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run33-cl5",
+        "label": "Processing biometric data through medical modules triggers strict HIPAA and GDPR obligations.",
+        "memberClaimIds": [
+          "run33-cl5-i1",
+          "run33-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 34,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 71 singleton cluster(s) of 74 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.039,
+    "claimCount": 77,
+    "uniqueClusterCount": 74,
+    "claims": [
+      {
+        "claimId": "run34-cl1-i1",
+        "text": "Daikin's Defense Systems Division currently manufactures oxygen concentration technology (Pressure Swing Adsorption) for medical and athletic use at TRL 9.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run34-cl1"
+      },
+      {
+        "claimId": "run34-cl1-i2",
+        "text": "Daikin possesses proprietary oxygen concentration technology from its Defense Systems Division.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run34-cl1"
+      },
+      {
+        "claimId": "run34-cl2-i1",
+        "text": "The venture currently lacks a dedicated sales team or P&L owner.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run34-cl2"
+      },
+      {
+        "claimId": "run34-cl2-i2",
+        "text": "The initiative currently lacks a single empowered leader with full P&L accountability.",
+        "chapter": "Team and Execution",
+        "hasEmbedding": null,
+        "clusterId": "run34-cl2"
+      },
+      {
+        "claimId": "run34-cl3-i1",
+        "text": "The venture should conduct 20 structured interviews with HR and Real Estate Directors to determine willingness-to-pay.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run34-cl3"
+      },
+      {
+        "claimId": "run34-cl3-i2",
+        "text": "The venture should interview 10+ HR Directors in high-stress sectors to test pricing elasticity.",
+        "chapter": "Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run34-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run34-cl1",
+        "label": "Daikin possesses proprietary oxygen concentration technology from its Defense Systems Division.",
+        "memberClaimIds": [
+          "run34-cl1-i1",
+          "run34-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run34-cl2",
+        "label": "The venture currently lacks a dedicated sales team or P&L owner.",
+        "memberClaimIds": [
+          "run34-cl2-i1",
+          "run34-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run34-cl3",
+        "label": "The venture should interview 10+ HR Directors in high-stress sectors to test pricing elasticity.",
+        "memberClaimIds": [
+          "run34-cl3-i1",
+          "run34-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 35,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 37 singleton cluster(s) of 47 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.175,
+    "claimCount": 57,
+    "uniqueClusterCount": 47,
+    "claims": [
+      {
+        "claimId": "run35-cl1-i1",
+        "text": "The project requires an estimated $200–300M capital deployment.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl1"
+      },
+      {
+        "claimId": "run35-cl1-i2",
+        "text": "The financial plan requires a capital injection of $200–250M, structured as $100M in equity and $150M in debt.",
+        "chapter": "Operations Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl1"
+      },
+      {
+        "claimId": "run35-cl2-i1",
+        "text": "Uzbekistan offers a tax-free regime for IT services until 2040.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl2"
+      },
+      {
+        "claimId": "run35-cl2-i2",
+        "text": "Uzbekistan offers tax holidays until 2040.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl2"
+      },
+      {
+        "claimId": "run35-cl3-i1",
+        "text": "A $0.01 increase in power costs reduces net margins by 15–20%.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl3"
+      },
+      {
+        "claimId": "run35-cl3-i2",
+        "text": "A $0.01/kWh increase in power tariffs erodes net margins by 15–20%.",
+        "chapter": "Operations Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl3"
+      },
+      {
+        "claimId": "run35-cl4-i1",
+        "text": "The current team lacks specific engineering certifications to operate liquid-cooled AI infrastructure (30kW+ racks).",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl4"
+      },
+      {
+        "claimId": "run35-cl4-i2",
+        "text": "The AI Factory model necessitates deploying liquid-cooled infrastructure capable of supporting 30–50kW per rack.",
+        "chapter": "Path to Success Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl4"
+      },
+      {
+        "claimId": "run35-cl5-i1",
+        "text": "The domestic Azerbaijani market is estimated at ~$203 million.",
+        "chapter": "Opportunity Validation Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl5"
+      },
+      {
+        "claimId": "run35-cl5-i2",
+        "text": "The domestic infrastructure spend in Azerbaijan is projected at ~$203M.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl5"
+      },
+      {
+        "claimId": "run35-cl6-i1",
+        "text": "Base colocation revenue is priced at $150–$200 per kW/month.",
+        "chapter": "Path to Success Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl6"
+      },
+      {
+        "claimId": "run35-cl6-i2",
+        "text": "Colocation (Tier III) is estimated at $150–$200 per kW/month.",
+        "chapter": "Unit Economics Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl6"
+      },
+      {
+        "claimId": "run35-cl7-i1",
+        "text": "High-density AI compute zones target $350–$500 per kW/month.",
+        "chapter": "Path to Success Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl7"
+      },
+      {
+        "claimId": "run35-cl7-i2",
+        "text": "High-density AI compute can command premium pricing of $350–$500 per kW/month compared to standard colocation rates of $150–$200 per kW/month.",
+        "chapter": "Operations Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl7"
+      },
+      {
+        "claimId": "run35-cl8-i1",
+        "text": "The facility requires 40–60% utilization to cover fixed operating costs and debt service.",
+        "chapter": "Operations Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl8"
+      },
+      {
+        "claimId": "run35-cl8-i2",
+        "text": "The project requires >40% utilization to cover fixed OPEX and debt service.",
+        "chapter": "Finance & Operations Analysis (Execution Checklist)",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl8"
+      },
+      {
+        "claimId": "run35-cl9-i1",
+        "text": "The AI Factory model requires a power tariff below $0.05/kWh to be viable.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl9"
+      },
+      {
+        "claimId": "run35-cl9-i2",
+        "text": "Current commercial power rates are higher than the $0.05/kWh threshold required for AI Factory viability.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl9"
+      },
+      {
+        "claimId": "run35-cl10-i1",
+        "text": "The market for data center services in Central Asia is projected to grow at a CAGR of 18.5% through 2028.",
+        "chapter": "Opportunity Validation Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl10"
+      },
+      {
+        "claimId": "run35-cl10-i2",
+        "text": "The Central Asian colocation market is projected to reach $179.7 million by 2028.",
+        "chapter": "Opportunity Validation Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run35-cl10"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run35-cl1",
+        "label": "The project requires an estimated $200–300M capital deployment.",
+        "memberClaimIds": [
+          "run35-cl1-i1",
+          "run35-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl2",
+        "label": "Uzbekistan offers tax holidays until 2040.",
+        "memberClaimIds": [
+          "run35-cl2-i1",
+          "run35-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl3",
+        "label": "A $0.01 increase in power costs reduces net margins by 15–20%.",
+        "memberClaimIds": [
+          "run35-cl3-i1",
+          "run35-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl4",
+        "label": "The AI Factory model necessitates deploying liquid-cooled infrastructure capable of supporting 30–50kW per rack.",
+        "memberClaimIds": [
+          "run35-cl4-i1",
+          "run35-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl5",
+        "label": "The domestic Azerbaijani market is estimated at ~$203 million.",
+        "memberClaimIds": [
+          "run35-cl5-i1",
+          "run35-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl6",
+        "label": "Base colocation revenue is priced at $150–$200 per kW/month.",
+        "memberClaimIds": [
+          "run35-cl6-i1",
+          "run35-cl6-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl7",
+        "label": "High-density AI compute zones target $350–$500 per kW/month.",
+        "memberClaimIds": [
+          "run35-cl7-i1",
+          "run35-cl7-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl8",
+        "label": "The project requires >40% utilization to cover fixed OPEX and debt service.",
+        "memberClaimIds": [
+          "run35-cl8-i1",
+          "run35-cl8-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl9",
+        "label": "The AI Factory model requires a power tariff below $0.05/kWh to be viable.",
+        "memberClaimIds": [
+          "run35-cl9-i1",
+          "run35-cl9-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run35-cl10",
+        "label": "The Central Asian colocation market is projected to reach $179.7 million by 2028.",
+        "memberClaimIds": [
+          "run35-cl10-i1",
+          "run35-cl10-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 36,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 48 singleton cluster(s) of 52 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.071,
+    "claimCount": 56,
+    "uniqueClusterCount": 52,
+    "claims": [
+      {
+        "claimId": "run36-cl1-i1",
+        "text": "NextEra Energy is evaluating a near-term entry into the New York distributed solar and energy storage market using a develop-and-sell model.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl1"
+      },
+      {
+        "claimId": "run36-cl1-i2",
+        "text": "NextEra Energy proposes a develop-and-sell model targeting 5-megawatt (MW) distributed solar and standalone storage projects in unconstrained upstate New York utility zones.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl1"
+      },
+      {
+        "claimId": "run36-cl2-i1",
+        "text": "The organization possesses solar development capabilities but lacks a deployed New York storage portfolio.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl2"
+      },
+      {
+        "claimId": "run36-cl2-i2",
+        "text": "The team lacks a deployed New York storage portfolio, resulting in critical gaps in grid interconnection and storage financial modeling.",
+        "chapter": "Team and Execution",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl2"
+      },
+      {
+        "claimId": "run36-cl3-i1",
+        "text": "Utilities retroactively apply infrastructure upgrade costs averaging 38% to 52% above initial estimates.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl3"
+      },
+      {
+        "claimId": "run36-cl3-i2",
+        "text": "Utility upgrade costs in New York frequently exceed initial estimates by 38% to 52%.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl3"
+      },
+      {
+        "claimId": "run36-cl4-i1",
+        "text": "If utility upgrade costs exceed 15% of total CapEx, the internal rate of return on the development capital will collapse.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl4"
+      },
+      {
+        "claimId": "run36-cl4-i2",
+        "text": "Achieving the target 10% to 20% development margin requires keeping utility upgrade costs strictly below 15% of total CapEx.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run36-cl4"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run36-cl1",
+        "label": "NextEra Energy is evaluating a near-term entry into the New York distributed solar and energy storage market using a dev",
+        "memberClaimIds": [
+          "run36-cl1-i1",
+          "run36-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run36-cl2",
+        "label": "The organization possesses solar development capabilities but lacks a deployed New York storage portfolio.",
+        "memberClaimIds": [
+          "run36-cl2-i1",
+          "run36-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run36-cl3",
+        "label": "Utility upgrade costs in New York frequently exceed initial estimates by 38% to 52%.",
+        "memberClaimIds": [
+          "run36-cl3-i1",
+          "run36-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run36-cl4",
+        "label": "If utility upgrade costs exceed 15% of total CapEx, the internal rate of return on the development capital will collapse",
+        "memberClaimIds": [
+          "run36-cl4-i1",
+          "run36-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 37,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 60 singleton cluster(s) of 64 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.111,
+    "claimCount": 72,
+    "uniqueClusterCount": 64,
+    "claims": [
+      {
+        "claimId": "run37-cl1-i1",
+        "text": "Recommended Phase 1 validation budget is $1.5M to $2.5M over 18 months.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl1"
+      },
+      {
+        "claimId": "run37-cl1-i2",
+        "text": "Recommended validation phase budget is $325,000 to $350,000 over 3 to 4 months.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl1"
+      },
+      {
+        "claimId": "run37-cl1-i3",
+        "text": "Phase 1 budget authorization is $1.5M to $2.5M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl1"
+      },
+      {
+        "claimId": "run37-cl1-i4",
+        "text": "Phase 1 funding ($2.5M) buys 18 months of validation and hiring.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl1"
+      },
+      {
+        "claimId": "run37-cl1-i5",
+        "text": "R&D/Product Phase 1 budget is $1.5M to $2.0M representing 70% of Phase 1 capital.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl1"
+      },
+      {
+        "claimId": "run37-cl2-i1",
+        "text": "Year 3 projected revenue is $10M to $25M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl2"
+      },
+      {
+        "claimId": "run37-cl2-i2",
+        "text": "Year 4 projected revenue is $100M to $150M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl2"
+      },
+      {
+        "claimId": "run37-cl2-i3",
+        "text": "Year 5 projected revenue is $400M to $600M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl2"
+      },
+      {
+        "claimId": "run37-cl3-i1",
+        "text": "Samsung ships 200 million Galaxy devices annually.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl3"
+      },
+      {
+        "claimId": "run37-cl3-i2",
+        "text": "Samsung ships approximately 200M devices per year.",
+        "chapter": "Appendix 1",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl3"
+      },
+      {
+        "claimId": "run37-cl4-i1",
+        "text": "Samsung currently lacks proprietary launch vehicles and dedicated aerospace engineering personnel.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl4"
+      },
+      {
+        "claimId": "run37-cl4-i2",
+        "text": "Samsung currently employs zero internal aerospace engineers.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run37-cl4"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run37-cl1",
+        "label": "Phase 1 budget authorization is $1.5M to $2.5M.",
+        "memberClaimIds": [
+          "run37-cl1-i1",
+          "run37-cl1-i2",
+          "run37-cl1-i3",
+          "run37-cl1-i4",
+          "run37-cl1-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run37-cl2",
+        "label": "Year 3 projected revenue is $10M to $25M.",
+        "memberClaimIds": [
+          "run37-cl2-i1",
+          "run37-cl2-i2",
+          "run37-cl2-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run37-cl3",
+        "label": "Samsung ships 200 million Galaxy devices annually.",
+        "memberClaimIds": [
+          "run37-cl3-i1",
+          "run37-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run37-cl4",
+        "label": "Samsung currently employs zero internal aerospace engineers.",
+        "memberClaimIds": [
+          "run37-cl4-i1",
+          "run37-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 38,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 29 singleton cluster(s) of 35 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.327,
+    "claimCount": 52,
+    "uniqueClusterCount": 35,
+    "claims": [
+      {
+        "claimId": "run38-cl1-i1",
+        "text": "Year 1 revenue is projected at $4.5M to $6.1M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i2",
+        "text": "Year 2 revenue is projected at $12.0M to $17.5M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i3",
+        "text": "Year 3 revenue is projected at $30.0M to $42.1M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i4",
+        "text": "Year 4 revenue scenario is $50.0M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i5",
+        "text": "Year 5 revenue scenario is $65.0M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i6",
+        "text": "Year 1 EBITDA is projected at $(4.2)M to $(3.5)M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i7",
+        "text": "Year 2 EBITDA is projected at $(1.5)M to $(0.5)M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i8",
+        "text": "Year 3 EBITDA is projected at $2.1M to $4.5M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i9",
+        "text": "EBITDA break-even is projected for Q3, Year 3.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl1-i10",
+        "text": "Cash-flow break-even is projected for Q4, Year 3.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl1"
+      },
+      {
+        "claimId": "run38-cl2-i1",
+        "text": "The US rice cracker market is valued at $1.5 billion to $1.65 billion.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl2"
+      },
+      {
+        "claimId": "run38-cl2-i2",
+        "text": "The US rice cracker market is growing at a 6.8% to 7.67% compound annual growth rate.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl2"
+      },
+      {
+        "claimId": "run38-cl2-i3",
+        "text": "The US rice cracker market is projected to reach $1.85 billion by 2032.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl2"
+      },
+      {
+        "claimId": "run38-cl2-i4",
+        "text": "The Total Addressable Market (TAM) for U.S. rice crackers is estimated between $1.25 billion and $1.9 billion, with a triangulated baseline of $1.5 billion to $1.65 billion for 2024/2025.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl2"
+      },
+      {
+        "claimId": "run38-cl3-i1",
+        "text": "Mainstream US grocery channels require upfront slotting fees of $1 million to $2 million for a national rollout.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl3"
+      },
+      {
+        "claimId": "run38-cl3-i2",
+        "text": "US dry grocery slotting fees range from $25,000 to $250,000 for regional launches, scaling up to $2 million nationwide.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl3"
+      },
+      {
+        "claimId": "run38-cl3-i3",
+        "text": "Beverage and snack brands face slotting fees ranging from $2,000 to $50,000 per SKU for nationwide distribution.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl3"
+      },
+      {
+        "claimId": "run38-cl4-i1",
+        "text": "The target retail price is $4.50 per 4.0 oz package to support a 30-35% gross margin.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl4"
+      },
+      {
+        "claimId": "run38-cl4-i2",
+        "text": "Achieving the target 30-35% gross margin requires a minimum retail price of $4.50 per 4.0 oz package to absorb 35% retail margins, 25% distributor margins, and a 19% import tariff.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl4"
+      },
+      {
+        "claimId": "run38-cl5-i1",
+        "text": "The Serviceable Available Market (SAM) is $365 million to $475 million after excluding segments controlled by mainstream incumbents and private labels.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl5"
+      },
+      {
+        "claimId": "run38-cl5-i2",
+        "text": "The Serviceable Available Market (SAM) represents 29% to 38% of the TAM.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl5"
+      },
+      {
+        "claimId": "run38-cl6-i1",
+        "text": "Quaker Oats holds 28% market share in the rice cracker category.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl6"
+      },
+      {
+        "claimId": "run38-cl6-i2",
+        "text": "Private labels hold 22% market share in the rice cracker category.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run38-cl6"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run38-cl1",
+        "label": "Year 4 revenue scenario is $50.0M.",
+        "memberClaimIds": [
+          "run38-cl1-i1",
+          "run38-cl1-i2",
+          "run38-cl1-i3",
+          "run38-cl1-i4",
+          "run38-cl1-i5",
+          "run38-cl1-i6",
+          "run38-cl1-i7",
+          "run38-cl1-i8",
+          "run38-cl1-i9",
+          "run38-cl1-i10"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run38-cl2",
+        "label": "The US rice cracker market is valued at $1.5 billion to $1.65 billion.",
+        "memberClaimIds": [
+          "run38-cl2-i1",
+          "run38-cl2-i2",
+          "run38-cl2-i3",
+          "run38-cl2-i4"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run38-cl3",
+        "label": "Mainstream US grocery channels require upfront slotting fees of $1 million to $2 million for a national rollout.",
+        "memberClaimIds": [
+          "run38-cl3-i1",
+          "run38-cl3-i2",
+          "run38-cl3-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run38-cl4",
+        "label": "The target retail price is $4.50 per 4.0 oz package to support a 30-35% gross margin.",
+        "memberClaimIds": [
+          "run38-cl4-i1",
+          "run38-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run38-cl5",
+        "label": "The Serviceable Available Market (SAM) represents 29% to 38% of the TAM.",
+        "memberClaimIds": [
+          "run38-cl5-i1",
+          "run38-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run38-cl6",
+        "label": "Quaker Oats holds 28% market share in the rice cracker category.",
+        "memberClaimIds": [
+          "run38-cl6-i1",
+          "run38-cl6-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 39,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 44 singleton cluster(s) of 47 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.113,
+    "claimCount": 53,
+    "uniqueClusterCount": 47,
+    "claims": [
+      {
+        "claimId": "run39-cl1-i1",
+        "text": "Zebra Technologies provides ultra-low-latency machine vision components to semiconductor equipment manufacturers.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl1"
+      },
+      {
+        "claimId": "run39-cl1-i2",
+        "text": "Zebra operates as a component supplier providing modular machine vision hardware and software directly to equipment manufacturers.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl1"
+      },
+      {
+        "claimId": "run39-cl1-i3",
+        "text": "Zebra possesses proprietary zero-latency FPGA hardware control and the Aurora Imaging Library, enabling extreme-speed inspection in space-constrained, high-vibration environments.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl1"
+      },
+      {
+        "claimId": "run39-cl1-i4",
+        "text": "Zebra enters as a Tier-2/3 component supplier targeting a specific high-speed whitespace.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl1"
+      },
+      {
+        "claimId": "run39-cl1-i5",
+        "text": "Zebra's FPGA-based zero-latency hardware control and proprietary Aurora Imaging Library algorithms present opportunities for new patent or trade secret protection.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl1"
+      },
+      {
+        "claimId": "run39-cl2-i1",
+        "text": "The long-term revenue target is highly unlikely under the current purely transactional model, but a realistic revenue ceiling of $120M–$150M is achievable.",
+        "chapter": "Revenue Model",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl2"
+      },
+      {
+        "claimId": "run39-cl2-i2",
+        "text": "The $500M revenue target is mathematically unachievable; however, a $120M–$150M scale is viable.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl2"
+      },
+      {
+        "claimId": "run39-cl3-i1",
+        "text": "The absence of dedicated semiconductor applications engineering and OEM business development leadership presents a critical execution gap.",
+        "chapter": "Team and Execution",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl3"
+      },
+      {
+        "claimId": "run39-cl3-i2",
+        "text": "The initiative requires dedicated semiconductor applications engineering and OEM business development leadership within the next 6 to 12 months.",
+        "chapter": "Team and Execution",
+        "hasEmbedding": null,
+        "clusterId": "run39-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run39-cl1",
+        "label": "Zebra enters as a Tier-2/3 component supplier targeting a specific high-speed whitespace.",
+        "memberClaimIds": [
+          "run39-cl1-i1",
+          "run39-cl1-i2",
+          "run39-cl1-i3",
+          "run39-cl1-i4",
+          "run39-cl1-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run39-cl2",
+        "label": "The $500M revenue target is mathematically unachievable; however, a $120M–$150M scale is viable.",
+        "memberClaimIds": [
+          "run39-cl2-i1",
+          "run39-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run39-cl3",
+        "label": "The absence of dedicated semiconductor applications engineering and OEM business development leadership presents a criti",
+        "memberClaimIds": [
+          "run39-cl3-i1",
+          "run39-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 40,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 34 singleton cluster(s) of 38 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.136,
+    "claimCount": 44,
+    "uniqueClusterCount": 38,
+    "claims": [
+      {
+        "claimId": "run40-cl1-i1",
+        "text": "65% of grocery retailers lack real-time data readiness and operate fragmented legacy camera networks requiring prohibitive capital expenditure.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl1"
+      },
+      {
+        "claimId": "run40-cl1-i2",
+        "text": "A majority of grocers lack real-time supply chain data and possess inadequate camera networks.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl1"
+      },
+      {
+        "claimId": "run40-cl1-i3",
+        "text": "High top-of-funnel interest is bottlenecked by fragmented legacy camera infrastructure and a lack of real-time data readiness across grocery chains.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl1"
+      },
+      {
+        "claimId": "run40-cl2-i1",
+        "text": "The serviceable market is valued at $128M.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl2"
+      },
+      {
+        "claimId": "run40-cl2-i2",
+        "text": "The serviceable addressable market is $128M.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl2"
+      },
+      {
+        "claimId": "run40-cl2-i3",
+        "text": "The total addressable market is valued at $213 million, with a serviceable addressable market of $128 million controlled by the top 10 national chains.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl2"
+      },
+      {
+        "claimId": "run40-cl3-i1",
+        "text": "Ecolab enters at the concept stage with zero proprietary grocery video data.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl3"
+      },
+      {
+        "claimId": "run40-cl3-i2",
+        "text": "Ecolab enters this market at the concept stage with zero proprietary grocery video data.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl3"
+      },
+      {
+        "claimId": "run40-cl4-i1",
+        "text": "The most viable entry points are loss prevention at self-checkout and automated slip-and-fall detection, which require minimal new hardware and integrate with existing point-of-sale systems.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl4"
+      },
+      {
+        "claimId": "run40-cl4-i2",
+        "text": "Self-checkout loss prevention and slip-and-fall detection offer the fastest path to adoption due to minimal hardware requirements and rapid payback.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run40-cl4"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run40-cl1",
+        "label": "A majority of grocers lack real-time supply chain data and possess inadequate camera networks.",
+        "memberClaimIds": [
+          "run40-cl1-i1",
+          "run40-cl1-i2",
+          "run40-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run40-cl2",
+        "label": "The serviceable market is valued at $128M.",
+        "memberClaimIds": [
+          "run40-cl2-i1",
+          "run40-cl2-i2",
+          "run40-cl2-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run40-cl3",
+        "label": "Ecolab enters at the concept stage with zero proprietary grocery video data.",
+        "memberClaimIds": [
+          "run40-cl3-i1",
+          "run40-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run40-cl4",
+        "label": "Self-checkout loss prevention and slip-and-fall detection offer the fastest path to adoption due to minimal hardware req",
+        "memberClaimIds": [
+          "run40-cl4-i1",
+          "run40-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 41,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 25 singleton cluster(s) of 32 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.347,
+    "claimCount": 49,
+    "uniqueClusterCount": 32,
+    "claims": [
+      {
+        "claimId": "run41-cl1-i1",
+        "text": "Strict biometric privacy regulations and legacy IT integration complexities will extend enterprise procurement cycles.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl1"
+      },
+      {
+        "claimId": "run41-cl1-i2",
+        "text": "Extended enterprise procurement cycles driven by strict biometric privacy regulations and legacy IT integration complexities have high probability and high severity.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl1"
+      },
+      {
+        "claimId": "run41-cl1-i3",
+        "text": "Strict biometric privacy regulations and legacy IT infrastructure present significant barriers to chainwide deployment.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl1"
+      },
+      {
+        "claimId": "run41-cl1-i4",
+        "text": "Strict biometric privacy regulations and legacy IT infrastructure severely lengthen enterprise sales cycles and complicate deployments.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl1"
+      },
+      {
+        "claimId": "run41-cl1-i5",
+        "text": "Heightened biometric privacy enforcement threatens to stall deployment velocity.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl1"
+      },
+      {
+        "claimId": "run41-cl1-i6",
+        "text": "Biometric privacy regulations and legacy IT integration complexities pose the greatest threats to the required 18-month deployment velocity.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl1"
+      },
+      {
+        "claimId": "run41-cl2-i1",
+        "text": "Large US grocery retailers lack automated operational visibility, relying on manual audits that fail to prevent shrink, spoilage, and compliance violations.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl2"
+      },
+      {
+        "claimId": "run41-cl2-i2",
+        "text": "Large grocery retailers face acute pain points around shrink, spoilage, and labor inefficiency, driven by reliance on manual audits and legacy IT infrastructure.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl2"
+      },
+      {
+        "claimId": "run41-cl2-i3",
+        "text": "Large grocery retailers require rapid payback periods for automated compliance and shrink reduction solutions.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl2"
+      },
+      {
+        "claimId": "run41-cl2-i4",
+        "text": "Structural labor inefficiencies and escalating retail crime are driving grocers to automate compliance and loss prevention.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl2"
+      },
+      {
+        "claimId": "run41-cl2-i5",
+        "text": "Structural labor shortages and rising retail crime provide strong, non-cyclical demand for automated compliance and loss prevention tools.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl2"
+      },
+      {
+        "claimId": "run41-cl3-i1",
+        "text": "Ecolab lacks proprietary pilot data to prove hard-dollar shrink reduction to grocery buyers.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl3"
+      },
+      {
+        "claimId": "run41-cl3-i2",
+        "text": "Ecolab currently lacks proprietary pilot data to validate technical accuracy across diverse store environments.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl3"
+      },
+      {
+        "claimId": "run41-cl3-i3",
+        "text": "Ecolab lacks proprietary pilot data to prove the assumed pull-through of core chemical sales.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl3"
+      },
+      {
+        "claimId": "run41-cl4-i1",
+        "text": "Ecolab enters as a late-stage challenger without proprietary Vision AI data or hardware moats.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl4"
+      },
+      {
+        "claimId": "run41-cl4-i2",
+        "text": "Ecolab enters as a late-stage challenger lacking proprietary Vision AI data, deployed hardware, or established software switching costs.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl4"
+      },
+      {
+        "claimId": "run41-cl4-i3",
+        "text": "Ecolab's right to win depends entirely on bypassing direct software competition by bundling Vision AI insights into its existing chemical and field-service contracts.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl4"
+      },
+      {
+        "claimId": "run41-cl5-i1",
+        "text": "Demand is highly concentrated among top-tier national chains.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl5"
+      },
+      {
+        "claimId": "run41-cl5-i2",
+        "text": "Securing at least one top-tier national chain is mathematically required to reach the revenue goal.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl5"
+      },
+      {
+        "claimId": "run41-cl5-i3",
+        "text": "Securing 1–2 top-tier national chains is mathematically required to reach the revenue target due to extreme market concentration.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl5"
+      },
+      {
+        "claimId": "run41-cl6-i1",
+        "text": "Entrenched incumbents already dominate the checkout loss prevention space.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl6"
+      },
+      {
+        "claimId": "run41-cl6-i2",
+        "text": "Entrenched incumbents dominate checkout loss prevention and autonomous shelf scanning.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl6"
+      },
+      {
+        "claimId": "run41-cl7-i1",
+        "text": "Platform disintermediation by e-commerce aggregators bundling in-store Vision AI with core fulfillment contracts has high probability and high severity.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl7"
+      },
+      {
+        "claimId": "run41-cl7-i2",
+        "text": "Platform aggregators like Instacart pose the highest displacement threat by bundling compliance into existing e-commerce ecosystems.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run41-cl7"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run41-cl1",
+        "label": "Heightened biometric privacy enforcement threatens to stall deployment velocity.",
+        "memberClaimIds": [
+          "run41-cl1-i1",
+          "run41-cl1-i2",
+          "run41-cl1-i3",
+          "run41-cl1-i4",
+          "run41-cl1-i5",
+          "run41-cl1-i6"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run41-cl2",
+        "label": "Large grocery retailers require rapid payback periods for automated compliance and shrink reduction solutions.",
+        "memberClaimIds": [
+          "run41-cl2-i1",
+          "run41-cl2-i2",
+          "run41-cl2-i3",
+          "run41-cl2-i4",
+          "run41-cl2-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run41-cl3",
+        "label": "Ecolab lacks proprietary pilot data to prove hard-dollar shrink reduction to grocery buyers.",
+        "memberClaimIds": [
+          "run41-cl3-i1",
+          "run41-cl3-i2",
+          "run41-cl3-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run41-cl4",
+        "label": "Ecolab enters as a late-stage challenger without proprietary Vision AI data or hardware moats.",
+        "memberClaimIds": [
+          "run41-cl4-i1",
+          "run41-cl4-i2",
+          "run41-cl4-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run41-cl5",
+        "label": "Demand is highly concentrated among top-tier national chains.",
+        "memberClaimIds": [
+          "run41-cl5-i1",
+          "run41-cl5-i2",
+          "run41-cl5-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run41-cl6",
+        "label": "Entrenched incumbents already dominate the checkout loss prevention space.",
+        "memberClaimIds": [
+          "run41-cl6-i1",
+          "run41-cl6-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run41-cl7",
+        "label": "Platform aggregators like Instacart pose the highest displacement threat by bundling compliance into existing e-commerce",
+        "memberClaimIds": [
+          "run41-cl7-i1",
+          "run41-cl7-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 42,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 29 singleton cluster(s) of 30 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.032,
+    "claimCount": 31,
+    "uniqueClusterCount": 30,
+    "claims": [
+      {
+        "claimId": "run42-cl1-i1",
+        "text": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitors lack.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run42-cl1"
+      },
+      {
+        "claimId": "run42-cl1-i2",
+        "text": "While pure-play AI vendors generate digital alerts, Ecolab can pair digital identification with immediate physical remediation through its national workforce.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run42-cl1"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run42-cl1",
+        "label": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitor",
+        "memberClaimIds": [
+          "run42-cl1-i1",
+          "run42-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 43,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 22 singleton cluster(s) of 26 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.133,
+    "claimCount": 30,
+    "uniqueClusterCount": 26,
+    "claims": [
+      {
+        "claimId": "run43-cl1-i1",
+        "text": "Ecolab is evaluating a Vision AI-powered digital auditing and compliance solution for large grocery retailers targeting $25M ARR within 18 months.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl1"
+      },
+      {
+        "claimId": "run43-cl1-i2",
+        "text": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl1"
+      },
+      {
+        "claimId": "run43-cl2-i1",
+        "text": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl2"
+      },
+      {
+        "claimId": "run43-cl2-i2",
+        "text": "Enterprise AI deployments in grocery retail typically average over a year.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl2"
+      },
+      {
+        "claimId": "run43-cl3-i1",
+        "text": "Ecolab's strategic wedge lies in the workflow integration layer, translating raw AI detections into physical compliance actions via its established field teams.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl3"
+      },
+      {
+        "claimId": "run43-cl3-i2",
+        "text": "Ecolab's ability to drive actual workflow adoption and compliance remediation creates a structural advantage.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl3"
+      },
+      {
+        "claimId": "run43-cl4-i1",
+        "text": "The obtainable market is approximately $153 million concentrated among the top 10 US grocery chains.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl4"
+      },
+      {
+        "claimId": "run43-cl4-i2",
+        "text": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run43-cl4"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run43-cl1",
+        "label": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "memberClaimIds": [
+          "run43-cl1-i1",
+          "run43-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run43-cl2",
+        "label": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "memberClaimIds": [
+          "run43-cl2-i1",
+          "run43-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run43-cl3",
+        "label": "Ecolab's ability to drive actual workflow adoption and compliance remediation creates a structural advantage.",
+        "memberClaimIds": [
+          "run43-cl3-i1",
+          "run43-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run43-cl4",
+        "label": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "memberClaimIds": [
+          "run43-cl4-i1",
+          "run43-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 44,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 19 singleton cluster(s) of 22 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.12,
+    "claimCount": 25,
+    "uniqueClusterCount": 22,
+    "claims": [
+      {
+        "claimId": "run44-cl1-i1",
+        "text": "Ecolab is evaluating a Vision AI-powered digital auditing and compliance solution for large grocery retailers targeting $25M ARR within 18 months.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run44-cl1"
+      },
+      {
+        "claimId": "run44-cl1-i2",
+        "text": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run44-cl1"
+      },
+      {
+        "claimId": "run44-cl2-i1",
+        "text": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run44-cl2"
+      },
+      {
+        "claimId": "run44-cl2-i2",
+        "text": "Enterprise AI deployments in grocery retail typically average over a year.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run44-cl2"
+      },
+      {
+        "claimId": "run44-cl3-i1",
+        "text": "The obtainable market is approximately $153 million concentrated among the top 10 US grocery chains.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run44-cl3"
+      },
+      {
+        "claimId": "run44-cl3-i2",
+        "text": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run44-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run44-cl1",
+        "label": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "memberClaimIds": [
+          "run44-cl1-i1",
+          "run44-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run44-cl2",
+        "label": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "memberClaimIds": [
+          "run44-cl2-i1",
+          "run44-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run44-cl3",
+        "label": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "memberClaimIds": [
+          "run44-cl3-i1",
+          "run44-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 45,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 26 singleton cluster(s) of 28 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.067,
+    "claimCount": 30,
+    "uniqueClusterCount": 28,
+    "claims": [
+      {
+        "claimId": "run45-cl1-i1",
+        "text": "Grocery retailers face severe margin compression from escalating theft and impending FDA traceability mandates.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run45-cl1"
+      },
+      {
+        "claimId": "run45-cl1-i2",
+        "text": "Grocery retailers face escalating financial losses from inventory shrink, spoilage, and compliance failures.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run45-cl1"
+      },
+      {
+        "claimId": "run45-cl2-i1",
+        "text": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitors lack.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run45-cl2"
+      },
+      {
+        "claimId": "run45-cl2-i2",
+        "text": "While pure-play AI vendors generate digital alerts, Ecolab can pair digital identification with immediate physical remediation through its national workforce.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run45-cl2"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run45-cl1",
+        "label": "Grocery retailers face escalating financial losses from inventory shrink, spoilage, and compliance failures.",
+        "memberClaimIds": [
+          "run45-cl1-i1",
+          "run45-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run45-cl2",
+        "label": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitor",
+        "memberClaimIds": [
+          "run45-cl2-i1",
+          "run45-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 46,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 49 singleton cluster(s) of 53 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.102,
+    "claimCount": 59,
+    "uniqueClusterCount": 53,
+    "claims": [
+      {
+        "claimId": "run46-cl1-i1",
+        "text": "Visiomex is a Turkish machine vision company developing Orbiteye, a standalone artificial intelligence industrial inspection device.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl1"
+      },
+      {
+        "claimId": "run46-cl1-i2",
+        "text": "Visiomex has 10 active Orbiteye units sold, 10 contracts in negotiation, and 50 active inquiries in Turkey.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl1"
+      },
+      {
+        "claimId": "run46-cl1-i3",
+        "text": "Visiomex generates approximately 50% EBITDA margins on its $85K Orbiteye hardware-plus-software units in Turkey.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl1"
+      },
+      {
+        "claimId": "run46-cl2-i1",
+        "text": "Visiomex currently lacks Western regulatory certifications, granted patents, and localized support infrastructure.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl2"
+      },
+      {
+        "claimId": "run46-cl2-i2",
+        "text": "Visiomex currently possesses zero structural moats in Western Europe, lacking granted patents, local support infrastructure, and mandatory regulatory certifications.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl2"
+      },
+      {
+        "claimId": "run46-cl2-i3",
+        "text": "Visiomex currently lacks granted patents, relying on pending applications and a utility model.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl2"
+      },
+      {
+        "claimId": "run46-cl3-i1",
+        "text": "The lack of CE marking and ISO 9001 certification legally blocks immediate hardware commercialization and distributor onboarding in Western Europe.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl3"
+      },
+      {
+        "claimId": "run46-cl3-i2",
+        "text": "The system currently lacks CE marking and ISO 9001 certifications, acting as a hard blocker for Western European market entry.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl3"
+      },
+      {
+        "claimId": "run46-cl4-i1",
+        "text": "77% of AI vision implementations never advance beyond the pilot phase due to integration complexity and high failure rates.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl4"
+      },
+      {
+        "claimId": "run46-cl4-i2",
+        "text": "Buyer risk aversion is the primary adoption barrier, as the vast majority of AI vision implementations stall in the pilot phase due to integration complexity.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run46-cl4"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run46-cl1",
+        "label": "Visiomex has 10 active Orbiteye units sold, 10 contracts in negotiation, and 50 active inquiries in Turkey.",
+        "memberClaimIds": [
+          "run46-cl1-i1",
+          "run46-cl1-i2",
+          "run46-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run46-cl2",
+        "label": "Visiomex currently lacks granted patents, relying on pending applications and a utility model.",
+        "memberClaimIds": [
+          "run46-cl2-i1",
+          "run46-cl2-i2",
+          "run46-cl2-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run46-cl3",
+        "label": "The system currently lacks CE marking and ISO 9001 certifications, acting as a hard blocker for Western European market ",
+        "memberClaimIds": [
+          "run46-cl3-i1",
+          "run46-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run46-cl4",
+        "label": "77% of AI vision implementations never advance beyond the pilot phase due to integration complexity and high failure rat",
+        "memberClaimIds": [
+          "run46-cl4-i1",
+          "run46-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 47,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 13 singleton cluster(s) of 14 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.067,
+    "claimCount": 15,
+    "uniqueClusterCount": 14,
+    "claims": [
+      {
+        "claimId": "run47-cl1-i1",
+        "text": "A single incumbent currently holds 72% of the consumer market and is projected to control 95% of orbital capacity by 2028.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run47-cl1"
+      },
+      {
+        "claimId": "run47-cl1-i2",
+        "text": "One incumbent is projected to control 95% of orbital capacity by 2028.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run47-cl1"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run47-cl1",
+        "label": "One incumbent is projected to control 95% of orbital capacity by 2028.",
+        "memberClaimIds": [
+          "run47-cl1-i1",
+          "run47-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 48,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 19 singleton cluster(s) of 23 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.207,
+    "claimCount": 29,
+    "uniqueClusterCount": 23,
+    "claims": [
+      {
+        "claimId": "run48-cl1-i1",
+        "text": "Starlink holds 72% market share in the consumer satellite broadband market.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl1"
+      },
+      {
+        "claimId": "run48-cl1-i2",
+        "text": "Starlink holds a near-monopoly in the mass-market consumer segment.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl1"
+      },
+      {
+        "claimId": "run48-cl1-i3",
+        "text": "Starlink has 7,000+ satellites deployed and 4.6M subscribers.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl1"
+      },
+      {
+        "claimId": "run48-cl2-i1",
+        "text": "Global TAM is $12.6B–$15.0B for satellite broadband.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl2"
+      },
+      {
+        "claimId": "run48-cl2-i2",
+        "text": "The global satellite internet market is currently valued between $12.6 billion and $15.0 billion.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl2"
+      },
+      {
+        "claimId": "run48-cl2-i3",
+        "text": "The global satellite internet market is projected to reach $33.4 billion to $41.3 billion by 2030–2033.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl2"
+      },
+      {
+        "claimId": "run48-cl3-i1",
+        "text": "The reachable near-term market is $500 million to $800 million, concentrated in government and telco backhaul contracts.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl3"
+      },
+      {
+        "claimId": "run48-cl3-i2",
+        "text": "The reachable 2-3 year SOM is $500M–$800M, concentrated in government and telco backhaul contracts.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl3"
+      },
+      {
+        "claimId": "run48-cl4-i1",
+        "text": "Falling launch costs disproportionately benefit vertically integrated incumbents, widening their competitive moat against unintegrated new entrants.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl4"
+      },
+      {
+        "claimId": "run48-cl4-i2",
+        "text": "Launch access and costs remain the primary barrier, giving vertically integrated incumbents a massive unit economic advantage.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run48-cl4"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run48-cl1",
+        "label": "Starlink has 7,000+ satellites deployed and 4.6M subscribers.",
+        "memberClaimIds": [
+          "run48-cl1-i1",
+          "run48-cl1-i2",
+          "run48-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run48-cl2",
+        "label": "Global TAM is $12.6B–$15.0B for satellite broadband.",
+        "memberClaimIds": [
+          "run48-cl2-i1",
+          "run48-cl2-i2",
+          "run48-cl2-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run48-cl3",
+        "label": "The reachable 2-3 year SOM is $500M–$800M, concentrated in government and telco backhaul contracts.",
+        "memberClaimIds": [
+          "run48-cl3-i1",
+          "run48-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run48-cl4",
+        "label": "Launch access and costs remain the primary barrier, giving vertically integrated incumbents a massive unit economic adva",
+        "memberClaimIds": [
+          "run48-cl4-i1",
+          "run48-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 49,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 13 singleton cluster(s) of 18 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.25,
+    "claimCount": 24,
+    "uniqueClusterCount": 18,
+    "claims": [
+      {
+        "claimId": "run49-cl1-i1",
+        "text": "Equipment manufacturers face 18-month qualification cycles.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl1"
+      },
+      {
+        "claimId": "run49-cl1-i2",
+        "text": "Top-tier equipment OEMs face 12-to-24-month qualification cycles.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl1"
+      },
+      {
+        "claimId": "run49-cl1-i3",
+        "text": "The competitive landscape has an 18-month OEM qualification cycle.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl1"
+      },
+      {
+        "claimId": "run49-cl2-i1",
+        "text": "Zebra Technologies provides a specialized machine vision component stack currently used by a Tier-1 semiconductor equipment manufacturer for wire bonding.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl2"
+      },
+      {
+        "claimId": "run49-cl2-i2",
+        "text": "Zebra has successfully deployed its machine vision components for wire bonding with a major Tier-1 OEM.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl2"
+      },
+      {
+        "claimId": "run49-cl3-i1",
+        "text": "The near-term obtainable market is $150M to $250M.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl3"
+      },
+      {
+        "claimId": "run49-cl3-i2",
+        "text": "The near-term obtainable window is constrained to $150M–$250M due to extreme OEM concentration and vertical integration.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl3"
+      },
+      {
+        "claimId": "run49-cl4-i1",
+        "text": "Zebra's components achieve sub-5ms latency.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl4"
+      },
+      {
+        "claimId": "run49-cl4-i2",
+        "text": "Zebra's FPGA-based controllers provide ultra-low-latency performance.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl4"
+      },
+      {
+        "claimId": "run49-cl5-i1",
+        "text": "The primary revenue aspiration is $500M annual revenue.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl5"
+      },
+      {
+        "claimId": "run49-cl5-i2",
+        "text": "The target is to achieve $500M in annual revenue by 2029-2030.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run49-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run49-cl1",
+        "label": "Equipment manufacturers face 18-month qualification cycles.",
+        "memberClaimIds": [
+          "run49-cl1-i1",
+          "run49-cl1-i2",
+          "run49-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run49-cl2",
+        "label": "Zebra has successfully deployed its machine vision components for wire bonding with a major Tier-1 OEM.",
+        "memberClaimIds": [
+          "run49-cl2-i1",
+          "run49-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run49-cl3",
+        "label": "The near-term obtainable market is $150M to $250M.",
+        "memberClaimIds": [
+          "run49-cl3-i1",
+          "run49-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run49-cl4",
+        "label": "Zebra's components achieve sub-5ms latency.",
+        "memberClaimIds": [
+          "run49-cl4-i1",
+          "run49-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run49-cl5",
+        "label": "The primary revenue aspiration is $500M annual revenue.",
+        "memberClaimIds": [
+          "run49-cl5-i1",
+          "run49-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 50,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 23 singleton cluster(s) of 26 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.188,
+    "claimCount": 32,
+    "uniqueClusterCount": 26,
+    "claims": [
+      {
+        "claimId": "run50-cl1-i1",
+        "text": "Zebra Technologies provides enterprise hardware and software, including a specialized machine vision solution used by Kulicke & Soffa for semiconductor wire bonding.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl1"
+      },
+      {
+        "claimId": "run50-cl1-i2",
+        "text": "Zebra's sub-5ms FPGA-based vision components solve yield-loss bottlenecks in back-end semiconductor packaging.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl1"
+      },
+      {
+        "claimId": "run50-cl1-i3",
+        "text": "Zebra has established a strong initial entry point in the semiconductor machine vision market by solving a critical bottleneck in wire bonding.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl1"
+      },
+      {
+        "claimId": "run50-cl1-i4",
+        "text": "Zebra's component-supplier model offers a tightly integrated FPGA-accelerated architecture that delivers sub-5ms inspection latency without burdening the host CPU.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl1"
+      },
+      {
+        "claimId": "run50-cl1-i5",
+        "text": "Zebra's primary differentiation is its FPGA-accelerated architecture delivering sub-5ms latency with zero CPU burden, which is highly attractive for high-speed back-end processes.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl1"
+      },
+      {
+        "claimId": "run50-cl2-i1",
+        "text": "The $500 million revenue target is mathematically implausible under a pure component-supplier model.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl2"
+      },
+      {
+        "claimId": "run50-cl2-i2",
+        "text": "The realistic opportunity is significantly smaller than required to meet the $500 million target under the current component-supplier model.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl2"
+      },
+      {
+        "claimId": "run50-cl3-i1",
+        "text": "The most attractive growth segments lie in advanced packaging and defect inspection, which offer structural resilience against the severe downcycles typical of legacy processes like wire bonding.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl3"
+      },
+      {
+        "claimId": "run50-cl3-i2",
+        "text": "Advanced packaging and defect inspection offer the most resilient structural growth, offsetting the severe cyclicality of legacy wire bonding.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run50-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run50-cl1",
+        "label": "Zebra's sub-5ms FPGA-based vision components solve yield-loss bottlenecks in back-end semiconductor packaging.",
+        "memberClaimIds": [
+          "run50-cl1-i1",
+          "run50-cl1-i2",
+          "run50-cl1-i3",
+          "run50-cl1-i4",
+          "run50-cl1-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run50-cl2",
+        "label": "The $500 million revenue target is mathematically implausible under a pure component-supplier model.",
+        "memberClaimIds": [
+          "run50-cl2-i1",
+          "run50-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run50-cl3",
+        "label": "Advanced packaging and defect inspection offer the most resilient structural growth, offsetting the severe cyclicality o",
+        "memberClaimIds": [
+          "run50-cl3-i1",
+          "run50-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 51,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 23 singleton cluster(s) of 28 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.152,
+    "claimCount": 33,
+    "uniqueClusterCount": 28,
+    "claims": [
+      {
+        "claimId": "run51-cl1-i1",
+        "text": "Samsung faces absolute reliance on third-party heavy-lift launch providers which exposes the venture to prohibitive deployment delays and capital overruns.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl1"
+      },
+      {
+        "claimId": "run51-cl1-i2",
+        "text": "Lack of a proprietary launch vehicle is the venture's most critical vulnerability, exposing it to severe deployment delays and capital overruns.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl1"
+      },
+      {
+        "claimId": "run51-cl2-i1",
+        "text": "Incumbent LEO providers' U.S.-centric ownership creates a regulatory gap for sovereign-compliant infrastructure in the Middle East and Southeast Asia.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl2"
+      },
+      {
+        "claimId": "run51-cl2-i2",
+        "text": "B2G and enterprise segments in non-U.S. regions require sovereign-compliant LEO infrastructure, creating a regulatory gap that U.S. incumbents cannot fill.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl2"
+      },
+      {
+        "claimId": "run51-cl3-i1",
+        "text": "The consumer broadband segment faces severe affordability barriers.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl3"
+      },
+      {
+        "claimId": "run51-cl3-i2",
+        "text": "Consumer broadband adoption in target regions is severely constrained by hardware and monthly fee affordability.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl3"
+      },
+      {
+        "claimId": "run51-cl4-i1",
+        "text": "The near-term obtainable window is constrained to $200M to $500M by launch and regulatory bottlenecks.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl4"
+      },
+      {
+        "claimId": "run51-cl4-i2",
+        "text": "The near-term obtainable market is constrained by launch access and regulatory approvals rather than underlying customer demand.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl4"
+      },
+      {
+        "claimId": "run51-cl5-i1",
+        "text": "Samsung possesses unique geopolitical neutrality and deep device ecosystem integration that incumbents lack.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl5"
+      },
+      {
+        "claimId": "run51-cl5-i2",
+        "text": "Samsung's primary competitive advantage is its geopolitical neutrality, which unlocks B2G and telco markets in regions wary of U.S. data control.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run51-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run51-cl1",
+        "label": "Lack of a proprietary launch vehicle is the venture's most critical vulnerability, exposing it to severe deployment dela",
+        "memberClaimIds": [
+          "run51-cl1-i1",
+          "run51-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run51-cl2",
+        "label": "Incumbent LEO providers' U.S.-centric ownership creates a regulatory gap for sovereign-compliant infrastructure in the M",
+        "memberClaimIds": [
+          "run51-cl2-i1",
+          "run51-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run51-cl3",
+        "label": "The consumer broadband segment faces severe affordability barriers.",
+        "memberClaimIds": [
+          "run51-cl3-i1",
+          "run51-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run51-cl4",
+        "label": "The near-term obtainable window is constrained to $200M to $500M by launch and regulatory bottlenecks.",
+        "memberClaimIds": [
+          "run51-cl4-i1",
+          "run51-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run51-cl5",
+        "label": "Samsung possesses unique geopolitical neutrality and deep device ecosystem integration that incumbents lack.",
+        "memberClaimIds": [
+          "run51-cl5-i1",
+          "run51-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 52,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 19 singleton cluster(s) of 22 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.12,
+    "claimCount": 25,
+    "uniqueClusterCount": 22,
+    "claims": [
+      {
+        "claimId": "run52-cl1-i1",
+        "text": "Ecolab is evaluating a Vision AI-powered digital auditing and compliance solution for large grocery retailers targeting $25M ARR within 18 months.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run52-cl1"
+      },
+      {
+        "claimId": "run52-cl1-i2",
+        "text": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run52-cl1"
+      },
+      {
+        "claimId": "run52-cl2-i1",
+        "text": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run52-cl2"
+      },
+      {
+        "claimId": "run52-cl2-i2",
+        "text": "Enterprise AI deployments in grocery retail typically average over a year.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run52-cl2"
+      },
+      {
+        "claimId": "run52-cl3-i1",
+        "text": "The obtainable market is approximately $153 million concentrated among the top 10 US grocery chains.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run52-cl3"
+      },
+      {
+        "claimId": "run52-cl3-i2",
+        "text": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run52-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run52-cl1",
+        "label": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "memberClaimIds": [
+          "run52-cl1-i1",
+          "run52-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run52-cl2",
+        "label": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "memberClaimIds": [
+          "run52-cl2-i1",
+          "run52-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run52-cl3",
+        "label": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "memberClaimIds": [
+          "run52-cl3-i1",
+          "run52-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 53,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 26 singleton cluster(s) of 28 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.067,
+    "claimCount": 30,
+    "uniqueClusterCount": 28,
+    "claims": [
+      {
+        "claimId": "run53-cl1-i1",
+        "text": "Grocery retailers face severe margin compression from escalating theft and impending FDA traceability mandates.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run53-cl1"
+      },
+      {
+        "claimId": "run53-cl1-i2",
+        "text": "Grocery retailers face escalating financial losses from inventory shrink, spoilage, and compliance failures.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run53-cl1"
+      },
+      {
+        "claimId": "run53-cl2-i1",
+        "text": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitors lack.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run53-cl2"
+      },
+      {
+        "claimId": "run53-cl2-i2",
+        "text": "While pure-play AI vendors generate digital alerts, Ecolab can pair digital identification with immediate physical remediation through its national workforce.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run53-cl2"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run53-cl1",
+        "label": "Grocery retailers face escalating financial losses from inventory shrink, spoilage, and compliance failures.",
+        "memberClaimIds": [
+          "run53-cl1-i1",
+          "run53-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run53-cl2",
+        "label": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitor",
+        "memberClaimIds": [
+          "run53-cl2-i1",
+          "run53-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 54,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 39 singleton cluster(s) of 44 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.12,
+    "claimCount": 50,
+    "uniqueClusterCount": 44,
+    "claims": [
+      {
+        "claimId": "run54-cl1-i1",
+        "text": "Ecolab is evaluating a Vision AI-powered digital auditing and compliance solution for large grocery retailers targeting $25M ARR within 18 months.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl1"
+      },
+      {
+        "claimId": "run54-cl1-i2",
+        "text": "Ecolab enters with zero proprietary Vision AI deployments.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl1"
+      },
+      {
+        "claimId": "run54-cl1-i3",
+        "text": "Ecolab's right to win depends entirely on bypassing direct software competition and bundling hardware-agnostic Vision AI insights with its established physical field teams.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl1"
+      },
+      {
+        "claimId": "run54-cl2-i1",
+        "text": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl2"
+      },
+      {
+        "claimId": "run54-cl2-i2",
+        "text": "Enterprise AI deployments in grocery retail typically average over a year.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl2"
+      },
+      {
+        "claimId": "run54-cl3-i1",
+        "text": "Incumbents dominate high-value checkout loss prevention through deep point-of-sale integrations.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl3"
+      },
+      {
+        "claimId": "run54-cl3-i2",
+        "text": "Incumbents like Everseen and Sensormatic control the loss prevention and checkout segments.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl3"
+      },
+      {
+        "claimId": "run54-cl4-i1",
+        "text": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl4"
+      },
+      {
+        "claimId": "run54-cl4-i2",
+        "text": "The obtainable market among top 10 US grocery chains is approximately $153M.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl4"
+      },
+      {
+        "claimId": "run54-cl5-i1",
+        "text": "Existing computer vision solutions fail to scale due to high false-positive rates and poor integration with legacy grocery IT systems.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl5"
+      },
+      {
+        "claimId": "run54-cl5-i2",
+        "text": "Legacy computer vision systems generate excessive false positives and struggle to integrate with fragmented store infrastructure.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run54-cl5"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run54-cl1",
+        "label": "Ecolab enters with zero proprietary Vision AI deployments.",
+        "memberClaimIds": [
+          "run54-cl1-i1",
+          "run54-cl1-i2",
+          "run54-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run54-cl2",
+        "label": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "memberClaimIds": [
+          "run54-cl2-i1",
+          "run54-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run54-cl3",
+        "label": "Incumbents like Everseen and Sensormatic control the loss prevention and checkout segments.",
+        "memberClaimIds": [
+          "run54-cl3-i1",
+          "run54-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run54-cl4",
+        "label": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "memberClaimIds": [
+          "run54-cl4-i1",
+          "run54-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run54-cl5",
+        "label": "Legacy computer vision systems generate excessive false positives and struggle to integrate with fragmented store infras",
+        "memberClaimIds": [
+          "run54-cl5-i1",
+          "run54-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 55,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 25 singleton cluster(s) of 27 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.069,
+    "claimCount": 29,
+    "uniqueClusterCount": 27,
+    "claims": [
+      {
+        "claimId": "run55-cl1-i1",
+        "text": "Grocery retailers face severe margin compression from escalating theft and impending FDA traceability mandates.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run55-cl1"
+      },
+      {
+        "claimId": "run55-cl1-i2",
+        "text": "Grocery retailers face escalating financial losses from inventory shrink, spoilage, and compliance failures.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run55-cl1"
+      },
+      {
+        "claimId": "run55-cl2-i1",
+        "text": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitors lack.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run55-cl2"
+      },
+      {
+        "claimId": "run55-cl2-i2",
+        "text": "Pure-play AI vendors generate digital alerts, but Ecolab can pair digital identification with immediate physical remediation through its national workforce.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run55-cl2"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run55-cl1",
+        "label": "Grocery retailers face escalating financial losses from inventory shrink, spoilage, and compliance failures.",
+        "memberClaimIds": [
+          "run55-cl1-i1",
+          "run55-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run55-cl2",
+        "label": "Ecolab's national field service workforce provides a unique physical remediation capability that pure-play AI competitor",
+        "memberClaimIds": [
+          "run55-cl2-i1",
+          "run55-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 56,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 47 singleton cluster(s) of 58 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.256,
+    "claimCount": 78,
+    "uniqueClusterCount": 58,
+    "claims": [
+      {
+        "claimId": "run56-cl1-i1",
+        "text": "Orbiteye is priced at $85,000 per unit.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl1"
+      },
+      {
+        "claimId": "run56-cl1-i2",
+        "text": "Orbiteye addresses a validated gap for mid-market manufacturers lacking the specialized engineers required to operate complex legacy vision systems.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl1"
+      },
+      {
+        "claimId": "run56-cl1-i3",
+        "text": "Orbiteye combines hybrid 2D/3D optical hardware with edge-processed AI and a no-code training interface.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl1"
+      },
+      {
+        "claimId": "run56-cl1-i4",
+        "text": "Orbiteye's primary competitive advantage lies in its turnkey, no-code hybrid 2D/3D architecture that undercuts legacy system costs.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl1"
+      },
+      {
+        "claimId": "run56-cl1-i5",
+        "text": "Orbiteye's pricing offers significant headroom against legacy incumbents.",
+        "chapter": "Revenue Model",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl1"
+      },
+      {
+        "claimId": "run56-cl2-i1",
+        "text": "The lack of CE marking and ISO 9001 certification legally blocks immediate hardware commercialization and distributor onboarding in Western Europe.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl2"
+      },
+      {
+        "claimId": "run56-cl2-i2",
+        "text": "The system currently lacks CE marking and ISO 9001 certifications, acting as a hard blocker for Western European market entry.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl2"
+      },
+      {
+        "claimId": "run56-cl2-i3",
+        "text": "Western regulatory compliance (CE marking and ISO 9001) is entirely absent and acts as a hard blocker for immediate European market entry.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl2"
+      },
+      {
+        "claimId": "run56-cl2-i4",
+        "text": "The venture currently lacks structural moats, granted patents, and the mandatory CE/ISO certifications required for European market entry.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl2"
+      },
+      {
+        "claimId": "run56-cl2-i5",
+        "text": "Lack of mandatory conformity markings and enterprise quality certifications currently blocks Orbiteye hardware commercialization and vendor qualification in Western Europe.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl2"
+      },
+      {
+        "claimId": "run56-cl3-i1",
+        "text": "Visiomex currently lacks Western regulatory certifications, granted patents, and localized support infrastructure.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl3"
+      },
+      {
+        "claimId": "run56-cl3-i2",
+        "text": "Visiomex's engineering team lacks the capacity to simultaneously manage domestic deployments, legacy system integrations, and European regulatory audits.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl3"
+      },
+      {
+        "claimId": "run56-cl3-i3",
+        "text": "Visiomex lacks granted patents.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl3"
+      },
+      {
+        "claimId": "run56-cl3-i4",
+        "text": "Absence of granted patents leaves Visiomex vulnerable to third-party infringement claims and NPE litigation in highly litigious Western markets.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl3"
+      },
+      {
+        "claimId": "run56-cl4-i1",
+        "text": "Visiomex is a Turkish machine vision company developing Orbiteye, a standalone artificial intelligence industrial inspection device.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl4"
+      },
+      {
+        "claimId": "run56-cl4-i2",
+        "text": "Visiomex has 10 active Orbiteye units sold, 10 contracts in negotiation, and 50 active inquiries in Turkey.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl4"
+      },
+      {
+        "claimId": "run56-cl4-i3",
+        "text": "Visiomex generates approximately 50% EBITDA margins on its $85K Orbiteye hardware-plus-software units in Turkey.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl4"
+      },
+      {
+        "claimId": "run56-cl5-i1",
+        "text": "Escaped defects drive cost increases scaling from $0.10 at inline inspection to $50,000 if discovered in the field.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl5"
+      },
+      {
+        "claimId": "run56-cl5-i2",
+        "text": "Escaped defects drive exponential cost increases, escalating from inline inspection to the field.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl5"
+      },
+      {
+        "claimId": "run56-cl6-i1",
+        "text": "77% of AI vision implementations never advance beyond the pilot phase due to integration complexity and high failure rates.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl6"
+      },
+      {
+        "claimId": "run56-cl6-i2",
+        "text": "The vast majority of AI vision implementations fail to advance beyond the pilot phase.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl6"
+      },
+      {
+        "claimId": "run56-cl7-i1",
+        "text": "Visiomex controls the proprietary in-house design of its camera, lens, and electronics.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl7"
+      },
+      {
+        "claimId": "run56-cl7-i2",
+        "text": "Visiomex designs its camera, lens, electronics, and hybrid 2D/3D optical systems entirely in-house.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl7"
+      },
+      {
+        "claimId": "run56-cl8-i1",
+        "text": "The EU AI Act and Machinery Regulation mandate strict third-party conformity assessments and CE marking.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl8"
+      },
+      {
+        "claimId": "run56-cl8-i2",
+        "text": "Expansion into Western Europe requires compliance with European machinery safety regulations and the EU AI Act for hardware commercialization.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl8"
+      },
+      {
+        "claimId": "run56-cl9-i1",
+        "text": "The current 5-year financial projection model is obsolete because it relies on an abandoned Hardware-as-a-Service (HaaS) pricing structure.",
+        "chapter": "Unit Economics",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl9"
+      },
+      {
+        "claimId": "run56-cl9-i2",
+        "text": "The existing 5-year financial model relies on abandoned Hardware-as-a-Service (HaaS) assumptions.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl9"
+      },
+      {
+        "claimId": "run56-cl10-i1",
+        "text": "Capital must cover >$500K in unmodeled regulatory compliance costs (CE marking, ISO 9001).",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl10"
+      },
+      {
+        "claimId": "run56-cl10-i2",
+        "text": "Mandatory regulatory compliance requires 6–18 months and >$500K capital.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl10"
+      },
+      {
+        "claimId": "run56-cl11-i1",
+        "text": "Cross-border data transfers between Western facilities and Turkey implicate GDPR and KVKK frameworks.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl11"
+      },
+      {
+        "claimId": "run56-cl11-i2",
+        "text": "Cross-border transfer of manufacturing image data from the EU/UK to Turkey requires formal adequacy mechanisms to comply with GDPR and KVKK.",
+        "chapter": "Legal and IP",
+        "hasEmbedding": null,
+        "clusterId": "run56-cl11"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run56-cl1",
+        "label": "Orbiteye is priced at $85,000 per unit.",
+        "memberClaimIds": [
+          "run56-cl1-i1",
+          "run56-cl1-i2",
+          "run56-cl1-i3",
+          "run56-cl1-i4",
+          "run56-cl1-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl2",
+        "label": "The system currently lacks CE marking and ISO 9001 certifications, acting as a hard blocker for Western European market ",
+        "memberClaimIds": [
+          "run56-cl2-i1",
+          "run56-cl2-i2",
+          "run56-cl2-i3",
+          "run56-cl2-i4",
+          "run56-cl2-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl3",
+        "label": "Visiomex lacks granted patents.",
+        "memberClaimIds": [
+          "run56-cl3-i1",
+          "run56-cl3-i2",
+          "run56-cl3-i3",
+          "run56-cl3-i4"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl4",
+        "label": "Visiomex has 10 active Orbiteye units sold, 10 contracts in negotiation, and 50 active inquiries in Turkey.",
+        "memberClaimIds": [
+          "run56-cl4-i1",
+          "run56-cl4-i2",
+          "run56-cl4-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl5",
+        "label": "Escaped defects drive exponential cost increases, escalating from inline inspection to the field.",
+        "memberClaimIds": [
+          "run56-cl5-i1",
+          "run56-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl6",
+        "label": "The vast majority of AI vision implementations fail to advance beyond the pilot phase.",
+        "memberClaimIds": [
+          "run56-cl6-i1",
+          "run56-cl6-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl7",
+        "label": "Visiomex controls the proprietary in-house design of its camera, lens, and electronics.",
+        "memberClaimIds": [
+          "run56-cl7-i1",
+          "run56-cl7-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl8",
+        "label": "The EU AI Act and Machinery Regulation mandate strict third-party conformity assessments and CE marking.",
+        "memberClaimIds": [
+          "run56-cl8-i1",
+          "run56-cl8-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl9",
+        "label": "The existing 5-year financial model relies on abandoned Hardware-as-a-Service (HaaS) assumptions.",
+        "memberClaimIds": [
+          "run56-cl9-i1",
+          "run56-cl9-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl10",
+        "label": "Mandatory regulatory compliance requires 6–18 months and >$500K capital.",
+        "memberClaimIds": [
+          "run56-cl10-i1",
+          "run56-cl10-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run56-cl11",
+        "label": "Cross-border data transfers between Western facilities and Turkey implicate GDPR and KVKK frameworks.",
+        "memberClaimIds": [
+          "run56-cl11-i1",
+          "run56-cl11-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 57,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 19 singleton cluster(s) of 22 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.12,
+    "claimCount": 25,
+    "uniqueClusterCount": 22,
+    "claims": [
+      {
+        "claimId": "run57-cl1-i1",
+        "text": "Ecolab is evaluating a Vision AI-powered digital auditing and compliance solution for large grocery retailers targeting $25M ARR within 18 months.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run57-cl1"
+      },
+      {
+        "claimId": "run57-cl1-i2",
+        "text": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run57-cl1"
+      },
+      {
+        "claimId": "run57-cl2-i1",
+        "text": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run57-cl2"
+      },
+      {
+        "claimId": "run57-cl2-i2",
+        "text": "Enterprise AI deployments in grocery retail typically average over a year.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run57-cl2"
+      },
+      {
+        "claimId": "run57-cl3-i1",
+        "text": "The obtainable market is approximately $153 million concentrated among the top 10 US grocery chains.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run57-cl3"
+      },
+      {
+        "claimId": "run57-cl3-i2",
+        "text": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run57-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run57-cl1",
+        "label": "Ecolab enters the market with zero proprietary Vision AI deployments.",
+        "memberClaimIds": [
+          "run57-cl1-i1",
+          "run57-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run57-cl2",
+        "label": "Enterprise AI deployments require 15 to 17 months to scale.",
+        "memberClaimIds": [
+          "run57-cl2-i1",
+          "run57-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run57-cl3",
+        "label": "The top 10 US grocery chains control 60% of the supermarket footprint.",
+        "memberClaimIds": [
+          "run57-cl3-i1",
+          "run57-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 58,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 17 singleton cluster(s) of 20 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.286,
+    "claimCount": 28,
+    "uniqueClusterCount": 20,
+    "claims": [
+      {
+        "claimId": "run58-cl1-i1",
+        "text": "Zebra Technologies provides a zero-latency, FPGA-based machine vision component package currently used by Kulicke & Soffa for semiconductor wire bonding.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl1"
+      },
+      {
+        "claimId": "run58-cl1-i2",
+        "text": "Zebra's zero-latency FPGA architecture successfully processes sub-5ms inspection speeds for Tier-1 OEMs.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl1"
+      },
+      {
+        "claimId": "run58-cl1-i3",
+        "text": "Zebra occupies a defensible white space by offering a pre-integrated capture layer that allows Tier-1 OEMs to own their application software.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl1"
+      },
+      {
+        "claimId": "run58-cl1-i4",
+        "text": "Zebra has established a proven entry point by supplying a zero-latency, FPGA-based component package to Kulicke & Soffa for wire bonding.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl1"
+      },
+      {
+        "claimId": "run58-cl1-i5",
+        "text": "Zebra operates as a component supplier where the OEM owns the machine integration and application layer.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl1"
+      },
+      {
+        "claimId": "run58-cl1-i6",
+        "text": "Zebra's opportunity lies in providing a pre-integrated, zero-latency capture layer that allows Tier-1 OEMs to build their own application software without engineering complex FPGA infrastructure from scratch.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl1"
+      },
+      {
+        "claimId": "run58-cl2-i1",
+        "text": "The $500M target is unachievable given the $100M–$150M near-term obtainable market.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl2"
+      },
+      {
+        "claimId": "run58-cl2-i2",
+        "text": "The near-term obtainable market is $100M to $150M.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl2"
+      },
+      {
+        "claimId": "run58-cl2-i3",
+        "text": "The realistic near-term obtainable market sits between $100M and $150M.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl2"
+      },
+      {
+        "claimId": "run58-cl3-i1",
+        "text": "Zebra's current defensibility relies heavily on the OEM design-in cycles and the technical switching costs associated with its Aurora Imaging Library.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl3"
+      },
+      {
+        "claimId": "run58-cl3-i2",
+        "text": "Zebra's defensibility relies on technical switching costs and OEM design-in cycles rather than broad ecosystem network effects.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run58-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run58-cl1",
+        "label": "Zebra's zero-latency FPGA architecture successfully processes sub-5ms inspection speeds for Tier-1 OEMs.",
+        "memberClaimIds": [
+          "run58-cl1-i1",
+          "run58-cl1-i2",
+          "run58-cl1-i3",
+          "run58-cl1-i4",
+          "run58-cl1-i5",
+          "run58-cl1-i6"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run58-cl2",
+        "label": "The near-term obtainable market is $100M to $150M.",
+        "memberClaimIds": [
+          "run58-cl2-i1",
+          "run58-cl2-i2",
+          "run58-cl2-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run58-cl3",
+        "label": "Zebra's defensibility relies on technical switching costs and OEM design-in cycles rather than broad ecosystem network e",
+        "memberClaimIds": [
+          "run58-cl3-i1",
+          "run58-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 59,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 11 singleton cluster(s) of 14 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.176,
+    "claimCount": 17,
+    "uniqueClusterCount": 14,
+    "claims": [
+      {
+        "claimId": "run59-cl1-i1",
+        "text": "Japan's strict Act on the Protection of Personal Information (APPI) prohibits raw medical data exports, forcing the venture to process data locally and export only aggregated insights.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run59-cl1"
+      },
+      {
+        "claimId": "run59-cl1-i2",
+        "text": "Strict cross-border data transfer regulations under Japan's APPI mandate local processing or explicit consent, blocking raw data exports.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run59-cl1"
+      },
+      {
+        "claimId": "run59-cl2-i1",
+        "text": "Recent revisions to Japan's Next-Generation Medical Infrastructure Act enable pseudonymized data linkage.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run59-cl2"
+      },
+      {
+        "claimId": "run59-cl2-i2",
+        "text": "Japan's revised Next-Generation Medical Infrastructure Act enables high-value data linkage, creating a structural advantage for localized analytics commercial models.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run59-cl2"
+      },
+      {
+        "claimId": "run59-cl3-i1",
+        "text": "The Japan de-identified health data market generated $392.4 million in 2025.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run59-cl3"
+      },
+      {
+        "claimId": "run59-cl3-i2",
+        "text": "The Japan de-identified health data market is projected to reach $902.3 million by 2033 at an 11% CAGR.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run59-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run59-cl1",
+        "label": "Strict cross-border data transfer regulations under Japan's APPI mandate local processing or explicit consent, blocking ",
+        "memberClaimIds": [
+          "run59-cl1-i1",
+          "run59-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run59-cl2",
+        "label": "Recent revisions to Japan's Next-Generation Medical Infrastructure Act enable pseudonymized data linkage.",
+        "memberClaimIds": [
+          "run59-cl2-i1",
+          "run59-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run59-cl3",
+        "label": "The Japan de-identified health data market generated $392.4 million in 2025.",
+        "memberClaimIds": [
+          "run59-cl3-i1",
+          "run59-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 60,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 25 singleton cluster(s) of 28 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.125,
+    "claimCount": 32,
+    "uniqueClusterCount": 28,
+    "claims": [
+      {
+        "claimId": "run60-cl1-i1",
+        "text": "Independent Power Producers actively reject speculative projects lacking Coordinated Electric System Interconnection Review approval.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run60-cl1"
+      },
+      {
+        "claimId": "run60-cl1-i2",
+        "text": "Independent Power Producers currently refuse to acquire pre-interconnection assets, forcing developers to absorb unpredictable, multi-million-dollar substation upgrade costs.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run60-cl1"
+      },
+      {
+        "claimId": "run60-cl1-i3",
+        "text": "Buyers increasingly reject speculative, early-stage projects lacking Coordinated Electric System Interconnection Review (CESIR) approval.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run60-cl1"
+      },
+      {
+        "claimId": "run60-cl2-i1",
+        "text": "New Energy Equity is evaluating entry into the New York distributed solar and storage market to diversify its development pipeline.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run60-cl2"
+      },
+      {
+        "claimId": "run60-cl2-i2",
+        "text": "New Energy Equity enters the market from a deficit position with zero operational storage assets in New York.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run60-cl2"
+      },
+      {
+        "claimId": "run60-cl3-i1",
+        "text": "Distribution-level interconnection saturation has halted deployments across 85% of Con Edison's territory.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run60-cl3"
+      },
+      {
+        "claimId": "run60-cl3-i2",
+        "text": "Distribution-level interconnection saturation is the primary blocker, having already halted deployments across vast portions of downstate utility territories.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run60-cl3"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run60-cl1",
+        "label": "Independent Power Producers actively reject speculative projects lacking Coordinated Electric System Interconnection Rev",
+        "memberClaimIds": [
+          "run60-cl1-i1",
+          "run60-cl1-i2",
+          "run60-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run60-cl2",
+        "label": "New Energy Equity enters the market from a deficit position with zero operational storage assets in New York.",
+        "memberClaimIds": [
+          "run60-cl2-i1",
+          "run60-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run60-cl3",
+        "label": "Distribution-level interconnection saturation has halted deployments across 85% of Con Edison's territory.",
+        "memberClaimIds": [
+          "run60-cl3-i1",
+          "run60-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 61,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 26 singleton cluster(s) of 26 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0,
+    "claimCount": 26,
+    "uniqueClusterCount": 26,
+    "claims": [],
+    "clusters": []
+  },
+  {
+    "runId": 62,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 28 singleton cluster(s) of 30 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.063,
+    "claimCount": 32,
+    "uniqueClusterCount": 30,
+    "claims": [
+      {
+        "claimId": "run62-cl1-i1",
+        "text": "New York has a 6 GW storage mandate by 2030.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run62-cl1"
+      },
+      {
+        "claimId": "run62-cl1-i2",
+        "text": "The New York State Energy Storage Market TAM is 6,000 MW by 2030.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run62-cl1"
+      },
+      {
+        "claimId": "run62-cl2-i1",
+        "text": "Outdated interconnection regimes and severe grid congestion delay energy storage deployments by multiple years.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run62-cl2"
+      },
+      {
+        "claimId": "run62-cl2-i2",
+        "text": "Severe grid congestion and multi-year interconnection delays create strong IPP demand for de-risked, ready-to-build storage assets.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run62-cl2"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run62-cl1",
+        "label": "New York has a 6 GW storage mandate by 2030.",
+        "memberClaimIds": [
+          "run62-cl1-i1",
+          "run62-cl1-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run62-cl2",
+        "label": "Outdated interconnection regimes and severe grid congestion delay energy storage deployments by multiple years.",
+        "memberClaimIds": [
+          "run62-cl2-i1",
+          "run62-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 63,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 17 singleton cluster(s) of 18 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.1,
+    "claimCount": 20,
+    "uniqueClusterCount": 18,
+    "claims": [
+      {
+        "claimId": "run63-cl1-i1",
+        "text": "The European gummy supplement market reached $3.18 billion in 2024.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run63-cl1"
+      },
+      {
+        "claimId": "run63-cl1-i2",
+        "text": "The European gummy supplement market is projected to grow at a 12.51% CAGR through 2032.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run63-cl1"
+      },
+      {
+        "claimId": "run63-cl1-i3",
+        "text": "The broader European dietary supplements market reached $26.6 billion in 2024.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run63-cl1"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run63-cl1",
+        "label": "The European gummy supplement market reached $3.18 billion in 2024.",
+        "memberClaimIds": [
+          "run63-cl1-i1",
+          "run63-cl1-i2",
+          "run63-cl1-i3"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  },
+  {
+    "runId": 64,
+    "note": "Reconstructed from stored favoriteFriends JSON. Repeated clusters only — 34 singleton cluster(s) of 40 total are not persisted (no text stored). Embedding presence not persisted.",
+    "sriStored": 0.184,
+    "claimCount": 49,
+    "uniqueClusterCount": 40,
+    "claims": [
+      {
+        "claimId": "run64-cl1-i1",
+        "text": "The US gummy supplement market reached $3.46 billion.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl1"
+      },
+      {
+        "claimId": "run64-cl1-i2",
+        "text": "The TAM for US Dietary Supplements is $67.0B to $68.7B.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl1"
+      },
+      {
+        "claimId": "run64-cl1-i3",
+        "text": "The SAM for US Gummy Supplements is $3.12B to $3.46B.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl1"
+      },
+      {
+        "claimId": "run64-cl1-i4",
+        "text": "The US gummy supplement market is projected to reach $6.71B by 2030.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl1"
+      },
+      {
+        "claimId": "run64-cl1-i5",
+        "text": "The US gummy supplement market is $3.46 billion, but the addressable premium targeted-benefit slice is only $603 million.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl1"
+      },
+      {
+        "claimId": "run64-cl2-i1",
+        "text": "The stated 5,000 retail doors and 75,000 subscribers mathematically cap Year 3 revenue at $43 million.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl2"
+      },
+      {
+        "claimId": "run64-cl2-i2",
+        "text": "The stated retail footprint (5,000 doors) and DTC subscriber base (75,000) mathematically cap Year 3 revenue at approximately $43M.",
+        "chapter": "Finance and Operations",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl2"
+      },
+      {
+        "claimId": "run64-cl3-i1",
+        "text": "Reckitt lacks the digital-native direct-to-consumer subscription infrastructure required to achieve the target customer acquisition cost below $90.",
+        "chapter": "Executive Summary",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl3"
+      },
+      {
+        "claimId": "run64-cl3-i2",
+        "text": "Reckitt lacks the digital-native direct-to-consumer (DTC) infrastructure of its primary competitors.",
+        "chapter": "Competitor Analysis",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl3"
+      },
+      {
+        "claimId": "run64-cl4-i1",
+        "text": "Four out of five gummy products fail ingredient accuracy tests, with ingredient variances ranging from 0% to 347% of labeled amounts.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl4"
+      },
+      {
+        "claimId": "run64-cl4-i2",
+        "text": "80% of incumbent gummy products fail ingredient accuracy tests.",
+        "chapter": "Customer and Demand Validation",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl4"
+      },
+      {
+        "claimId": "run64-cl5-i1",
+        "text": "Achieving the revenue target requires capturing 25% to 50% of the $603 million premium targeted-benefit slice.",
+        "chapter": "Full Summary",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl5"
+      },
+      {
+        "claimId": "run64-cl5-i2",
+        "text": "Achieving the client's revenue target would require capturing between 25% and 50% of the premium targeted-benefit niche, which significantly exceeds the 4% total market share held by the current category leader.",
+        "chapter": "Market Research",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl5"
+      },
+      {
+        "claimId": "run64-cl6-i1",
+        "text": "Reckitt's deep mass retail distribution networks and internal regulatory compliance infrastructure provide a material execution advantage for offline deployment and quality assurance.",
+        "chapter": "Product and Technology",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl6"
+      },
+      {
+        "claimId": "run64-cl6-i2",
+        "text": "Reckitt possesses strong traditional retail execution capabilities and deep pharmacy buyer relationships across major US channels.",
+        "chapter": "Team and Execution",
+        "hasEmbedding": null,
+        "clusterId": "run64-cl6"
+      }
+    ],
+    "clusters": [
+      {
+        "clusterId": "run64-cl1",
+        "label": "The US gummy supplement market reached $3.46 billion.",
+        "memberClaimIds": [
+          "run64-cl1-i1",
+          "run64-cl1-i2",
+          "run64-cl1-i3",
+          "run64-cl1-i4",
+          "run64-cl1-i5"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run64-cl2",
+        "label": "The stated 5,000 retail doors and 75,000 subscribers mathematically cap Year 3 revenue at $43 million.",
+        "memberClaimIds": [
+          "run64-cl2-i1",
+          "run64-cl2-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run64-cl3",
+        "label": "Reckitt lacks the digital-native direct-to-consumer (DTC) infrastructure of its primary competitors.",
+        "memberClaimIds": [
+          "run64-cl3-i1",
+          "run64-cl3-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run64-cl4",
+        "label": "80% of incumbent gummy products fail ingredient accuracy tests.",
+        "memberClaimIds": [
+          "run64-cl4-i1",
+          "run64-cl4-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run64-cl5",
+        "label": "Achieving the revenue target requires capturing 25% to 50% of the $603 million premium targeted-benefit slice.",
+        "memberClaimIds": [
+          "run64-cl5-i1",
+          "run64-cl5-i2"
+        ],
+        "isFavoriteFriend": true
+      },
+      {
+        "clusterId": "run64-cl6",
+        "label": "Reckitt possesses strong traditional retail execution capabilities and deep pharmacy buyer relationships across major US",
+        "memberClaimIds": [
+          "run64-cl6-i1",
+          "run64-cl6-i2"
+        ],
+        "isFavoriteFriend": true
+      }
+    ]
+  }
+]

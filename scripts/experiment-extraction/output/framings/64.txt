@@ -1,0 +1,97 @@
+Reckitt US Case Frame 
+________________________________________
+1. Decision
+Decision Question: Should Reckitt launch a new standalone daily wellness gummy vitamin brand in the US market?
+
+
+Decision Format: Go / No-Go
+
+Decision Scope: In scope: the US launch decision for a new standalone daily wellness gummy vitamin brand; if Go, the downstream choices include entry model (DTC-first vs. retail-first vs. hybrid), product configuration (broad daily multivitamin vs. targeted benefit such as GLP-1 companion), and business model (subscription vs. one-time purchase vs. hybrid). 
+Out of scope: Airborne brand extension as the lead brand architecture, and non-US launch decisions unless needed for supply or benchmarking.
+
+Expectation: is to have $150-200M/year in revenue from vitamin gummy category in 3 years
+
+Strategic Intent: Determine whether Reckitt should use a new standalone daily wellness gummy entry as a new US growth platform beyond its legacy Airborne and Mucinex franchises, expanding from reactive sick-care brands into proactive daily wellness. A successful outcome is one that meets the explicit success criteria below, not merely category participation or a small adjacency.
+
+________________________________________
+2. Context
+Current State & Background Reckitt already operates in the adjacent US supplement space via Airborne, with existing gummy format and supply chain experience. Airborne is positioned around immune support and reactive usage, while Mucinex reinforces Reckitt's strength in scaled US consumer health but also its association with sick-care brands. Reckitt has strong US pharmacy and mass retail relationships including CVS, Walgreens, Walmart, Target, Costco, and Kroger.
+
+Problem Statement Reckitt is evaluating whether it can credibly win in proactive daily wellness gummies in the US, despite its current portfolio and capabilities being stronger in reactive OTC health categories. The core problem is whether there is still a defensible entry opportunity and a right to win versus established and newly consolidated competitors. More specifically, the business problem is how Reckitt can create a new US growth platform beyond Airborne and Mucinex rather than relying on those legacy brands for future growth.
+
+Evidence Base Reckitt context: Airborne is estimated at ~$200M+ US revenue; Mucinex at ~$600M+ US revenue; Reckitt has no current DTC/subscription capability in this category; marketing capabilities are oriented toward traditional push advertising rather than creator-led UGC systems; regulatory/compliance capability in OTC and DSHEA is a relative strength; existing US pharmacy and mass retail relationships span CVS, Walgreens, Walmart, Target, Costco, and Kroger.
+
+Category benchmarks: The US gummy supplement market reached $3.46B in 2024 and is projected to grow at 11.6% CAGR to $6.71B by 2030. Grüns, a DTC-first gummy supplement brand with no prior FMCG backing, achieved $550M in annualized revenue within 32 months of launch, contribution profitability at 14 months, DTC gross margin of approximately 73%, and a blended customer acquisition cost of $60–90 with a 3–5 month payback period, reaching approximately 480,000–500,000 active DTC subscribers and 8,800 retail doors before being acquired by Unilever for $1.2B in April 2026. Olly, a retail-led gummy supplement brand, was acquired by Unilever in 2019 for approximately $675M.
+
+Market Context & Timing The US gummy supplement category has been validated at scale but is consolidating under Unilever following its acquisitions of Olly and Grüns. A category window may still be open for a differentiated new entrant, but that window may narrow as incumbents strengthen shelf and digital positioning. An emerging demand signal is the growth in GLP-1 users, which may create a targeted micronutrient-support opportunity worth investigating as one possible entry vector.
+
+Strategic Intent This decision fits into a broader strategy of extending Reckitt from reactive health and immunity into proactive daily wellness, potentially creating a new growth platform with different brand, channel, and operating requirements from the core business.
+
+________________________________________
+3. Key Questions
+Each question has a priority (BLOCKING / HIGH / MEDIUM)
+
+Category 1: Market Attractiveness
+
+-	[BLOCKING/RESEARCH] Is the US gummy supplement category still structurally open to a new entrant after Unilever's consolidation of category leaders?
+-	[BLOCKING/RESEARCH] What is the realistic US gummy supplement growth trajectory through 2028, and is it sufficient to support profitable scale for a new Reckitt-backed brand?
+-	[HIGH/RESEARCH] Which consumer segments in daily wellness gummies remain underserved, and how large are they?
+
+Category 2: Right to Win & Competitive Positioning
+
+-	[BLOCKING/RESEARCH] What is Reckitt's credible right to win in this category: retail access, regulatory credibility, science-forward positioning, or another vector?
+-	[HIGH/RESEARCH] Can Reckitt differentiate enough against incumbents such as Olly, Ritual, and other challengers to avoid being a me-too entrant?
+-	[HIGH/RESEARCH] Can this initiative credibly become a new US growth platform beyond Airborne and Mucinex, rather than just a small adjacency?
+
+Category 3: Channel & Business Model Feasibility
+
+-	[BLOCKING/RESEARCH] What do the unit economics look like under DTC-first, retail-first, and hybrid entry models?
+-	[HIGH/RESEARCH] How disadvantaged would Reckitt be in DTC acquisition, subscription retention, and UGC-driven growth versus digital-native competitors?
+
+Category 4: Product & Regulatory Feasibility
+
+-	[HIGH/RESEARCH] What product configuration creates defensible differentiation: broad daily multivitamin, targeted benefit, or science-forward premium wellness?
+-	[HIGH/RESEARCH] Is the GLP-1 companion angle clinically credible, commercially large enough, and ownable as a potential entry vector?
+-	[HIGH/RESEARCH] What DSHEA, FDA, and FTC requirements would shape claim architecture and launch feasibility for a new gummy supplement brand?
+
+________________________________________
+4. Success Criteria
+Primary Success Criteria
+
+-	Market opportunity confirmed at scale – SAM of $1.0B with 10%+ CAGR
+-	Structural white space validated — At least one defensible product configuration confirmed with strong addressable demand and no incumbent from Unilever Wellbeing Collective or Bayer Supradyn occupying it at premium positioning.
+-	Consumer demand confirmed at premium tier — US target consumers demonstrate documented willingness to pay for premium gummies; 
+-	Confirmed ability to enter at least one other channel beyond retail (e.g. pharmacy, Costco, Wallmart, etc)
+-	Right to win confirmed on at least two durable vectors — Regulatory, production, channel access, supply chain, business model, etc. Both vectors must be documented, not assumed. 
+-	Potential Year 3 revenue of $240–300M, blended across all channels.
+
+
+Evaluation Guidance
+
+-	A Go decision should require confidence that the recommended entry model can credibly reach the primary financial thresholds within three years while establishing a distinct brand position in proactive daily wellness.
+-	A No-Go would be warranted if the category is no longer structurally open, if Reckitt lacks a defensible right to win, or if no entry model can credibly meet the revenue, margin, and contribution-profitability hurdles.
+
+________________________________________
+5. Assumptions
+Uncertain beliefs that must hold true for success. Each should be stress-testable and could plausibly be wrong.
+
+-	Assumption 1: The US gummy supplement category remains open enough for a differentiated new entrant despite recent consolidation.
+-	Assumption 2: Reckitt can translate its retail relationships, regulatory capability, and existing supplement adjacency into a credible advantage in proactive daily wellness.
+
+________________________________________
+6. Constraints
+Fixed, immutable boundary conditions that cannot be changed within this decision.
+
+-	Geography: Primary market is the United States. Analysis should focus on US consumers, channels, competitors, and regulation.
+
+________________________________________
+7. Stakeholders & Background
+Key Stakeholders
+
+-	Likely decision makers include Reckitt leadership and the board.
+-	Affected parties likely include the US consumer health business, brand teams, commercial teams, regulatory/scientific affairs, and any future venture unit.
+
+Project Stage & Prior Work
+
+-	This is at an early case-framing stage for a board-level Go / No-Go decision.
+
