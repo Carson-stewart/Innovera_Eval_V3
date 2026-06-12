@@ -1,0 +1,226 @@
+NEE – New York Energy Storage Market Entry Decision Frame (2026)
+
+# 1. Context Block
+
+New Energy Equity (NEE) is evaluating entry into the New York energy storage market, with an emphasis on distributed solar + battery storage and standalone battery systems.
+
+The initiative originates from internal efforts to expand beyond solar-only development and to integrate storage as a complementary capability. Current internal confidence in modeling and storage-specific economics is limited, and the company seeks external analytical rigor to validate assumptions and determine commercial viability.
+
+New York has been identified as the immediate focus state due to:
+
+- Established distributed solar activity
+- Existing incentive structures
+- Defined interconnection pathways
+- Active market participation frameworks under NYISO
+While the broader strategic ambition may include expansion beyond New York, this decision concerns only long-term viability within New York.
+
+NEE maintains internal storage-related capability, including a dedicated interconnection specialist and a storage specialist, supporting queue navigation, interconnection analysis, and storage-specific modeling inputs.
+
+The outcome of this work will inform a Board-level decision targeted for March 31, 2026.
+
+# 2. Decision Block
+
+Core Decision
+
+Should NEE enter the New York energy storage market on a long-term basis?
+
+The decision is binary:
+
+- Go – Commit to sustained NY market participation.
+- No-Go – Do not pursue NY storage market entry at this time.
+All analysis must support answering this decision.
+
+# 3. Key Questions
+
+These questions must be explicitly answered to resolve the decision.
+
+### BLOCKING QUESTIONS (Must Be Answered to Proceed)
+
+- Do NY storage market economics (hybrid and/or standalone) meet NEE’s required financial thresholds under realistic assumptions?
+- Is the NY policy, incentive, and regulatory environment sufficiently stable and durable to support long-term participation?
+- Can projects be developed, interconnected, and monetized within acceptable execution timelines and risk parameters?
+- Is there a credible buyer / IPP demand structure for projects under NEE’s non-ownership model?
+
+### HIGH PRIORITY QUESTIONS (Material to Decision)
+
+- Which configuration (standalone vs solar + storage) produces superior risk-adjusted economics in NY?
+- What proportion of projected revenue is policy-driven versus merchant-exposed, and how volatile is the revenue stack?
+- Are interconnection constraints likely to materially limit scalability?
+- What is the realistic replicability of viable project archetypes within NY?
+
+### MEDIUM PRIORITY QUESTIONS (Contextual but Not Blocking)
+
+- What EMS, degradation, and augmentation risks materially affect long-term value?
+- What operational or organizational adjustments are required to support NY storage participation?
+All risks identified in prior materials have been reframed as neutral, answerable questions.
+
+# 4. Success Criteria
+
+If the decision is Go, success is defined as:
+
+### Financial Outcomes
+
+- Projects meet or exceed Board-defined return thresholds.
+- Revenue profile is sufficiently stable relative to risk tolerance.
+- Capital deployment produces acceptable risk-adjusted returns.
+
+### Strategic Outcomes
+
+- Establishes a credible and repeatable development pathway in NY.
+- Demonstrates configuration(s) that are economically viable under NY market conditions.
+- Builds internal competence in storage development and monetization.
+
+### Operational Outcomes
+
+- Projects can be executed within defined timeline constraints.
+- Development and monetization processes are scalable.
+Prioritization:
+
+Financial viability is primary. Strategic positioning is secondary. Organizational build-out is tertiary.
+
+No feasibility judgments are embedded here.
+
+# 5. Assumptions
+
+These are hypotheses that must hold true for long-term NY market entry to be viable. Each must be explicitly validated during analysis.
+
+### 1. Battery Cost Competitiveness
+
+[Client-stated input — cost modeling basis]
+
+Installed battery system costs (including BOS, interconnection, integration, and augmentation) remain within the cost assumptions used in the financial model that are required to achieve Board-defined return thresholds.
+
+### 2. Revenue Sufficiency
+
+[Inferred — derived from core decision logic]
+
+Under base-case modeling assumptions, the NY revenue stack (policy-driven incentives plus market-based dispatch revenues) produces project returns that meet Board-defined financial thresholds.
+
+### 3. Merchant Exposure Tolerance
+
+[Pending client confirmation — see Section 0, Item A3]
+
+Achieving Board-defined financial thresholds does not require merchant revenue exposure beyond the client-confirmed risk tolerance.
+
+### 4. Incentive Accessibility
+
+[Client-stated reliance on ITC and NY incentives]
+
+Federal ITC and relevant NY incentive programs are legally and structurally accessible to NEE’s develop-and-sell project model for projects reaching commercial operation within the evaluation period.
+
+### 5. Policy Stability
+
+[Inferred — durability requirement for long-term entry]
+
+No foreseeable regulatory changes within the defined projection horizon materially eliminate or reduce the primary modeled revenue streams for NY storage projects.
+
+### 6. IPP Buyer Demand
+
+[Client-stated strategic positioning — IPP model]
+
+There is sufficient market demand from IPPs for NY storage-inclusive projects at pricing levels consistent with the development margins assumed in the financial model.
+
+### 7. Replicability
+
+[Inferred — required for long-term market entry classification]
+
+The economically viable project configuration identified through modeling can be deployed across multiple NY sites that meet defined technical and economic screening criteria.
+
+### 8. Interconnection Feasibility
+
+[Inferred — execution feasibility requirement]
+
+Interconnection timelines and upgrade costs for NY storage projects remain within the assumptions used in the financial model and do not reduce modeled returns below Board-defined thresholds.
+
+### 9. Configuration Viability
+
+[Pending clarification — see Section 0, Item D10/D11]
+
+At least one distributed-scale configuration (standalone or hybrid, ~5 MW class or optimized equivalent) can meet financial thresholds under NY conditions.
+
+### 10. Organizational Capability
+
+[Inferred — execution dependency]
+
+NEE can resource the technical, financial, and operational capabilities required to develop and transact NY storage projects within the decision timeline and at costs consistent with modeled returns.
+
+# 6. Constraints
+
+Constraints are fixed boundaries.
+
+### Decision Deadline
+
+Board decision required by March 31, 2026.
+
+### Geographic Scope
+
+State of New York only.
+
+### Ownership Model
+
+NEE will develop projects for sale or partnership with IPPs and will not retain long-term asset ownership.
+
+### Market Focus
+
+Distributed / non-utility-scale configurations (exact size constraint subject to clarification per Section 0).
+
+### Definition of Market Entry
+
+For purposes of this decision, “market entry” refers to committing to sustained participation in the NY energy storage market and does not refer solely to conducting a limited pilot study without long-term commitment.
+
+### Time Horizon
+
+Projection horizon to be clarified (see Section 0).
+
+No solutions may violate these constraints.
+
+### Ownership Model
+
+NEE will develop energy storage projects for sale to or partnership with IPPs and will not retain long-term asset ownership.
+
+All financial modeling and strategic evaluation must assume a develop-and-sell structure rather than long-term balance sheet ownership.
+
+# 7. Background Information
+
+## A. Stakeholders & Governance
+
+- Decision Owner: Jim Wrathall (General Counsel)
+- Executive Sponsor: Josh Cockle (CEO)
+- Project Leads: Josh Koppel and Zack Sherry
+- Board Decision Deadline: March 31, 2026
+The output of this work will support a Board-level Go / No-Go decision.
+
+## B. Prior Strategic Direction
+
+Initial discussions considered multiple states (including IL and NY) as test cases.
+
+Subsequent refinement narrowed the scope to a single-state NY focus, while maintaining the broader strategic ambition of expanding storage capabilities over time.
+
+This framing concerns NY only.
+
+## C. Organizational Readiness Context
+
+NEE maintains internal storage-related capability, including an interconnection specialist and a storage specialist, supporting queue navigation, interconnection analysis, organizational roadmap drafted for BESS capability development, and storage-specific technical modeling inputs.
+
+These capabilities contribute to execution readiness but do not, in themselves, determine commercial viability or scalability within NY.
+
+## D. Existing Materials & Analytical Inputs
+
+The following materials are available to inform analysis:
+
+- NY Decision Frame (Single-State Approach)
+- First Interview Notes
+- BESS Organizational & Operational Strategy
+- Energy Storage Business Plan Outline
+- Financial modeling templates (internal, referenced in interview materials)
+These materials serve as reference inputs for validation and stress-testing of assumptions.
+
+## E. Current Maturity Stage
+
+NEE has:
+
+- Existing solar development capability
+- No fully deployed NY storage portfolio
+- Concept-level modeling for storage integration
+- Identified potential distributed-scale configurations (~5 MW class)
+The company has not yet committed to long-term NY storage market participation.

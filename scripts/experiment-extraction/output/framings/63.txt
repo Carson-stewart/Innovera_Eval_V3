@@ -1,0 +1,95 @@
+
+WORKSHOP CASE
+1. Context Block
+Company Overview
+Reckitt Group plc (LSE: RKT) is a global consumer health, hygiene, and nutrition company with approximately £14.6 billion in revenue (2024, approximate — verify against current filings). Headquartered in Slough, UK, Reckitt operates across more than 60 countries through three business units: Health, Hygiene, and Nutrition.
+
+Following the divestiture of its Infant Formula China and North America business (Mead Johnson/Enfamil) to Primavera Capital Group in 2023 — a transaction valued at approximately $10 billion — Reckitt is actively seeking to redeploy capital into higher-growth consumer health categories.
+Category Trigger
+In April 2026, Unilever acquired Grüns for $1.2 billion. Grüns had reached approximately $550M in annualized revenue, with profitability at 14 months from launch, ~480–500K active DTC subscribers, and distribution across ~8,800 US retail doors. This was Unilever's second significant gummy vitamin acquisition — they had already purchased Olly (retail-led gummy vitamins) in 2019 for approximately $675 million.
+
+Unilever now owns the category's retail leader (Olly) and its DTC subscription leader (Grüns). For Reckitt, which already operates in the adjacent supplement space via Airborne, this consolidation is both a competitive threat and a strategic signal: the gummy format has been validated at scale, and the category premium is accruing to brands with a clear identity and channel strategy.
+
+ 
+2. Decision Block
+Primary Decision
+Go / No-Go
+Should Reckitt launch a new daily wellness gummy vitamin brand in the EU market? This is a binary decision. The board requires a recommendation backed by evidence. A 'further analysis needed' outcome is not acceptable given the eight-week mandate.
+
+
+Strategic Expectation: to have $240-300M/year in revenue from vitamin gummy category in 3 years
+
+Secondary Decisions (If Go)
+A Go recommendation resolves into four tightly interdependent choices. The answer to each constrains the others:
+
+–	A. Brand architecture: New standalone brand (new identity, new infrastructure, no Airborne baggage) vs. Airborne evolution (reposition the existing brand from reactive immune support to proactive daily wellness — faster, cheaper, but risks confusing the existing Airborne consumer). This is the most consequential early decision.
+–	B. Entry model: DTC-first (build a Grüns-style subscription engine from scratch) vs. Retail-first (leverage Reckitt's pharmacy and mass retail relationships from day one) vs. Hybrid (seed DTC for brand credibility, then use retail network for scale). Each produces a fundamentally different P&L, timeline, and organizational requirement.
+–	C. Product configuration: Daily multivitamin platform (head-on with Grüns / Unilever) vs. Targeted benefit (GLP-1 companion, stress + sleep, gut health) vs. Science-forward premium positioning anchored in Reckitt's clinical credibility. The Grüns benchmark — 60 ingredients, anti-AG1 positioning — sets a high bar.
+–	D. Business model: Subscription-default (requires entirely new commercial capability) vs. one-time retail unit economics (familiar, but structurally disadvantaged on LTV and margin vs. a subscription-native competitor). A hybrid that starts retail and migrates toward subscription is a third option worth modeling.
+
+ 
+3. Key Questions
+BLOCKING PRIORITY — Must be answered to make the Go / No-Go call
+–	Is the EU gummy supplement category still structurally open to a new entrant after Unilever's double consolidation (Olly + Grüns)? Has Unilever effectively closed the premium DTC window, or is there a defensible position that a Reckitt-backed brand can occupy?
+–	What is Reckitt's credible 'right to win'? Is it retail access, regulatory credibility, GLP-1 positioning, science-forward differentiation, or something else — and is that vector genuinely defensible against a Unilever that now has both the DTC and retail gummy leaders?
+–	Does Airborne's existing brand equity help or hurt a new daily wellness gummy brand? Specifically: would the Airborne halo accelerate a repositioned launch, or would it permanently anchor the product in the 'sick-person supplement' mental model — making a new brand the only viable architecture?
+–	What are the regulatory requirements specific to launching a new gummy supplement brand — and does Reckitt's OTC drug regulatory experience translate usefully, or does it create internal bias toward overly conservative claims that blunt the lifestyle appeal the category rewards?
+–	What is the realistic category growth trajectory for EU gummy supplements through 2028, and is it sufficient to support profitable scale for a new Reckitt brand alongside Grüns, Olly, Ritual, and a growing wave of challenger brands?
+
+HIGH PRIORITY — Shape the entry strategy if Go
+–	What product configuration creates defensible differentiation? 
+–	What do the unit economics look like under each entry model — DTC subscription vs. retail-led — including CAC, LTV, monthly churn, contribution margin, and payback period? The Grüns benchmark ($54.40 blended subscription ASP, 73% DTC gross margin, $60–$90 blended CAC, 3–5 month payback) sets the reference point. How does a Reckitt-backed brand compare, and where does it have structural advantages or disadvantages?
+–	Can Reckitt credibly build and operate a DTC subscription brand, or does its organizational DNA make retail-first the only viable path? What would it realistically cost in time, capital, and talent to build the missing capabilities — and is the build vs. acquire vs. hire-the-team decision better addressed through an acqui-hire?
+–	What revenue, gross margin, and market share is realistically achievable within three years under each model — and what are the financial scenarios (bull, base, bear) that the board needs to see?
+–	Should Reckitt's pharmacy retail relationships be used as a first-mover advantage from day one — or would entering pharmacy too early anchor the brand in the OTC health channel and undercut the aspirational wellness positioning that commands premium pricing and subscription loyalty?
+
+MEDIUM PRIORITY — Execution and optionality
+–	What is the 12-month launch roadmap under the recommended model, including critical path dependencies: co-manufacturer qualification, regulatory filing, DTC platform build, retail buyer sequencing, and creator/UGC engine setup?
+–	What talent and organizational model is required? Can this be run as an internal venture unit within Reckitt's Health division, or does it need complete separation to avoid the OTC culture infecting the brand-building approach? What is the acqui-hire landscape?
+–	What does the competitive response look like — from big players and from private-label pharmacy brands — and how does the recommended strategy hold up under each scenario?
+–	What is the 3–5 year strategic optionality: scale and hold within Reckitt's portfolio, sell to a strategic, or use the brand as a platform for sub-brand adjacency (kids, sleep, GLP-1 companion) expansion?
+
+ 
+4. Success Criteria
+Validation Criteria — Opportunity Assessment
+All five criteria below are directly answerable by the three Innovera research chapters: Customer & Demand Validation, Market Research (incl. EFSA Regulation), and Competitor Analysis. No financial modelling chapter is required to reach a Go / No-Go verdict.
+1)	Market opportunity confirmed at scale — EU gummy vitamin SAM has to be bigger than $0.5B, and growing at ≥ 8% CAGR through 2030. 
+2)	Structural white space validated — At least one defensible product configuration confirmed with strong addressable demand and no incumbent from Unilever Wellbeing Collective or Bayer Supradyn occupying it at premium positioning.
+3)	Regulatory pathway is navigable — ≥ 3 EFSA-compliant functional health claims identified as substantiable using Reckitt’s existing clinical dossiers sufficient to support premium positioning over private-label alternatives
+4)	Right to win confirmed on at least two durable vectors — Regulatory, production, channel access, supply chain, business model, etc. Both vectors must be documented, not assumed. 
+5)	Priority segment attractiveness confirmed — Leading sub-segments demonstrate ≥ 12% annual growth and limited premium-tier competition, enabling a targeted benefit entry rather than a broad multivitamin play. 
+ 
+5. Assumptions
+Client-Stated Assumptions
+–	Reckitt's existing pharmacy and mass retail relationships can materially accelerate retail door placement relative to a startup — but the sequencing question (pharmacy-first vs. natural/specialty-first) must be resolved in the strategy, not assumed away.
+–	Gummy supplement co-manufacturing via qualified US and European co-packers (with GMP certification and DSHEA compliance) is accessible within a 4–6 month qualification timeline, potentially leveraging Reckitt's existing co-manufacturer relationships through Airborne.
+–	Capital is not the binding constraint. The Mead Johnson divestiture created substantial capital capacity. 
+
+
+ 
+6. Constraints
+Decision Deadline
+Board presentation in 8 weeks from initiative launch (target: late July / August 2026). The recommendation must be board-ready and defensible — Reckitt has faced sustained activist shareholder pressure and the board will subject this analysis to serious scrutiny.
+Geographic Scope
+–	Primary market: European Union 
+Financial
+–	Initial investment envelope for exploration and Year 1 launch: up to $50M (capex + opex), subject to board approval at the Go gate
+–	Acquisition / acqui-hire budget: not pre-approved; M&A scenarios should be modeled with indicative ranges and separate board approval pathway noted
+–	Hurdle rate: Reckitt's capital allocation framework requires consumer health investments to demonstrate a clear path to mid-teens ROIC; any scenario that does not reach this threshold within the 5-year horizon requires explicit board exception
+Organizational
+–	The initiative must be structured as a venture unit with a dedicated P&L and separate operating practices — not absorbed into the existing Health business unit, which operates on OTC drug timelines and retail-push marketing rhythms
+–	Maximum Year 1 headcount: 35-50 FTEs, recognizing that Reckitt's HR systems and hiring velocity are calibrated for the core business, not startup-pace hiring
+Brand and Competitive
+–	No Airborne branding on the new brand: the brand architecture decision may involve an Airborne evolution in name only in a secondary scenario, but the primary scenario is a fully new brand identity
+–	Both DTC-first and retail-first entry models must be evaluated on equal financial footing — the board will not accept a recommendation that pre-supposes Reckitt cannot execute DTC without modeling the alternative
+–	Subscription as a business model must be assessed with full organizational implications surfaced — the board wants to understand what building this capability actually requires, not just the P&L upside
+
+ 
+7. Background Information
+
+Project Stage
+–	Early-stage opportunity validation — pre-business-case exploration, not an approved investment
+–	No internal P&L, product formulation, or brand architecture work has been completed
+–	Board milestone in 8 weeks is the first formal gate: a Go / No-Go with supporting analysis and, if Go, a recommended strategy with financial scenarios
+–	If Go is approved, a full business case and Phase 2 operating plan will follow in the subsequent 6–8 weeks
+

@@ -1,0 +1,647 @@
+[
+  {
+    "runId": 23,
+    "memoName": "Ecolab_Parallel_Gen.md",
+    "scoredAt": "2026-06-02T14:19:57.267Z",
+    "p1DimensionScore": {
+      "score": 2,
+      "serverComputed": 2,
+      "agentSelfReported": null,
+      "calibrationDrift": false,
+      "subScores": {
+        "ci": 2,
+        "bonus": 0.5,
+        "minorGaps": 6,
+        "flatPenalty": 0,
+        "majorPenalty": 2,
+        "reasoningGaps": 19,
+        "totalPenalties": 3.5,
+        "driftPenaltyRaw": 0,
+        "minorPenaltyRaw": 1.5,
+        "minorCombinedRaw": 6.25,
+        "definitionalDrifts": 0,
+        "flatContradictions": 0,
+        "reasoningPenaltyRaw": 4.75,
+        "majorReconciliations": 6,
+        "minorCombinedPenalty": 1.5
+      },
+      "traceabilityLog": {
+        "ci": 2,
+        "formula": "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+        "minor_gaps": 6,
+        "flat_penalty": 0,
+        "major_penalty": 2,
+        "tension_bonus": 0.5,
+        "reasoning_gaps": 19,
+        "total_penalties": 3.5,
+        "drift_penalty_raw": 0,
+        "minor_cap_applied": true,
+        "minor_penalty_raw": 1.5,
+        "minor_combined_cap": 1.5,
+        "minor_combined_raw": 6.25,
+        "definitional_drifts": 0,
+        "flat_contradictions": 0,
+        "reasoning_penalty_raw": 4.75,
+        "minor_combined_penalty": 1.5,
+        "major_reconciliation_failures": 6
+      }
+    },
+    "p1GapRows": [
+      {
+        "issue": "Coherence: 6 major reconciliation failure(s) — the same metric appears with conflicting values in different sections.",
+        "impact": "Confidence erosion: 7.5 points.",
+        "fix": "Reconcile the conflicting figures across sections. For each conflict, either unify the value or explicitly label one as a scenario variant.",
+        "severity": "HIGH"
+      }
+    ],
+    "p1EditRows": [
+      {
+        "issue": "The memo states conflicting revenue timelines: '~18–24 months' in the Executive Summary table versus '24 months' in Strategic Opportunity Validation and multiple other sections.",
+        "impact": "Readers cannot determine the actual target timeline, eroding confidence in the financial projections and making it impossible to assess feasibility against the stated 9-12 month sales cycles.",
+        "fix": "Standardize all references to use a single timeline format. In the Executive Summary table under 'Core Decision', change '~18–24 months' to '24 months'. In Strategic Opportunity Validation, confirm '24 months' is the official target. Add a footnote in the Executive Summary clarifying: 'All revenue targets reference 24 months from commercial launch, not from project initiation.'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "The Serviceable Addressable Market appears as both '$190M to $215M' and is referenced inconsistently across sections without explaining the range or which figure drives the 11-13% penetration calculation.",
+        "impact": "Stakeholders cannot validate whether the $25M target requires 11% or 13% market share, creating ambiguity in the feasibility assessment.",
+        "fix": "In the Market Research section under 'At a Glance', add: 'The SAM range of $190M-$215M reflects conservative versus optimistic deployment density assumptions. The $25M ARR target requires capturing 11.6% of the $215M upper bound or 13.2% of the $190M lower bound.' In the Six T Analysis TAM section, replace 'Data Point 1' text with: 'The US grocery Vision AI SAM is $190M-$215M, with the midpoint of $202.5M used for penetration calculations [CHAPTER: market-research].'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "The projected software gross margin appears as '45%' in the Key Risks table but is not reconciled with the cloud compute cost analysis that suggests margins will be negative without edge processing.",
+        "impact": "The 45% margin figure appears aspirational rather than validated, undermining the credibility of the unit economics and making the 'Unit Economic Collapse' risk seem speculative rather than data-driven.",
+        "fix": "In the Key Risks table under 'Unit Economic Collapse', revise the mitigation text to: 'Engineer edge-compute solutions to process video locally and achieve the target 45% gross margin; current cloud-only architecture yields negative margins at scale.' In the Six T Analysis Technology section, add after Data Point 1: 'At $0.10/minute for continuous streams across 50 stores, annual cloud costs exceed $2.6M, destroying the 45% target margin unless edge processing reduces inference costs by 80%+.'",
+        "severity": "HIGH"
+      }
+    ],
+    "perFailureDetailGap": "Agent-cited per-failure detail (ReconciliationEntry quoteA/quoteB/locations) is NOT persisted — computeP1 reduces all finding arrays to counts before persistence; raw Tier-1/Tier-2 LLM responses are not stored in any table (Inngest journal ephemeral, already confirmed unrecoverable).",
+    "redundancy": {
+      "sri": 0.021,
+      "claimCount": 48
+    }
+  },
+  {
+    "runId": 35,
+    "memoName": "26-01-09-Pasha_DC_Last_Gen.md",
+    "scoredAt": "2026-06-02T15:46:57.993Z",
+    "p1DimensionScore": {
+      "score": 2,
+      "serverComputed": 2,
+      "agentSelfReported": null,
+      "calibrationDrift": false,
+      "subScores": {
+        "ci": 2,
+        "bonus": 0.5,
+        "minorGaps": 17,
+        "flatPenalty": 0,
+        "majorPenalty": 2,
+        "reasoningGaps": 42,
+        "totalPenalties": 3.5,
+        "driftPenaltyRaw": 0.5,
+        "minorPenaltyRaw": 4.25,
+        "minorCombinedRaw": 15.25,
+        "definitionalDrifts": 2,
+        "flatContradictions": 0,
+        "reasoningPenaltyRaw": 10.5,
+        "majorReconciliations": 11,
+        "minorCombinedPenalty": 1.5
+      },
+      "traceabilityLog": {
+        "ci": 2,
+        "formula": "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+        "minor_gaps": 17,
+        "flat_penalty": 0,
+        "major_penalty": 2,
+        "tension_bonus": 0.5,
+        "reasoning_gaps": 42,
+        "total_penalties": 3.5,
+        "drift_penalty_raw": 0.5,
+        "minor_cap_applied": true,
+        "minor_penalty_raw": 4.25,
+        "minor_combined_cap": 1.5,
+        "minor_combined_raw": 15.25,
+        "definitional_drifts": 2,
+        "flat_contradictions": 0,
+        "reasoning_penalty_raw": 10.5,
+        "minor_combined_penalty": 1.5,
+        "major_reconciliation_failures": 11
+      }
+    },
+    "p1GapRows": [
+      {
+        "issue": "Coherence: 11 major reconciliation failure(s) — the same metric appears with conflicting values in different sections.",
+        "impact": "Confidence erosion: 7.5 points.",
+        "fix": "Reconcile the conflicting figures across sections. For each conflict, either unify the value or explicitly label one as a scenario variant.",
+        "severity": "HIGH"
+      }
+    ],
+    "p1EditRows": [
+      {
+        "issue": "The 'Industry' field lists 'Digital Infrastructure & Cloud Services' but later sections describe it as entering a 'global logistics business' creating sector confusion",
+        "impact": "Readers cannot determine if this is infrastructure, logistics, or cloud services, eroding trust in the strategic framing and making competitive analysis ambiguous",
+        "fix": "In the Overview Table, change 'Industry' field to: 'Digital Infrastructure (Data Center Colocation & Cloud Services)' and remove the 'global logistics business' phrase from 'Tell it to me straight' section, replacing with 'commercial data center operations'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Domestic market size appears as '$203 million' in Market Summary but is described as 'small' and 'capped' without reconciling what portion is addressable colocation revenue versus hardware procurement",
+        "impact": "The $203M figure misleads stakeholders into believing a larger addressable market exists, directly contradicting the 'too small to justify CAPEX' conclusion and undermining investment sizing decisions",
+        "fix": "In Market Summary section, revise to: 'The domestic infrastructure market is estimated at ~$203M in total IT spend, but the addressable colocation revenue subset is estimated at $40-60M annually, as the $203M figure includes hardware procurement and internal IT budgets that do not translate to commercial data center demand.' Cross-reference this clarification in Executive Summary where market size is discussed.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Phase 1 utilization is stated as '30-40%' from internal anchors in Go-to-Market but Revenue model states break-even requires '40-60%' utilization, creating ambiguity on whether Phase 1 is self-funding",
+        "impact": "Decision-makers cannot determine if Phase 1 cash flows are positive or negative, directly affecting the capital deployment decision and Valley of Death duration",
+        "fix": "In Revenue & Business Model section, add: 'Phase 1 internal anchor demand (30-40% utilization) covers variable operating costs but falls short of the 40-60% threshold required for full break-even including debt service. External pre-leasing of an additional 10-20% capacity is required to achieve positive EBITDA in Year 3.' This reconciles both figures and clarifies the funding gap.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Timeline shows '90-day validation sprint' (Months 1-3) but detailed GTM chapter shows 'Month 1: Power tariff negotiation' as a discrete monthly task, creating confusion on whether power validation is a 90-day process or a Month 1 deliverable",
+        "impact": "Project managers cannot build a coherent workplan, risking either premature go-live decisions or unnecessary delays in capital deployment",
+        "fix": "In Next Steps table, revise the Power Tariff row to: 'Months 1-3: Negotiate binding PPA with Ministry of Energy (Month 1: Initial terms; Month 2: Legal review; Month 3: Ministerial approval)' to show this is a phased 90-day process, not a single-month task. Remove conflicting monthly breakdowns from GTM chapter or align them to this phased structure.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Power cost threshold appears as '$0.05/kWh' in multiple sections but the '$0.01 increase erodes margins by 15-20%' statement implies the current baseline is unknown, creating circular logic",
+        "impact": "Readers cannot determine if current power costs are $0.04, $0.06, or $0.07/kWh, making the entire unit economics analysis unverifiable and the investment decision ungrounded",
+        "fix": "In Unit Economics Summary, add: 'Current commercial power tariffs in Azerbaijan are estimated at $0.06-0.07/kWh. The AI Factory model requires negotiating a subsidized rate of ≤$0.05/kWh to achieve target margins. At the current $0.07/kWh rate, the project is 15-20% below commercial viability.' This establishes the baseline and clarifies the negotiation target.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Central Asian market is cited as '$179.7M by 2028' but Kazakhstan alone controls '45% of market' which would imply ~$80M, yet Kazakhstan is described as having 'massive' scale suggesting a larger absolute market size",
+        "impact": "The market sizing creates doubt about whether the $179.7M figure is credible or whether Kazakhstan's dominance is overstated, undermining the competitive threat assessment",
+        "fix": "In Market Summary, clarify: 'The Central Asian colocation market (excluding domestic enterprise IT spend) is projected to reach $179.7M by 2028, with Kazakhstan capturing approximately $80M (45% share) due to its Google Cloud partnership and subsidized infrastructure.' This reconciles the percentage with absolute figures and validates the scale claim.",
+        "severity": "MEDIUM"
+      },
+      {
+        "issue": "Colocation pricing is stated as '$150-200 per kW/month' for base and '$350-500 per kW/month' for AI compute, but Kazakhstan competitor pricing is '$120-150 per kW/month', creating confusion on whether PASHA can command premium pricing",
+        "impact": "Revenue projections become unreliable if PASHA cannot justify premium pricing over Kazakhstan, directly affecting the financial model's validity",
+        "fix": "In Revenue & Business Model section, add: 'PASHA's target pricing of $150-200/kW for standard colocation represents a 15-25% premium over Kazakhstan's subsidized $120-150/kW rates. This premium is justified only for domestic clients requiring data sovereignty compliance (Decree No. 718). For regional clients, PASHA must match Kazakhstan pricing, compressing margins unless power costs are reduced below $0.05/kWh.' This reconciles the pricing contradiction and clarifies the segmentation strategy.",
+        "severity": "MEDIUM"
+      },
+      {
+        "issue": "Capital requirement appears as '$200-300M' in Executive Summary but Operations shows '$200-250M' with a specific '$100M equity + $150M debt' structure, creating ambiguity on total project cost",
+        "impact": "Board members cannot determine the actual funding requirement, risking under-capitalization or confusion in capital allocation approvals",
+        "fix": "Standardize to '$200-250M' throughout the memo. In Executive Summary, revise to: 'Capital Requirement: $200-250M ($100M equity, $150M debt) for Phase 1 (10MW) with an additional $80-100M contingent on Phase 2 expansion, bringing total potential deployment to $280-350M.' This reconciles the range and clarifies phasing.",
+        "severity": "MEDIUM"
+      },
+      {
+        "issue": "Sales cycle duration is stated as '10-11 months' in one section but GTM strategy implies Q4 commercial launch with revenue in Year 1, creating timeline impossibility",
+        "impact": "Revenue forecasts for Year 1-2 become implausible if sales cycles extend beyond the fiscal year, undermining the financial model's credibility",
+        "fix": "In Path to Success - Go-to-Market section, add: 'External B2B sales cycles average 10-11 months, meaning clients engaged in Month 6 (Q2) will not generate revenue until Month 16-17 (Year 2 Q2). Year 1 revenue projections therefore rely exclusively on pre-negotiated internal PASHA Group migrations and any pre-construction LOIs secured during the validation sprint.' This aligns the sales cycle reality with the revenue timeline.",
+        "severity": "MEDIUM"
+      },
+      {
+        "issue": "Workforce cost structure shows 'local labor at $10k-15k/year' and 'expat leadership at $120k-160k/year' but does not reconcile with the '$4-5M monthly burn rate' stated in Financials, making the cost structure unverifiable",
+        "impact": "Stakeholders cannot validate if the burn rate is realistic or inflated, creating doubt about the operational budget's accuracy",
+        "fix": "In Operations Analysis - Financials section, add a footnote: 'The $4-5M monthly burn during construction includes: $2.5-3M in construction/equipment payments, $0.8-1M in pre-revenue staffing (20 local staff + 5 expat leads), $0.5M in facility pre-commissioning costs, and $0.2-0.5M in sales/marketing. Post-commissioning operational burn reduces to $1.5-2M/month until 40% utilization is achieved.' This reconciles the burn rate with the workforce structure.",
+        "severity": "LOW"
+      }
+    ],
+    "perFailureDetailGap": "Agent-cited per-failure detail (ReconciliationEntry quoteA/quoteB/locations) is NOT persisted — computeP1 reduces all finding arrays to counts before persistence; raw Tier-1/Tier-2 LLM responses are not stored in any table (Inngest journal ephemeral, already confirmed unrecoverable).",
+    "redundancy": {
+      "sri": 0.175,
+      "claimCount": 57
+    }
+  },
+  {
+    "runId": 38,
+    "memoName": "MN_4_1.docx",
+    "scoredAt": "2026-06-02T16:09:15.118Z",
+    "p1DimensionScore": {
+      "score": 2,
+      "serverComputed": 2,
+      "agentSelfReported": null,
+      "calibrationDrift": false,
+      "subScores": {
+        "ci": 2,
+        "bonus": 0.5,
+        "minorGaps": 13,
+        "flatPenalty": 0,
+        "majorPenalty": 2,
+        "reasoningGaps": 27,
+        "totalPenalties": 3.5,
+        "driftPenaltyRaw": 0.75,
+        "minorPenaltyRaw": 3.25,
+        "minorCombinedRaw": 10.75,
+        "definitionalDrifts": 3,
+        "flatContradictions": 0,
+        "reasoningPenaltyRaw": 6.75,
+        "majorReconciliations": 14,
+        "minorCombinedPenalty": 1.5
+      },
+      "traceabilityLog": {
+        "ci": 2,
+        "formula": "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+        "minor_gaps": 13,
+        "flat_penalty": 0,
+        "major_penalty": 2,
+        "tension_bonus": 0.5,
+        "reasoning_gaps": 27,
+        "total_penalties": 3.5,
+        "drift_penalty_raw": 0.75,
+        "minor_cap_applied": true,
+        "minor_penalty_raw": 3.25,
+        "minor_combined_cap": 1.5,
+        "minor_combined_raw": 10.75,
+        "definitional_drifts": 3,
+        "flat_contradictions": 0,
+        "reasoning_penalty_raw": 6.75,
+        "minor_combined_penalty": 1.5,
+        "major_reconciliation_failures": 14
+      }
+    },
+    "p1GapRows": [
+      {
+        "issue": "Coherence: 14 major reconciliation failure(s) — the same metric appears with conflicting values in different sections.",
+        "impact": "Confidence erosion: 7.5 points.",
+        "fix": "Reconcile the conflicting figures across sections. For each conflict, either unify the value or explicitly label one as a scenario variant.",
+        "severity": "HIGH"
+      }
+    ],
+    "p1EditRows": [
+      {
+        "issue": "The 12-month timeline appears in multiple forms: 'Months 1-3/4-8/9-12' in one section and 'Phase 1/2/3 (Months 1-3/4-8/9-12+)' in another, creating reconciliation confusion.",
+        "impact": "Readers cannot determine the actual project timeline, eroding confidence in execution planning and making it impossible to assess feasibility.",
+        "fix": "In the 'Financials & Operational Plan' table, replace the timeline references with a single, consistent phasing structure that matches the 'Product & Technology' section exactly: 'Phase 1 (Months 1-3): Prototyping & Regulatory Validation; Phase 2 (Months 4-8): Pilot Production & E-commerce Launch; Phase 3 (Months 9-12): Scaled Production & Mainstream Retail.' Remove all alternative timeline descriptions from other sections.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Market size appears as '$1.5B to $1.65B' in one location, '$1.25B in 2025' in another, and '$1.85B by 2032' in a third, with no clear reconciliation of these figures.",
+        "impact": "The TAM analysis becomes unreliable, making it impossible to assess the true market opportunity or validate the SOM calculations.",
+        "fix": "In the 'Market Summary' section, add a single reconciliation statement: 'The US rice cracker market is valued at $1.5B–$1.65B in 2025 (current), projected to reach $1.85B by 2032 at a 6.8% CAGR. All subsequent calculations use the 2025 baseline of $1.5B.' Remove conflicting standalone figures from other sections.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Retail price appears as '$4.00–$4.99 range' in one section and '$4.50 anchor price' in another, while gross margin is stated as both '30-35% target' and '32.2% projected.'",
+        "impact": "Unit economics cannot be validated because the pricing foundation shifts between sections, making the margin analysis unreliable.",
+        "fix": "In the 'Revenue & Business Model' section, state: 'The financial model uses a $4.50 retail price (midpoint of the $4.00–$4.99 premium tier) to calculate a 32.2% gross margin, which falls within the corporate mandate of 30-35%.' Remove all standalone margin percentages that lack this explicit linkage.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Retail door targets conflict: '3,500 retail doors in Year 1' appears in one section while the phased strategy describes 'e-commerce first, then specialty retail, then mainstream deferment' without quantifying doors per phase.",
+        "impact": "The go-to-market plan appears internally contradictory, making it impossible to assess whether the 3,500-door target is achievable within the stated phased approach.",
+        "fix": "In the 'Financials & Operational Plan' table, break down the 3,500 doors by phase: 'Year 1 Target: 3,500 doors (Phase 1: 500 e-commerce/DTC; Phase 2: 3,000 specialty retail; Phase 3: mainstream deferred to Year 2+).' Cross-reference this breakdown in the 'Go-to-Market' section.",
+        "severity": "HIGH"
+      }
+    ],
+    "perFailureDetailGap": "Agent-cited per-failure detail (ReconciliationEntry quoteA/quoteB/locations) is NOT persisted — computeP1 reduces all finding arrays to counts before persistence; raw Tier-1/Tier-2 LLM responses are not stored in any table (Inngest journal ephemeral, already confirmed unrecoverable).",
+    "redundancy": {
+      "sri": 0.327,
+      "claimCount": 52
+    }
+  },
+  {
+    "runId": 41,
+    "memoName": "ecolab3.docx",
+    "scoredAt": "2026-06-08T19:39:00.128Z",
+    "p1DimensionScore": {
+      "score": 3,
+      "serverComputed": 3,
+      "agentSelfReported": null,
+      "calibrationDrift": false,
+      "subScores": {
+        "ci": 3,
+        "bonus": 0.5,
+        "minorGaps": 9,
+        "flatPenalty": 0,
+        "majorPenalty": 1,
+        "reasoningGaps": 10,
+        "totalPenalties": 2.5,
+        "driftPenaltyRaw": 0,
+        "minorPenaltyRaw": 2.25,
+        "minorCombinedRaw": 4.75,
+        "definitionalDrifts": 0,
+        "flatContradictions": 0,
+        "reasoningPenaltyRaw": 2.5,
+        "majorReconciliations": 1,
+        "minorCombinedPenalty": 1.5
+      },
+      "traceabilityLog": {
+        "ci": 3,
+        "formula": "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+        "minor_gaps": 9,
+        "flat_penalty": 0,
+        "major_penalty": 1,
+        "tension_bonus": 0.5,
+        "reasoning_gaps": 10,
+        "total_penalties": 2.5,
+        "drift_penalty_raw": 0,
+        "minor_cap_applied": true,
+        "minor_penalty_raw": 2.25,
+        "minor_combined_cap": 1.5,
+        "minor_combined_raw": 4.75,
+        "definitional_drifts": 0,
+        "flat_contradictions": 0,
+        "reasoning_penalty_raw": 2.5,
+        "minor_combined_penalty": 1.5,
+        "major_reconciliation_failures": 1
+      }
+    },
+    "p1GapRows": [
+      {
+        "issue": "Coherence: 1 major reconciliation failure(s) — the same metric appears with conflicting values in different sections.",
+        "impact": "Confidence erosion: 5.0 points.",
+        "fix": "Reconcile the conflicting figures across sections. For each conflict, either unify the value or explicitly label one as a scenario variant.",
+        "severity": "MEDIUM"
+      }
+    ],
+    "p1EditRows": [
+      {
+        "issue": "The memo states '~$25M in ARR within ~18 months of commercial launch' in the Executive Summary table but later states 'Enterprise software deals typically require 6 to 12+ months' and Action Items specify 30-90 day timelines, creating an unreconciled timeline conflict.",
+        "impact": "Readers cannot determine if the 18-month target is feasible given the stated 6-12 month sales cycles, eroding confidence in the commercial viability assessment and making the recommendation appear internally contradictory.",
+        "fix": "In the Executive Summary table under 'Core Decision', revise the timeline to read '~$25M in ARR within 24-30 months of commercial launch (accounting for 6-12 month enterprise sales cycles plus 12-18 month deployment ramp)'. In the Customer & Demand Validation chapter's 'Demand Stress Testing' section, add a reconciliation paragraph: 'The original 18-month target assumed 6-month sales cycles; extending to 24-30 months accounts for the 6-12 month enterprise procurement reality plus sequential pilot-to-scale deployment phases.' This also addresses the P7 timeline-to-milestone FIC failure.",
+        "severity": "HIGH"
+      }
+    ],
+    "perFailureDetailGap": "Agent-cited per-failure detail (ReconciliationEntry quoteA/quoteB/locations) is NOT persisted — computeP1 reduces all finding arrays to counts before persistence; raw Tier-1/Tier-2 LLM responses are not stored in any table (Inngest journal ephemeral, already confirmed unrecoverable).",
+    "redundancy": {
+      "sri": 0.347,
+      "claimCount": 49
+    }
+  },
+  {
+    "runId": 56,
+    "memoName": "Visiomex_1st_Gen.md",
+    "scoredAt": "2026-06-10T10:59:33.092Z",
+    "p1DimensionScore": {
+      "score": 2,
+      "serverComputed": 2,
+      "agentSelfReported": null,
+      "calibrationDrift": false,
+      "subScores": {
+        "ci": 2,
+        "bonus": 0.5,
+        "minorGaps": 5,
+        "flatPenalty": 0,
+        "majorPenalty": 2,
+        "reasoningGaps": 24,
+        "totalPenalties": 3.5,
+        "driftPenaltyRaw": 0,
+        "minorPenaltyRaw": 1.25,
+        "minorCombinedRaw": 7.25,
+        "definitionalDrifts": 0,
+        "flatContradictions": 0,
+        "reasoningPenaltyRaw": 6,
+        "majorReconciliations": 3,
+        "minorCombinedPenalty": 1.5
+      },
+      "traceabilityLog": {
+        "ci": 2,
+        "formula": "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+        "minor_gaps": 5,
+        "flat_penalty": 0,
+        "major_penalty": 2,
+        "tension_bonus": 0.5,
+        "reasoning_gaps": 24,
+        "total_penalties": 3.5,
+        "drift_penalty_raw": 0,
+        "minor_cap_applied": true,
+        "minor_penalty_raw": 1.25,
+        "minor_combined_cap": 1.5,
+        "minor_combined_raw": 7.25,
+        "definitional_drifts": 0,
+        "flat_contradictions": 0,
+        "reasoning_penalty_raw": 6,
+        "minor_combined_penalty": 1.5,
+        "major_reconciliation_failures": 3
+      }
+    },
+    "p1GapRows": [
+      {
+        "issue": "Coherence: 3 major reconciliation failure(s) — the same metric appears with conflicting values in different sections.",
+        "impact": "Confidence erosion: 7.5 points.",
+        "fix": "Reconcile the conflicting figures across sections. For each conflict, either unify the value or explicitly label one as a scenario variant.",
+        "severity": "HIGH"
+      }
+    ],
+    "p1EditRows": [
+      {
+        "issue": "The memo states CE marking takes 12 months in one location but references a 6-18 month regulatory delay in multiple other sections, creating a reconciliation failure.",
+        "impact": "Readers cannot determine the actual timeline constraint for market entry, undermining the credibility of the phased execution plan and making it impossible to assess whether the 10-15 month runway is sufficient.",
+        "fix": "In the 'Financials & Operational Plan' section, replace all references to regulatory timeline with a single consolidated statement: 'CE marking and ISO 9001 certification will require 6-18 months and $500,000-$700,000 in costs.' Remove the standalone '12 months' reference. In the 'Product & Technology' section, update the timeline to match: 'These regulatory requirements represent a 6-18 month delay.' In the Executive Summary 'Rationale' section, confirm the same range: 'The lack of CE marking and ISO 9001 certification will require 6-18 months to secure.'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Phase timelines conflict with stated regulatory delays—Phase 2 (Months 6-18) overlaps with the 6-18 month certification period, and Phase 3 (Months 18-24) assumes channel scaling before certifications could realistically be complete.",
+        "impact": "The phased rollout plan appears operationally impossible, eroding confidence in the entire execution roadmap and making the recommended strategy appear internally contradictory.",
+        "fix": "In the 'Path to Execution' section under 'Go-to-Market', revise the phase structure to: 'Phase 1: Anchor Pilot & Regulatory Initiation — Months 1-6 (Magna pilot while CE/ISO process begins); Phase 2: Certification Completion & Validation — Months 6-18 (finalize certifications, no channel activity); Phase 3: Channel Enablement & Scaling — Months 18-30 (distributor recruitment begins only after certifications are granted).' Update the Executive Summary timeline references to match this revised structure.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "The memo states 'scalable European revenue cannot begin until Q3 2027' in one location but describes a 24-month execution plan elsewhere, creating timeline confusion about when revenue generation is actually feasible.",
+        "impact": "Stakeholders cannot determine whether the opportunity is a 2-year or 3+ year horizon, fundamentally altering investment and resource allocation decisions.",
+        "fix": "In the Executive Summary under 'Rationale', add explicit timeline reconciliation: 'Regulatory compliance will enforce a 6-18 month delay before channel distribution can begin. Assuming certification completion by Month 18, scalable channel revenue cannot realistically begin until Month 24-30 (Q3 2026 - Q1 2027 if initiated immediately).' Remove any reference to 'Q3 2027' unless it is explicitly tied to a specific start date assumption. In the 'Financials & Operational Plan' section, add a timeline table showing: Month 0-6 (Pilot), Month 6-18 (Certification), Month 18-30 (Channel Scaling), with revenue milestones aligned to each phase.",
+        "severity": "HIGH"
+      }
+    ],
+    "perFailureDetailGap": "Agent-cited per-failure detail (ReconciliationEntry quoteA/quoteB/locations) is NOT persisted — computeP1 reduces all finding arrays to counts before persistence; raw Tier-1/Tier-2 LLM responses are not stored in any table (Inngest journal ephemeral, already confirmed unrecoverable).",
+    "redundancy": {
+      "sri": 0.256,
+      "claimCount": 78
+    }
+  },
+  {
+    "runId": 58,
+    "memoName": "Zebrav5.docx",
+    "scoredAt": "2026-06-10T14:20:26.837Z",
+    "p1DimensionScore": {
+      "score": 2,
+      "serverComputed": 2,
+      "agentSelfReported": null,
+      "calibrationDrift": false,
+      "subScores": {
+        "ci": 2,
+        "bonus": 0.5,
+        "minorGaps": 6,
+        "flatPenalty": 0,
+        "majorPenalty": 2,
+        "reasoningGaps": 10,
+        "totalPenalties": 3.5,
+        "driftPenaltyRaw": 0.25,
+        "minorPenaltyRaw": 1.5,
+        "minorCombinedRaw": 4.25,
+        "definitionalDrifts": 1,
+        "flatContradictions": 0,
+        "reasoningPenaltyRaw": 2.5,
+        "majorReconciliations": 4,
+        "minorCombinedPenalty": 1.5
+      },
+      "traceabilityLog": {
+        "ci": 2,
+        "formula": "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+        "minor_gaps": 6,
+        "flat_penalty": 0,
+        "major_penalty": 2,
+        "tension_bonus": 0.5,
+        "reasoning_gaps": 10,
+        "total_penalties": 3.5,
+        "drift_penalty_raw": 0.25,
+        "minor_cap_applied": true,
+        "minor_penalty_raw": 1.5,
+        "minor_combined_cap": 1.5,
+        "minor_combined_raw": 4.25,
+        "definitional_drifts": 1,
+        "flat_contradictions": 0,
+        "reasoning_penalty_raw": 2.5,
+        "minor_combined_penalty": 1.5,
+        "major_reconciliation_failures": 4
+      }
+    },
+    "p1GapRows": [
+      {
+        "issue": "Coherence: 4 major reconciliation failure(s) — the same metric appears with conflicting values in different sections.",
+        "impact": "Confidence erosion: 7.5 points.",
+        "fix": "Reconcile the conflicting figures across sections. For each conflict, either unify the value or explicitly label one as a scenario variant.",
+        "severity": "HIGH"
+      }
+    ],
+    "p1EditRows": [
+      {
+        "issue": "The TAM value appears as both '$5.6B (2024) to $12.1B (2033)' in the table and '$133 billion' in Market Dynamics, creating a reconciliation failure.",
+        "impact": "Readers cannot determine the true market size, eroding confidence in all downstream revenue projections and the feasibility assessment of the $500M target.",
+        "fix": "In the TAM row of the Market Size & Segmentation table, clarify that $5.6B-$12.1B refers specifically to defect inspection and metrology equipment (a subset), while the $133B figure in Market Dynamics refers to total semiconductor manufacturing equipment. Add a footnote: 'Note: TAM is scoped to inspection/metrology only; total equipment market is $133B (2025).' In Market Dynamics, revise the sentence to: 'Per market research, the global semiconductor manufacturing equipment market (which includes but is not limited to inspection equipment) is projected to reach $133 billion in 2025.'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "The 'required inspection latency' is stated as 'sub-5ms' in Problem Definition but appears as 'under 0.7 seconds' in the Workflow Pain Points table, creating a 140x discrepancy.",
+        "impact": "Technical stakeholders cannot assess whether Zebra's solution meets the actual performance requirement, undermining the entire technical viability claim.",
+        "fix": "In the Workflow Pain Points table under 'Wafer/Die Positioning & Alignment', change 'processing massive image volumes (25 MP+) in under 0.7 seconds' to 'processing massive image volumes (25 MP+) at sub-5ms per frame to support real-time alignment'. Add clarification: 'The 0.7-second figure represents total cycle time for multi-frame processing, while individual frame capture must occur at sub-5ms latency.'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Assembly and packaging equipment sales are stated as both '$6.0 billion in 2025' (19.6% growth) and implicitly as a subset of the $133B total equipment market, but the percentage relationship is never reconciled.",
+        "impact": "Readers cannot validate whether the advanced packaging opportunity is material enough to offset wire bonding cyclicality, weakening the diversification strategy.",
+        "fix": "In the AI-Driven Advanced Packaging row of the Trend → Implication table, add: 'Assembly and packaging equipment represents approximately 4.5% of the total $133B equipment market ($6.0B in 2025), but is growing at 19.6% versus the overall market growth rate, indicating structural share expansion.' This also addresses the P1 reconciliation issue across chapters.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "The revenue target appears as '$500M by 2029-2030' in the Decision section but as '$200M minimum threshold' in the Answer, with no clear reconciliation of which target the recommendation actually supports.",
+        "impact": "The executive cannot determine whether the recommendation is to pursue the original $500M goal or accept the downgraded $200M floor, creating decision ambiguity.",
+        "fix": "In the Answer subsection, revise to: 'Proceed via a standardized component model targeting advanced packaging and metrology equipment manufacturers, with a revised revenue target of $200M by 2029-2030. The original $500M aspiration is unachievable given the $100M-$150M near-term obtainable market (see Market Research chapter), but the $200M floor is reachable by capturing 40-50% share in advanced packaging segments and diversifying away from cyclical wire bonding.'",
+        "severity": "HIGH"
+      }
+    ],
+    "perFailureDetailGap": "Agent-cited per-failure detail (ReconciliationEntry quoteA/quoteB/locations) is NOT persisted — computeP1 reduces all finding arrays to counts before persistence; raw Tier-1/Tier-2 LLM responses are not stored in any table (Inngest journal ephemeral, already confirmed unrecoverable).",
+    "redundancy": {
+      "sri": 0.286,
+      "claimCount": 28
+    }
+  },
+  {
+    "runId": 64,
+    "memoName": "US Vitamin Gummy Market.md",
+    "scoredAt": "2026-06-11T09:38:02.003Z",
+    "p1DimensionScore": {
+      "score": 2,
+      "serverComputed": 2,
+      "agentSelfReported": null,
+      "calibrationDrift": false,
+      "subScores": {
+        "ci": 2,
+        "bonus": 0.5,
+        "minorGaps": 12,
+        "flatPenalty": 0,
+        "majorPenalty": 2,
+        "reasoningGaps": 23,
+        "totalPenalties": 3.5,
+        "driftPenaltyRaw": 0.5,
+        "minorPenaltyRaw": 3,
+        "minorCombinedRaw": 9.25,
+        "definitionalDrifts": 2,
+        "flatContradictions": 0,
+        "reasoningPenaltyRaw": 5.75,
+        "majorReconciliations": 15,
+        "minorCombinedPenalty": 1.5
+      },
+      "traceabilityLog": {
+        "ci": 2,
+        "formula": "CI = 5 − penalties + tension_bonus, clamp [1,5]",
+        "minor_gaps": 12,
+        "flat_penalty": 0,
+        "major_penalty": 2,
+        "tension_bonus": 0.5,
+        "reasoning_gaps": 23,
+        "total_penalties": 3.5,
+        "drift_penalty_raw": 0.5,
+        "minor_cap_applied": true,
+        "minor_penalty_raw": 3,
+        "minor_combined_cap": 1.5,
+        "minor_combined_raw": 9.25,
+        "definitional_drifts": 2,
+        "flat_contradictions": 0,
+        "reasoning_penalty_raw": 5.75,
+        "minor_combined_penalty": 1.5,
+        "major_reconciliation_failures": 15
+      }
+    },
+    "p1GapRows": [
+      {
+        "issue": "Coherence: 15 major reconciliation failure(s) — the same metric appears with conflicting values in different sections.",
+        "impact": "Confidence erosion: 7.5 points.",
+        "fix": "Reconcile the conflicting figures across sections. For each conflict, either unify the value or explicitly label one as a scenario variant.",
+        "severity": "HIGH"
+      }
+    ],
+    "p1EditRows": [
+      {
+        "issue": "The table states Year 3 revenue target as '$240–300M' but the Brief Discrepancies section and multiple other sections cite '$150–200M' as the baseline expectation.",
+        "impact": "This creates immediate confusion about the actual success threshold, undermining confidence in all downstream financial analysis and making it impossible to assess whether the venture meets or fails its core objective.",
+        "fix": "In the Success Criteria Analysis table, change the second row criterion from 'Potential Year 3 revenue of $240–300M, blended across all channels' to 'Potential Year 3 revenue of $150–200M (baseline expectation per client brief), with $240–300M as stretch target'. Update the Assessment column to read: 'The arithmetic closure audit proves the baseline $150M target is structurally unachievable; the venture's stated retail door count and subscriber targets mathematically cap Year 3 revenue at approximately $43M, creating a $107M minimum gap.'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Timeline statements conflict: 'Execute format pivot and unbranded DTC smoke test — 30 Days' appears in Action Items, but Executive Summary states 'Phase 1: Unbranded Smoke Test — Months 1–3' and other sections reference 'Weeks 1–6' for CDMO studies.",
+        "impact": "Contradictory timelines erode trust in the execution roadmap and make it impossible for stakeholders to understand the actual critical path and resource requirements.",
+        "fix": "In the Action Items table, revise the first row timeframe from '30 Days' to 'Months 1–3 (Phase 1)' to align with the phased rollout structure stated in the Executive Summary. Add a new column 'Phase Alignment' showing which action belongs to which phase (Phase 1: Months 1–3, Phase 2: Months 4–9, Phase 3: Months 10–18). Ensure all timeline references use consistent units (months) and align with the three-phase structure.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "States 'Projected ARPU: $40.00/month' but the Executive Summary Success Criteria table shows price range '$24.99–$42.99' without clarifying which specific price point the financial model uses.",
+        "impact": "Revenue projections become unreliable when the baseline price assumption is ambiguous, making it impossible to validate the $43M revenue cap calculation or assess pricing sensitivity.",
+        "fix": "In the Pricing & Revenue per Unit section, revise the first bullet to read: 'Baseline ARPU: $40.00/month (midpoint of $24.99–$42.99 range, used consistently across all financial projections in this memo). DTC subscription model assumes 10–15% discount from this baseline, yielding net ARPU of $34.00–$36.00/month.' Cross-reference this assumption in the Executive Summary's revenue gap calculation to confirm the $43M cap uses the $40 baseline.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "SOM shows '$150M–$200M' as 'Bottom-up calculation' but the Executive Summary states the arithmetic closure audit caps revenue at '$43M', creating a $107M unexplained gap.",
+        "impact": "The market sizing section contradicts the core financial finding, making it impossible to trust either the market opportunity or the feasibility assessment.",
+        "fix": "In the Market Summary table, revise the SOM row to read: 'SOM (Client Target): $150M–$200M | SOM (Arithmetic Closure): $43M–$59.5M | Methodology: Client target represents stated expectation; arithmetic closure represents maximum achievable revenue given stated retail door count (5,000) and subscriber targets (75,000) at $40 ARPU. Gap of $91M–$157M indicates structural infeasibility of current plan.' Add a footnote explaining the reconciliation between target and achievable SOM.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "Lists 'Arithmetic Closure Failure' as a risk with 'High' probability, but this contradicts the Decision section which states the revenue cap is a proven fact, not a risk.",
+        "impact": "Treating a confirmed mathematical constraint as a probabilistic risk undermines the credibility of the entire risk framework and suggests the analysis is uncertain about its own findings.",
+        "fix": "Remove 'Arithmetic Closure Failure' from the Key Risks table entirely. In the Decision section's fourth rationale bullet, strengthen the language from 'The stated 5,000 retail doors and 75,000 subscribers mathematically cap Year 3 revenue at $43 million' to 'Arithmetic closure audit confirms the stated 5,000 retail doors and 75,000 subscribers cannot generate more than $43M–$59.5M in Year 3 revenue under any realistic velocity assumption, creating a structural $91M–$107M shortfall against the $150M baseline target.' This also addresses the P7 timeline-to-milestone issue by clarifying the revenue model is structurally broken, not just risky.",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "States 'The case brief states \"Expectation: is to have $150-200M/year in revenue\" but later lists \"Potential Year 3 revenue of $240–300M\"' without reconciling which figure is the actual success criterion used throughout the memo.",
+        "impact": "This unresolved discrepancy at the top of the memo immediately signals internal inconsistency and forces readers to question every subsequent financial claim.",
+        "fix": "Revise the Brief Discrepancies section to read: 'The case brief contains two revenue figures: (1) \"Expectation: $150–200M/year in revenue from vitamin gummy category in 3 years\" and (2) \"Potential Year 3 revenue of $240–300M, blended across all channels.\" This memo treats $150–200M as the baseline viability threshold and $240–300M as a stretch target. All financial analysis, including the arithmetic closure audit and success criteria evaluation, uses the $150M baseline. If the $240–300M figure is required for strategic approval, the revenue gap increases from $107M to $197M–$257M, further strengthening the No-Go recommendation.'",
+        "severity": "HIGH"
+      },
+      {
+        "issue": "States 'Projected DTC Gross Margin: 65–80%' and 'Projected Retail Gross Margin: 35–45%' but does not specify the blended gross margin assumption used in the $43M revenue cap calculation.",
+        "impact": "Without a clear blended margin assumption, the revenue cap calculation cannot be validated and the contribution margin analysis in later sections becomes unreliable.",
+        "fix": "In the Gross Margin section, add a new bullet after the third bullet: 'Blended Gross Margin (Hybrid Model): 50–60% — assumes 50/50 revenue split between DTC (70% GM after fulfillment) and retail (40% GM after wholesale discount). This blended margin is used in all downstream contribution margin and payback calculations. A shift to 70% retail mix would compress blended GM to 45%, requiring a 33% increase in unit volume to maintain absolute gross profit dollars.'",
+        "severity": "MEDIUM"
+      },
+      {
+        "issue": "The Competitor Analysis table lists 'Ritual' as a 'High' threat but the narrative states 'Lacks gummy manufacturing scale', creating ambiguity about whether Ritual is a direct competitor or a tangential threat.",
+        "impact": "Inconsistent threat assessment undermines the competitive positioning analysis and makes it unclear whether Reckitt should prioritize defending against Ritual or focus on Unilever/Pharmavite.",
+        "fix": "In the Competitor Analysis table, revise the Ritual row's 'Threat Level' from 'High' to 'Medium (Indirect)'. Update the 'Key Weakness / Gap' column to read: 'Lacks gummy manufacturing scale; competes in capsule format only, making it an indirect rather than direct threat to a gummy-focused entry.' Add a footnote below the table: 'Threat levels assess direct competitive overlap in the gummy format. Ritual poses a medium indirect threat by occupying the premium science-forward positioning that Reckitt would need to claim, but does not compete in gummy manufacturing.'",
+        "severity": "LOW"
+      },
+      {
+        "issue": "States 'Target CAC: <$90' and 'Kill Threshold: >$120' but does not reconcile these thresholds with the LTV assumptions required to achieve a healthy 3:1 LTV:CAC ratio.",
+        "impact": "Without explicit LTV targets tied to the CAC thresholds, stakeholders cannot assess whether the $90 target is genuinely viable or arbitrarily chosen.",
+        "fix": "In the CAC section, add a new bullet after the third bullet: 'Implied LTV Requirements: To achieve a 3:1 LTV:CAC ratio at the $90 target CAC, the venture requires a minimum LTV of $270 (gross margin basis). At the $120 kill threshold, required LTV increases to $360. Given the projected $40 ARPU and 70% DTC gross margin, this requires 10–13 months of retention at the target CAC and 13–17 months at the kill threshold. These retention requirements are unvalidated and represent the primary execution risk in the unit economic model.'",
+        "severity": "MEDIUM"
+      }
+    ],
+    "perFailureDetailGap": "Agent-cited per-failure detail (ReconciliationEntry quoteA/quoteB/locations) is NOT persisted — computeP1 reduces all finding arrays to counts before persistence; raw Tier-1/Tier-2 LLM responses are not stored in any table (Inngest journal ephemeral, already confirmed unrecoverable).",
+    "redundancy": {
+      "sri": 0.184,
+      "claimCount": 49
+    }
+  }
+]

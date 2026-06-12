@@ -112,8 +112,13 @@ export function extractQuantities(text: string): Quantity[] {
   const PCT_RE = /(\d+(?:\.\d+)?)(?:\s?[–—-]\s?(\d+(?:\.\d+)?))?\s?%/g;
   // Duration: 3 years, 18 months
   const DUR_RE = /\b(\d+(?:\.\d+)?)\s?(years?|months?|weeks?|days?)\b/gi;
-  // Counts with unit nouns: 2,700 units, 400 FTEs
-  const COUNT_RE = /\b(\d[\d,]*(?:\.\d+)?)\s?(units?|users?|customers?|FTEs?|stores?|sites?|employees?|headcount)\b/gi;
+  // Counts with unit nouns: 2,700 units, 400 FTEs, 3,000–4,000 units (range = ONE
+  // value, same semantics as money ranges), 2,500+ units (open floor: hi = Infinity,
+  // so it never "conflicts" with any specific value at or above the floor).
+  // Currency-prefixed numbers are prices, not counts ("~$2,500 units", "$2,500 unit
+  // price") — the first lookbehind keeps them money-only; the second stops the
+  // match re-entering mid-number ("$2,500 units" must not yield "500 units").
+  const COUNT_RE = /(?<![$€£¥]\s?)(?<![\d,.])(\d[\d,]*(?:\.\d+)?)(\+)?(?:\s?[–—-]\s?(\d[\d,]*(?:\.\d+)?))?\s?(units?|users?|customers?|FTEs?|stores?|sites?|employees?|headcount)\b/gi;
   // Engineering units: 5 MW, 200 MWh
   const ENG_RE = /\b(\d[\d,]*(?:\.\d+)?)\s?(MWh|GWh|kWh|MW|GW|kW)\b/g;
 
@@ -149,8 +154,10 @@ export function extractQuantities(text: string): Quantity[] {
 
     COUNT_RE.lastIndex = 0;
     while ((m = COUNT_RE.exec(lineText)) !== null) {
-      const [raw, v, noun] = m;
-      push(raw.trim(), `count:${noun.toLowerCase().replace(/s$/, "")}`, num(v), num(v), idx);
+      const [raw, v, plus, v2, noun] = m;
+      const lo = num(v);
+      const hi = v2 !== undefined ? num(v2) : plus ? Infinity : lo;
+      push(raw.trim(), `count:${noun.toLowerCase().replace(/s$/, "")}`, lo, hi, idx);
     }
 
     ENG_RE.lastIndex = 0;
@@ -179,12 +186,13 @@ function timeDistinguished(a: Quantity, b: Quantity): boolean {
 }
 
 /**
- * Stage 1 pairing: same unit class, disjoint values, shared context signal,
+ * Stage 1 pairing core: same unit class, disjoint values, shared context signal,
  * not scenario-labeled, not time-distinguished. The same statement never pairs
- * with itself.
+ * with itself. Exported so callers that attribute quantities to larger structures
+ * (e.g. the conflict screener's cross-chapter pass) can pair an arbitrary
+ * quantity list under the SAME exclusion rules — one grammar, one rule set.
  */
-export function extractCandidatePairs(text: string): CandidatePair[] {
-  const qs = extractQuantities(text);
+export function pairCandidates(qs: Quantity[]): CandidatePair[] {
   const pairs: CandidatePair[] = [];
 
   for (let i = 0; i < qs.length; i++) {
@@ -211,6 +219,11 @@ export function extractCandidatePairs(text: string): CandidatePair[] {
   }
 
   return pairs;
+}
+
+/** Stage 1 pairing over a single text (the checker's entry point). */
+export function extractCandidatePairs(text: string): CandidatePair[] {
+  return pairCandidates(extractQuantities(text));
 }
 
 /** Label heuristic: most frequent meaningful token within the anchor's statements. */

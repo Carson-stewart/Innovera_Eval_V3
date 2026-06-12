@@ -1,0 +1,106 @@
+Sumitomo framing
+
+1. Decision
+
+Decision Question: How should Sumitomo enter the Japan health data platform market for pharma use cases?
+
+Decision Format: Choose between options
+
+Decision Scope: In scope: entry approach into a Japan-based health data aggregation and management platform focused on human medical data for pharma customers; likely options include JV, partnership, direct go-to-market, and adjacent investment choices. Also in scope are initial focus choices such as cancer vs other disease areas and U.S.-only pharma vs broader pharma customer targets including Europe. Out of scope: entering the pharma business itself.
+
+Strategic Intent: Build new businesses in data aggregation, data utilization/analytics, and marketing/sales by using fragmented Japanese medical data to serve pharma customers and accelerate drug development. The framing is evolving from broad market entry to a more specific decision about the best model to commercialize Japan-based human medical data for pharma.
+
+2. Context
+
+Current State & Background
+
+What's the situation? What exists today? Sumitomo is evaluating entry into the health data aggregation and management platform market with a focus on human medical data in Japan. Internal materials indicate a proposed medical data platform business in Japan, likely via a joint venture with NTT, with an initial focus on pharma-facing services such as real-world data, clinical research data, and drug-discovery AI. Sumitomo already has relevant assets and relationships across digital health and medical data, including DeSC Healthcare/kencom, Dr.JOY, SCSK, Kurashiki Central Hospital R&D, and a National Cancer Center collaboration.
+
+Problem Statement
+
+What specific problem are you trying to solve? Medical data in Japan is fragmented, which limits its utility for pharma companies seeking to develop better drugs efficiently. Sumitomo is trying to determine the best entry model and initial focus area to aggregate, structure, and commercialize that data in a way that creates a scalable business while delivering high-quality data or insights to pharma customers.
+
+Evidence Base
+
+What data, research, or evidence do you already have? Available materials include a strategy summary deck dated 2025-04-17 and interview feedback. These indicate a two-phase roadmap, a likely JV structure with NTT, candidate partnership and investment targets, existing collaborations with research institutes, and explicit business success logic based on data-source economics. The documents also note that pharma is viewed as the highest-unit-economics segment and that Japan’s secondary-use market for medical/genome/PHR data is sized at roughly ¥25B by 2025.
+
+Market Context & Timing
+
+Why is this decision important now? What external factors are relevant? The materials suggest a strong "why now": Japan has supportive regulatory and policy tailwinds under Medical DX initiatives, expanding data infrastructure, and increasing demand for real-world data, clinical data, and AI-enabled drug discovery. At the same time, Japan’s medical-data market remains underdeveloped relative to the U.S., with no dominant platform, creating a window to establish a scaled position before competitors lock up data partnerships. There is also near-term timing pressure: Sumitomo wants to make this entry decision in about one month.
+
+Strategic Intent
+
+How does this decision fit into the broader strategy? This decision fits Sumitomo’s broader effort to move from scattered digital-health experiments toward a structural platform play with clearer monetization. The intended strategic role is to create a Japan-based medical data platform that can first monetize pharma demand and potentially expand over time into broader healthcare data services and possibly East Asia.
+
+3. Key Questions
+
+Strategic Focus
+
+- [BLOCKING/CLIENT] Is the primary objective category entry, monetizing existing data assets, or building a long-term strategic platform position?
+- [HIGH/RESEARCH] Should cancer remain the initial disease-area focus?
+- [MEDIUM/RESEARCH] Which disease areas offer the best combination of data availability, pharma demand, and monetization potential?
+Entry Model & Structure
+
+- [BLOCKING/CLIENT] Is Sumitomo choosing among a JV with NTT, other partnerships, acquisitions/investments, or a standalone build?
+- [HIGH/RESEARCH] What entry model best balances speed, control, capital efficiency, and access to differentiated data assets?
+- [MEDIUM/RESEARCH] What are the implications of different JV governance structures for execution speed and strategic control?
+Customer & Go-to-Market
+
+- [HIGH/RESEARCH] Should the initial commercial focus be U.S. pharma only or a broader set of pharma customers including Europe?
+- [HIGH/RESEARCH] Is it better to sell through U.S. data handlers/aggregators or go directly to pharma customers?
+- [MEDIUM/RESEARCH] What specific customer use cases have the strongest willingness to pay: joint research, analytics/insights, or data-enabled services?
+Business Model & Economics
+
+- [HIGH/RESEARCH] Can the business realistically achieve $5M–$10M per disease-area data source under plausible adoption assumptions?
+- [MEDIUM/RESEARCH] What monetization model is most viable under Japanese regulatory constraints: joint research, analyzed insights, or other structured offerings?
+- [MEDIUM/RESEARCH] How quickly can the platform scale from initial pharma revenues into adjacent businesses in data utilization and marketing/sales?
+Data Access & Regulation
+
+- [BLOCKING/RESEARCH] What forms of data commercialization are legally and operationally feasible in Japan?
+- [HIGH/RESEARCH] How difficult will it be to secure and scale access to hospital, research, and other medical data sources?
+- [MEDIUM/RESEARCH] What de-identification, consent, and data-treatment requirements materially affect product design and go-to-market?
+4. Success Criteria
+
+Primary Success Criteria
+
+- Achieve business economics of roughly $5M–$10M per disease-area data source.
+- Deliver data quality sufficient for pharma customers to accelerate drug development versus current approaches.
+- Establish a scalable business model in data aggregation, utilization/analytics, and related commercial services.
+Secondary Success Criteria
+
+- Build an initial offering centered on human data with clear pharma demand.
+- Create a platform position that can expand beyond the first use case or disease area over time.
+- Support development of more customized medicines for Japanese patients, with possible expansion into East Asia.
+Evaluation Guidance
+
+Prioritize options that create legally compliant access to differentiated data, offer credible speed to monetization in pharma, and preserve the ability to expand into adjacent services. Treat any option that depends on unrestricted raw patient-data sales as a likely no-go.
+
+5. Assumptions
+
+Only uncertain beliefs that must hold true and can be stress-tested. NOT constraints, criteria, or process steps.
+
+- Market demand: Pharma companies will pay meaningful premiums for high-quality Japan-based human medical data or derived insights.
+- Business model: Preparing, analyzing, and commercializing data-derived insights will be a more viable model than attempting to sell raw data directly.
+- Strategic expansion: Success in an initial area such as cancer can be extended into additional disease areas and potentially East Asia.
+6. Constraints
+
+Fixed, immutable boundary conditions — things the team CANNOT change.
+
+- Timeline/Deadline: Entry decision needs to be made in about one month, which limits how much primary diligence and partnership structuring can be completed before recommendation.
+- Budget/Capital: N/A — no explicit budget cap identified in the materials.
+- Regulatory/Legal: Japan restricts direct sale of patient data; offerings must involve compliant treatment, structuring, analysis, or research-based models.
+- Technology/Capability: N/A — no hard technology constraint identified yet, though data structuring and handling capabilities are central to feasibility.
+- Geography/Market: Initial market context is Japan-based medical data; commercial targets under consideration include U.S. pharma and Europe.
+- Strategic Boundaries: Sumitomo does not want to enter the pharma field itself; the mission is limited to providing data, analysis, or related services.
+7. Stakeholders & Background
+
+Key Stakeholders
+
+- Sumitomo decision makers for new business creation and medical data strategy
+- Potential JV/partner stakeholders including NTT
+- Pharma customers, with U.S. pharma as a current focus and Europe under consideration
+- Data-providing research institutes and hospital partners such as National Cancer Center and Kurashiki Central Hospital
+Project Stage & Prior Work
+
+- The case is beyond pure ideation: Sumitomo has prior digital-health investments, relevant portfolio assets, existing institutional relationships, and a strategy deck outlining a phased platform roadmap.
+- Prior work appears to include evaluation of JV structures, partner options, investment targets across the value chain, and open choices on disease-area and geography prioritization.

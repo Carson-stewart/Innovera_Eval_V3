@@ -11,7 +11,8 @@
     "test": "vitest run",
     "dev:clean": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-clean.ps1",
     "db:sync": "prisma generate && prisma db push && npm run dev:clean",
-    "stack:health": "tsx scripts/dev-stack-health.ts"
+    "stack:health": "tsx scripts/dev-stack-health.ts",
+    "screen": "tsx scripts/conflict-screener/screen.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
